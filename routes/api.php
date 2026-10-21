@@ -15,3 +15,8 @@ use App\Http\Controllers\Api\LiveMatchController;
 */
 
 Route::get('/matches/live', [LiveMatchController::class, 'index'])->name('api.matches.live');
+
+// Phase 7: Tính năng Bình chọn Dự đoán kết quả trận đấu (Community Match Voting)
+Route::post('/matches/{id}/vote', [\App\Http\Controllers\MatchVoteController::class, 'vote'])->name('api.match.vote');
+Route::get('/matches/{id}/votes', [\App\Http\Controllers\MatchVoteController::class, 'stats'])->name('api.match.votes');
+

@@ -3,20 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Services\PremierLeagueService;
+use App\Services\AiMatchService;
 use App\Helpers\FootballSeoHelper;
+use App\Models\MatchVote;
 use Illuminate\View\View;
 
 /**
- * Controller phục vụ Phase 4: Trang Trung tâm trận đấu (Match Center) chi tiết
+ * Controller phục vụ Trang Trung tâm trận đấu (Match Center) chi tiết
  */
 class MatchController extends Controller
 {
     public function __construct(
-        protected PremierLeagueService $premierLeagueService
+        protected PremierLeagueService $premierLeagueService,
+        protected AiMatchService $aiMatchService
     ) {}
 
     /**
-     * Hiển thị chi tiết trận đấu: Header, Diễn biến, Sân 2D & Thống kê
+     * Hiển thị chi tiết trận đấu: Header, Diễn biến, Sân 2D, Thống kê, AI Insight & Vote
      *
      * @param int|string $id
      * @return View
@@ -49,6 +52,25 @@ class MatchController extends Controller
 
         $seo = FootballSeoHelper::generateSeoMetadata($details);
 
+        // 6. Phase 7: Thống kê bình chọn dự đoán trận đấu (Community Match Voting)
+        $userIp = (string) request()->ip();
+        $voteStats = MatchVote::getStatsForMatch($matchId, $userIp);
+
+        // 7. Phase 7: Trợ lý AI Tự động nhận định & Tóm tắt trận đấu
+        $status = $details['status'] ?? 'U';
+        $homeTeam = $details['teams'][0]['team'] ?? [];
+        $awayTeam = $details['teams'][1]['team'] ?? [];
+        $ground = $details['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh';
+
+        if ($status === 'C') {
+            $aiInsight = $this->aiMatchService->generateMatchSummary($events, $stats, $details);
+        } else {
+            $aiInsight = $this->aiMatchService->generateMatchPreview($homeTeam, $awayTeam, [
+                'match_id' => $matchId,
+                'ground' => $ground,
+            ]);
+        }
+
         return view('match-detail', [
             'match' => $details,
             'events' => $events,
@@ -56,6 +78,8 @@ class MatchController extends Controller
             'stats' => $stats,
             'seo' => $seo,
             'tvChannel' => $tvChannel,
+            'voteStats' => $voteStats,
+            'aiInsight' => $aiInsight,
         ]);
     }
 }

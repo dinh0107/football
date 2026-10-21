@@ -8,6 +8,12 @@ use Carbon\Carbon;
 
 class FootballTrackingTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->artisan('migrate');
+    }
+
     /**
      * Test Phase 2: Trang chủ mặc định hiển thị ngày hôm nay và các nút điều hướng
      */
@@ -386,5 +392,133 @@ class FootballTrackingTest extends TestCase
         $this->assertStringContainsString('<?xml version="1.0" encoding="UTF-8"?>', $xmlContent);
         $this->assertStringContainsString('<loc>', $xmlContent);
     }
+
+    /**
+     * Test Phase 7: API Bình chọn Dự đoán kết quả (Community Match Voting) và chặn 1 IP vote 1 lần
+     */
+    public function test_phase_7_community_match_voting_api(): void
+    {
+        $matchId = 999901;
+
+        // 1. Lấy thống kê ban đầu qua GET /api/matches/{id}/votes
+        $getRes = $this->getJson("/api/matches/{$matchId}/votes");
+        $getRes->assertStatus(200);
+        $getRes->assertJsonStructure([
+            'match_id',
+            'total_votes',
+            'home' => ['count', 'percent'],
+            'draw' => ['count', 'percent'],
+            'away' => ['count', 'percent'],
+            'has_voted',
+            'user_choice',
+        ]);
+        $this->assertEquals(0, $getRes->json('total_votes'));
+        $this->assertFalse($getRes->json('has_voted'));
+
+        // 2. Gửi lượt bình chọn đầu tiên qua POST /api/matches/{id}/vote
+        $postRes = $this->postJson("/api/matches/{$matchId}/vote", [
+            'choice' => 'home'
+        ]);
+        $postRes->assertStatus(200);
+        $postRes->assertJson([
+            'success' => true,
+            'message' => 'Bình chọn dự đoán thành công!',
+        ]);
+        $this->assertEquals(1, $postRes->json('stats.total_votes'));
+        $this->assertEquals(100.0, $postRes->json('stats.home.percent'));
+        $this->assertTrue($postRes->json('stats.has_voted'));
+        $this->assertEquals('home', $postRes->json('stats.user_choice'));
+
+        // 3. Chặn cùng 1 IP vote lần 2 cho cùng 1 trận (phải trả về 409 Conflict)
+        $duplicateRes = $this->postJson("/api/matches/{$matchId}/vote", [
+            'choice' => 'away'
+        ]);
+        $duplicateRes->assertStatus(409);
+        $duplicateRes->assertJson([
+            'success' => false,
+            'message' => 'Bạn đã bình chọn cho trận đấu này rồi.',
+        ]);
+        $this->assertEquals(1, $duplicateRes->json('stats.total_votes'));
+
+        // 4. Validate dữ liệu không hợp lệ
+        $invalidRes = $this->postJson("/api/matches/{$matchId}/vote", [
+            'choice' => 'invalid_choice'
+        ]);
+        $invalidRes->assertStatus(422);
+    }
+
+    /**
+     * Test Phase 7: Ghim trận & Đội bóng yêu thích (Favorites)
+     */
+    public function test_phase_7_favorites_engine_and_star_icons(): void
+    {
+        // 1. Kiểm tra file JS favorites.js tồn tại và chứa hàm quản lý
+        $jsPath = public_path('js/favorites.js');
+        $this->assertFileExists($jsPath);
+        $jsContent = file_get_contents($jsPath);
+        $this->assertStringContainsString('epl_favorite_teams', $jsContent);
+        $this->assertStringContainsString('toggleFavorite', $jsContent);
+        $this->assertStringContainsString('reorderMatchesOnHome', $jsContent);
+        $this->assertStringContainsString('badge-favorite-pinned', $jsContent);
+
+        // 2. Kiểm tra Trang Chủ có icon Ngôi sao và data-home-id / data-away-id
+        $homeRes = $this->get('/?date=2026-10-24');
+        $homeRes->assertStatus(200);
+        $homeRes->assertSee('btn-favorite-team', false);
+        $homeRes->assertSee('star-icon', false);
+        $homeRes->assertSee('data-home-id', false);
+        $homeRes->assertSee('data-away-id', false);
+        $homeRes->assertSee('favorites.js');
+
+        // 3. Kiểm tra trang Bảng Xếp Hạng có icon Ngôi sao cho từng CLB
+        $standingsRes = $this->get('/bang-xep-hang');
+        $standingsRes->assertStatus(200);
+        $standingsRes->assertSee('btn-favorite-team', false);
+        $standingsRes->assertSee('data-favorite-team', false);
+        $standingsRes->assertSee('favorites.js');
+    }
+
+    /**
+     * Test Phase 7: Trợ lý AI Tự động nhận định & Tóm tắt trận đấu
+     */
+    public function test_phase_7_ai_match_service_and_blade_cards(): void
+    {
+        $aiService = app(\App\Services\AiMatchService::class);
+
+        // 1. Kiểm tra AiMatchService::generateMatchPreview
+        $preview = $aiService->generateMatchPreview('Arsenal', 'Chelsea', [
+            'ground' => 'Emirates Stadium',
+        ]);
+        $this->assertIsArray($preview);
+        $this->assertEquals('preview', $preview['type']);
+        $this->assertStringContainsString('Arsenal', $preview['title']);
+        $this->assertStringContainsString('Chelsea', $preview['title']);
+        $this->assertNotEmpty($preview['content']);
+        $this->assertCount(3, $preview['highlights']);
+
+        // 2. Kiểm tra AiMatchService::generateMatchSummary
+        $summary = $aiService->generateMatchSummary([
+            ['clock' => '25', 'description' => 'Bàn thắng', 'type' => 'G']
+        ], [], [
+            'teams' => [
+                ['team' => ['name' => 'Arsenal'], 'score' => 2],
+                ['team' => ['name' => 'Chelsea'], 'score' => 1],
+            ]
+        ]);
+        $this->assertIsArray($summary);
+        $this->assertEquals('summary', $summary['type']);
+        $this->assertCount(3, $summary['highlights']);
+
+        // 3. Kiểm tra giao diện Match Center hiển thị cả Widget Bình chọn và Thẻ Trợ Lý AI
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+        $matchRes->assertSee('matchVotingWidget');
+        $matchRes->assertSee('Dự Đoán Cộng Đồng');
+        $matchRes->assertSee('btn-vote-choice');
+        $matchRes->assertSee('voting-multi-bar');
+        $matchRes->assertSee('ai-assistant-card');
+        $matchRes->assertSee('3 Điểm Nhấn');
+    }
 }
+
 

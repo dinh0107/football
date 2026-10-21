@@ -211,6 +211,35 @@
             letter-spacing: 0.04em;
         }
 
+        /* Phase 7: Ghim Đội Bóng Yêu Thích & Icon Ngôi Sao */
+        .btn-favorite-team {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #cbd5e1;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: var(--radius-full);
+            vertical-align: middle;
+        }
+        .btn-favorite-team:hover {
+            color: #f59e0b;
+            transform: scale(1.2);
+        }
+        .btn-favorite-team.is-favorite {
+            color: #f59e0b;
+        }
+        .btn-favorite-team .star-icon {
+            width: 17px;
+            height: 17px;
+            fill: currentColor;
+            stroke: currentColor;
+            stroke-width: 1.2;
+        }
+
         /* Navigation Tabs: BXH & Top Scorers */
         .standings-tabs {
             display: flex;
@@ -653,6 +682,9 @@
                                         {{-- CLB --}}
                                         <td>
                                             <div class="club-col">
+                                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $clubId }}" title="Ghim đội yêu thích">
+                                                    <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                                </button>
                                                 <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($clubId, 50) }}" 
                                                      alt="{{ $team['name'] ?? 'CLB' }}" 
                                                      class="club-badge" loading="lazy">
@@ -855,5 +887,6 @@
             }
         });
     </script>
+    <script src="{{ asset('js/favorites.js') }}"></script>
 </body>
 </html>

@@ -1127,6 +1127,105 @@
                 </div>
             </div>
 
+            {{-- PHASE 7: BÌNH CHỌN DỰ ĐOÁN KẾT QUẢ CỘNG ĐỒNG (COMMUNITY MATCH VOTING) --}}
+            <div class="community-voting-card" id="matchVotingWidget" data-match-id="{{ (int)$match['id'] }}">
+                <div class="voting-header">
+                    <div>
+                        <span class="voting-badge">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                            Dự Đoán Cộng Đồng
+                        </span>
+                        <h3 class="voting-title">Bạn dự đoán kết quả trận đấu này?</h3>
+                    </div>
+                    <span class="voting-total-counter">
+                        <strong id="totalVotesCount">{{ $voteStats['total_votes'] ?? 0 }}</strong> lượt bình chọn
+                    </span>
+                </div>
+
+                {{-- Nút bấm bình chọn 3 lựa chọn --}}
+                <div class="voting-buttons-grid">
+                    <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'home' ? 'active-voted' : '' }}" 
+                            data-choice="home" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
+                        <span class="vote-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }} thắng</span>
+                        <span class="vote-percent-tag" id="homeVoteTag">{{ $voteStats['home']['percent'] ?? 45 }}%</span>
+                    </button>
+
+                    <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'draw' ? 'active-voted' : '' }}" 
+                            data-choice="draw" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
+                        <span class="vote-team-name">Hai đội Hòa</span>
+                        <span class="vote-percent-tag" id="drawVoteTag">{{ $voteStats['draw']['percent'] ?? 25 }}%</span>
+                    </button>
+
+                    <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'away' ? 'active-voted' : '' }}" 
+                            data-choice="away" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
+                        <span class="vote-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }} thắng</span>
+                        <span class="vote-percent-tag" id="awayVoteTag">{{ $voteStats['away']['percent'] ?? 30 }}%</span>
+                    </button>
+                </div>
+
+                {{-- Thanh tỷ lệ phần trăm bình chọn trực quan: [Đội nhà thắng 65%] - [Hòa 15%] - [Đội khách thắng 20%] --}}
+                <div class="voting-progress-bar-wrap">
+                    <div class="voting-multi-bar">
+                        <div class="bar-segment segment-home" id="barHomeSegment" style="width: {{ $voteStats['home']['percent'] ?? 45 }}%;"></div>
+                        <div class="bar-segment segment-draw" id="barDrawSegment" style="width: {{ $voteStats['draw']['percent'] ?? 25 }}%;"></div>
+                        <div class="bar-segment segment-away" id="barAwaySegment" style="width: {{ $voteStats['away']['percent'] ?? 30 }}%;"></div>
+                    </div>
+                    <div class="voting-legend-row">
+                        <span class="legend-item legend-home">
+                            <span class="legend-dot"></span> {{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}: <strong id="legendHomeVal">{{ $voteStats['home']['percent'] ?? 45 }}%</strong>
+                        </span>
+                        <span class="legend-item legend-draw">
+                            <span class="legend-dot"></span> Hòa: <strong id="legendDrawVal">{{ $voteStats['draw']['percent'] ?? 25 }}%</strong>
+                        </span>
+                        <span class="legend-item legend-away">
+                            <span class="legend-dot"></span> {{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}: <strong id="legendAwayVal">{{ $voteStats['away']['percent'] ?? 30 }}%</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="voting-feedback-msg" id="votingFeedbackMsg" style="{{ ($voteStats['has_voted'] ?? false) ? 'display: block;' : 'display: none;' }}">
+                    {{ ($voteStats['has_voted'] ?? false) ? '✓ Bạn đã ghi nhận dự đoán cho trận đấu này.' : '' }}
+                </div>
+            </div>
+
+            {{-- PHASE 7: TRỢ LÝ AI TỰ ĐỘNG NHẬN ĐỊNH & TÓM TẮT TRẬN ĐẤU --}}
+            @if(!empty($aiInsight))
+            <div class="ai-assistant-card">
+                <div class="ai-header">
+                    <div class="ai-brand-group">
+                        <div class="ai-icon-bubble">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+                        </div>
+                        <div>
+                            <span class="ai-badge-label">{{ $aiInsight['badge'] ?? 'Trợ Lý AI Phân Tích' }}</span>
+                            <h3 class="ai-card-title">{{ $aiInsight['title'] ?? 'Nhận Định & Điểm Nhấn Chiến Thuật' }}</h3>
+                        </div>
+                    </div>
+                    <span class="ai-source-tag">{{ $aiInsight['source'] ?? 'Google Gemini AI' }}</span>
+                </div>
+
+                @if(!empty($aiInsight['content']))
+                    <p class="ai-content-paragraph">{{ $aiInsight['content'] }}</p>
+                @endif
+
+                @if(!empty($aiInsight['highlights']))
+                    <div class="ai-highlights-box">
+                        <h4 class="highlights-title">
+                            {{ $status === 'C' ? '3 Điểm Nhấn Định Đoạt Trận Đấu:' : '3 Trọng Tâm Chiến Thuật Đáng Chú Ý:' }}
+                        </h4>
+                        <ul class="ai-highlights-list">
+                            @foreach($aiInsight['highlights'] as $highlight)
+                                <li>
+                                    <span class="highlight-check">✓</span>
+                                    <span>{{ $highlight }}</span>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+            </div>
+            @endif
+
             {{-- Hệ thống Tab chuyển đổi bằng JS thuần --}}
             <div class="match-nav-tabs">
                 <button class="match-tab-btn active" data-target="tab-events">Diễn Biến (Timeline)</button>
@@ -1396,6 +1495,98 @@
             });
         });
     </script>
+
+    {{-- Vanilla JS Bình Chọn Dự Đoán Kết Quả Cộng Đồng --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const votingWidget = document.getElementById('matchVotingWidget');
+            if (!votingWidget) return;
+
+            const matchId = votingWidget.getAttribute('data-match-id');
+            const voteButtons = votingWidget.querySelectorAll('.btn-vote-choice');
+            const feedbackMsg = document.getElementById('votingFeedbackMsg');
+            const totalCountEl = document.getElementById('totalVotesCount');
+
+            const homeTag = document.getElementById('homeVoteTag');
+            const drawTag = document.getElementById('drawVoteTag');
+            const awayTag = document.getElementById('awayVoteTag');
+
+            const barHome = document.getElementById('barHomeSegment');
+            const barDraw = document.getElementById('barDrawSegment');
+            const barAway = document.getElementById('barAwaySegment');
+
+            const legendHome = document.getElementById('legendHomeVal');
+            const legendDraw = document.getElementById('legendDrawVal');
+            const legendAway = document.getElementById('legendAwayVal');
+
+            function updateVotingUI(stats, choice) {
+                if (totalCountEl) totalCountEl.textContent = stats.total_votes;
+                if (homeTag) homeTag.textContent = stats.home.percent + '%';
+                if (drawTag) drawTag.textContent = stats.draw.percent + '%';
+                if (awayTag) awayTag.textContent = stats.away.percent + '%';
+
+                if (barHome) barHome.style.width = stats.home.percent + '%';
+                if (barDraw) barDraw.style.width = stats.draw.percent + '%';
+                if (barAway) barAway.style.width = stats.away.percent + '%';
+
+                if (legendHome) legendHome.textContent = stats.home.percent + '%';
+                if (legendDraw) legendDraw.textContent = stats.draw.percent + '%';
+                if (legendAway) legendAway.textContent = stats.away.percent + '%';
+
+                voteButtons.forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.getAttribute('data-choice') === choice) {
+                        btn.classList.add('active-voted');
+                    } else {
+                        btn.classList.remove('active-voted');
+                    }
+                });
+            }
+
+            voteButtons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const choice = this.getAttribute('data-choice');
+                    if (!choice) return;
+
+                    voteButtons.forEach(b => b.disabled = true);
+
+                    fetch('/api/matches/' + matchId + '/vote', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ choice: choice })
+                    })
+                    .then(res => res.json().then(data => ({ status: res.status, body: data })))
+                    .then(result => {
+                        if (result.status === 200 || result.status === 201) {
+                            if (feedbackMsg) {
+                                feedbackMsg.textContent = '✓ ' + (result.body.message || 'Bình chọn dự đoán thành công!');
+                                feedbackMsg.style.display = 'block';
+                            }
+                            if (result.body.stats) {
+                                updateVotingUI(result.body.stats, choice);
+                            }
+                        } else {
+                            if (feedbackMsg) {
+                                feedbackMsg.textContent = result.body.message || 'Bạn đã bình chọn cho trận này.';
+                                feedbackMsg.style.display = 'block';
+                            }
+                            if (result.body.stats) {
+                                updateVotingUI(result.body.stats, result.body.stats.user_choice || choice);
+                            }
+                        }
+                    })
+                    .catch(err => {
+                        console.error('Lỗi khi gửi bình chọn:', err);
+                        voteButtons.forEach(b => b.disabled = false);
+                    });
+                });
+            });
+        });
+    </script>
+    <script src="{{ asset('js/favorites.js') }}"></script>
     <script src="{{ asset('js/livescore-engine.js') }}"></script>
 </body>
 </html>

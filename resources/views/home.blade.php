@@ -866,6 +866,8 @@
                     <a href="{{ route('match.detail', ['slug' => $slug]) }}" 
                        class="match-card match-item" 
                        data-fixture-id="{{ (int)$match['id'] }}"
+                       data-home-id="{{ $homeId }}"
+                       data-away-id="{{ $awayId }}"
                        data-home-score="{{ $homeScore ?? 0 }}"
                        data-away-score="{{ $awayScore ?? 0 }}"
                        data-home-name="{{ $homeTeam['name'] ?? 'Đội nhà' }}"
@@ -898,6 +900,9 @@
                         <div class="match-main-row">
                             {{-- Đội Nhà --}}
                             <div class="team-col home">
+                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeId }}" title="Ghim đội yêu thích">
+                                    <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
                                 <span class="team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</span>
                                 <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($homeId, 70) }}" 
                                      alt="{{ $homeTeam['name'] ?? '' }}" 
@@ -927,6 +932,9 @@
                                      alt="{{ $awayTeam['name'] ?? '' }}" 
                                      class="team-logo" loading="lazy">
                                 <span class="team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</span>
+                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayId }}" title="Ghim đội yêu thích">
+                                    <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                </button>
                             </div>
                         </div>
                     </a>
@@ -1009,6 +1017,7 @@
             });
         });
     </script>
+    <script src="{{ asset('js/favorites.js') }}"></script>
     <script src="{{ asset('js/livescore-engine.js') }}"></script>
 </body>
 </html>

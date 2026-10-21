@@ -56,8 +56,13 @@
             $homeScore = $match['teams'][0]['score'] ?? null;
             $awayScore = $match['teams'][1]['score'] ?? null;
             $kickoff = $match['kickoff']['millis'] ?? null;
+            $homeClubId = $homeTeam['club']['id'] ?? ($homeTeam['id'] ?? 0);
+            $awayClubId = $awayTeam['club']['id'] ?? ($awayTeam['id'] ?? 0);
         @endphp
-        <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" data-fixture-id="{{ $match['id'] ?? '' }}">
+        <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" 
+           data-fixture-id="{{ $match['id'] ?? '' }}"
+           data-home-id="{{ $homeClubId }}"
+           data-away-id="{{ $awayClubId }}">
             <div class="match-card-header">
                 <span class="match-card-venue">
                     <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -88,10 +93,15 @@
             <div class="match-teams-box">
                 {{-- Đội Nhà --}}
                 <div class="match-team">
-                    <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($homeTeam['club']['id'] ?? ($homeTeam['id'] ?? 0), 70) }}" 
+                    <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($homeClubId, 70) }}" 
                          alt="{{ $homeTeam['name'] ?? 'Đội nhà' }}" 
                          class="team-badge-lg" loading="lazy">
-                    <span class="match-team-name">{{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}</span>
+                    <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <span class="match-team-name">{{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}</span>
+                        <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeClubId }}" title="Ghim đội yêu thích">
+                            <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </button>
+                    </div>
                 </div>
 
                 {{-- Tỉ Số hoặc Giờ Đá --}}
@@ -110,10 +120,15 @@
 
                 {{-- Đội Khách --}}
                 <div class="match-team">
-                    <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($awayTeam['club']['id'] ?? ($awayTeam['id'] ?? 0), 70) }}" 
+                    <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($awayClubId, 70) }}" 
                          alt="{{ $awayTeam['name'] ?? 'Đội khách' }}" 
                          class="team-badge-lg" loading="lazy">
-                    <span class="match-team-name">{{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}</span>
+                    <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
+                        <span class="match-team-name">{{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}</span>
+                        <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayClubId }}" title="Ghim đội yêu thích">
+                            <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
