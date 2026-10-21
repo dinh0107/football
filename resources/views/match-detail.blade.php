@@ -569,16 +569,17 @@
            ===================================================================== */
         .match-nav-tabs {
             display: flex;
-            align-items: center;
-            gap: 6px;
+            align-items: stretch;
+            gap: 4px;
             background: #ffffff;
             border-radius: var(--radius-md);
-            padding: 6px;
+            padding: 5px;
             border: 1px solid var(--pl-border);
-            box-shadow: var(--shadow-subtle);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
             margin-bottom: 22px;
             overflow-x: auto;
             scrollbar-width: none;
+            box-sizing: border-box;
         }
 
         .match-nav-tabs::-webkit-scrollbar {
@@ -587,22 +588,24 @@
 
         .match-tab-btn {
             flex: 1;
-            min-width: 130px;
+            min-width: 110px;
             text-align: center;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.875rem;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
             color: var(--pl-text-muted);
             background: transparent;
-            border: none;
+            border: 1px solid transparent;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
+            box-sizing: border-box;
+            line-height: 1.3;
         }
 
         .match-tab-btn:hover {
@@ -611,10 +614,15 @@
         }
 
         .match-tab-btn.active {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.2);
+            font-weight: 800;
+        }
+
+        .match-tab-btn.active .svg-icon-inline {
+            color: var(--pl-mint);
         }
 
         /* Banner Quảng Cáo Tài Trợ - Polished Modern Card */
@@ -2453,23 +2461,23 @@
             {{-- Hệ thống Tab điều hướng Match Center --}}
             <div class="match-nav-tabs">
                 <button class="match-tab-btn active" data-target="tab-events">
-                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-                    Diễn Biến (Timeline)
+                    <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Diễn Biến
                 </button>
                 <button class="match-tab-btn" data-target="tab-pitch">
-                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line><circle cx="12" cy="12" r="3"></circle></svg>
-                    Đội Hình Ra Sân (Lineups 2D)
+                    <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line><circle cx="12" cy="12" r="3"></circle></svg>
+                    Đội Hình
                 </button>
                 <button class="match-tab-btn" data-target="tab-stats">
-                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    Thống Kê (Stats)
+                    <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Thống Kê
                 </button>
                 <button class="match-tab-btn" data-target="tab-ai">
-                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path></svg>
-                    AI Nhận Định
+                    <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Nhận Định AI
                 </button>
                 <button class="match-tab-btn" data-target="tab-voting">
-                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="m9 12 2 2 4-4"></path><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path><path d="M22 19H2"></path></svg>
+                    <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="9 12 11.5 14.5 15.5 9.5"></polyline></svg>
                     Dự Đoán
                 </button>
             </div>
