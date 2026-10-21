@@ -40,6 +40,77 @@
   --shadow-glow: 0 0 20px rgba(0, 255, 135, 0.25);
 }
 
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  vertical-align: -2px;
+  fill: currentColor;
+}
+
+.svg-icon-lg {
+  width: 20px;
+  height: 20px;
+  vertical-align: -4px;
+}
+
+.badge-goal {
+  background: rgba(0, 255, 135, 0.15);
+  color: var(--pl-green);
+  border: 1px solid rgba(0, 255, 135, 0.3);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.badge-card-yellow {
+  display: inline-block;
+  width: 10px;
+  height: 14px;
+  background: #eab308;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.badge-card-red {
+  display: inline-block;
+  width: 10px;
+  height: 14px;
+  background: #ef4444;
+  border-radius: 2px;
+  vertical-align: middle;
+  margin-right: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-full);
+  padding: 0 14px;
+  gap: 8px;
+}
+
+.search-box:focus-within {
+  border-color: var(--pl-green);
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 8px 0;
+  font-size: 0.85rem;
+  outline: none;
+  width: 200px;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;

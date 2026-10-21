@@ -54,13 +54,16 @@
 
             <nav class="nav-links">
                 <a href="{{ route('standings') }}" class="nav-link {{ request()->routeIs('standings', 'home') ? 'active' : '' }}">
-                    🏆 Bảng Xếp Hạng
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
+                    Bảng Xếp Hạng
                 </a>
                 <a href="{{ route('fixtures') }}" class="nav-link {{ request()->routeIs('fixtures') ? 'active' : '' }}">
-                    📅 Lịch Thi Đấu
+                    <svg class="svg-icon" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
+                    Lịch Thi Đấu
                 </a>
                 <a href="{{ route('live') }}" class="nav-link {{ request()->routeIs('live') ? 'active' : '' }}">
-                    <span class="live-badge-dot"></span> Trực Tiếp
+                    <span class="live-badge-dot"></span>
+                    Trực Tiếp
                 </a>
             </nav>
         </div>
@@ -70,15 +73,15 @@
     <div class="ticker-bar">
         <div class="container ticker-inner">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="ticker-badge">🔴 LIVE PULSE</span>
+                <span class="ticker-badge">LIVE PULSE</span>
                 <span style="color: var(--text-muted); font-size: 0.8rem;" id="livePollingIndicator">Cập nhật mỗi 30s từ PulseLive</span>
             </div>
             <div style="display: flex; gap: 12px; align-items: center;">
                 <a href="{{ route('fixtures') }}" class="ticker-match">
-                    <span>⚡ Vòng đấu hiện tại: <strong>Mùa 2026/27</strong></span>
+                    <span>Vòng đấu hiện tại: <strong>Mùa 2026/27</strong></span>
                 </a>
                 <a href="{{ route('standings') }}" class="ticker-match">
-                    <span>🔥 Xem BXH mới nhất</span>
+                    <span>Xem BXH mới nhất</span>
                 </a>
             </div>
         </div>
@@ -94,15 +97,15 @@
     {{-- Mobile Bottom Bar --}}
     <nav class="bottom-nav">
         <a href="{{ route('standings') }}" class="bottom-nav-item {{ request()->routeIs('standings', 'home') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">🏆</span>
+            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0011 15.9V19H7v2h10v-2h-4v-3.1a5.01 5.01 0 003.61-2.96C19.08 12.63 21 10.55 21 8V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"/></svg>
             <span>Bảng xếp hạng</span>
         </a>
         <a href="{{ route('fixtures') }}" class="bottom-nav-item {{ request()->routeIs('fixtures') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">📅</span>
+            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/></svg>
             <span>Lịch đấu</span>
         </a>
         <a href="{{ route('live') }}" class="bottom-nav-item {{ request()->routeIs('live') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">🔴</span>
+            <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>
             <span>Trực tiếp</span>
         </a>
     </nav>

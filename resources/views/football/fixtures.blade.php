@@ -58,7 +58,10 @@
         @endphp
         <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" data-fixture-id="{{ $match['id'] ?? '' }}">
             <div class="match-card-header">
-                <span class="match-card-venue">🏟️ {{ $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh' }}</span>
+                <span class="match-card-venue">
+                    <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    {{ $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh' }}
+                </span>
                 
                 @if($status === 'L')
                     <span class="match-status-tag status-live">

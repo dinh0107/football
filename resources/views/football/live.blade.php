@@ -28,7 +28,10 @@
                     <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" data-fixture-id="{{ $match['id'] ?? '' }}"
                        style="border-color: rgba(233, 0, 82, 0.4); background: linear-gradient(135deg, rgba(233, 0, 82, 0.08) 0%, var(--bg-card) 100%);">
                         <div class="match-card-header">
-                            <span>🏟️ {{ $match['ground']['name'] ?? 'Premier League' }}</span>
+                            <span class="match-card-venue">
+                                <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                                {{ $match['ground']['name'] ?? 'Premier League' }}
+                            </span>
                             <span class="match-status-tag status-live">
                                 <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
                                 <span class="match-clock">{{ $match['clock']['label'] ?? 'LIVE' }}</span>
@@ -69,7 +72,9 @@
     @else
         {{-- Thông báo khi chưa có trận nào đang đá --}}
         <div class="card" style="text-align: center; padding: 40px 20px; margin-bottom: 32px; border-color: rgba(0, 255, 135, 0.2);">
-            <div style="font-size: 2.5rem; margin-bottom: 12px;">⚽</div>
+            <div style="margin-bottom: 12px;">
+                <svg class="svg-icon-lg" style="width: 40px; height: 40px; color: var(--pl-green);" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            </div>
             <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
                 Hiện tại không có trận đấu nào đang đá trực tiếp
             </h3>
@@ -77,7 +82,7 @@
                 Hệ thống luôn sẵn sàng tự động đồng bộ khi bóng lăn. Dưới đây là các trận đấu thuộc vòng <strong>{{ $currentGw['gameweek'] ?? '' }}</strong> sắp diễn ra.
             </p>
             <a href="{{ route('fixtures') }}" class="nav-link active" style="display: inline-flex;">
-                📅 Xem Toàn Bộ Lịch Thi Đấu
+                Xem Toàn Bộ Lịch Thi Đấu
             </a>
         </div>
     @endif
@@ -104,7 +109,10 @@
                 @endphp
                 <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" data-fixture-id="{{ $match['id'] ?? '' }}">
                     <div class="match-card-header">
-                        <span class="match-card-venue">🏟️ {{ $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh' }}</span>
+                        <span class="match-card-venue">
+                            <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                            {{ $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh' }}
+                        </span>
                         
                         @if($status === 'L')
                             <span class="match-status-tag status-live">

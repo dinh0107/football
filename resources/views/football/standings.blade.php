@@ -58,12 +58,12 @@
 {{-- Thanh Công Cụ & Tìm Kiếm CLB --}}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
     <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-weight: 700; font-size: 0.95rem;">🏆 BXH Chi Tiết</span>
+        <span style="font-weight: 700; font-size: 0.95rem;">BXH Chi Tiết</span>
         <span style="font-size: 0.8rem; color: var(--text-muted);">(Tổng cộng 20 CLB)</span>
     </div>
-    <div>
-        <input type="text" id="tableSearchInput" placeholder="🔍 Tìm nhanh tên câu lạc bộ..." 
-               style="background: var(--bg-card); border: 1px solid var(--border-light); color: #fff; padding: 8px 16px; border-radius: var(--radius-full); font-size: 0.85rem; outline: none; min-width: 240px;">
+    <div class="search-box">
+        <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim);"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+        <input type="text" id="tableSearchInput" placeholder="Tìm tên câu lạc bộ...">
     </div>
 </div>
 

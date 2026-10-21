@@ -32,7 +32,7 @@
 <div class="match-detail-hero hero-match-detail" data-fixture-id="{{ $match['id'] ?? '' }}">
     <div class="hero-header-info">
         <span class="hero-league-badge">
-            🏆 Ngoại Hạng Anh &bull; Vòng {{ $match['gameweek']['gameweek'] ?? '' }}
+            Ngoại Hạng Anh &bull; Vòng {{ $match['gameweek']['gameweek'] ?? '' }}
         </span>
         <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">
             {{ $kickoff ? \App\Services\PulseLiveService::formatKickoffVietnam($kickoff, 'H:i - l, d/m/Y') : '' }} (Giờ VN)
@@ -84,21 +84,21 @@
 
     {{-- Thông tin sân vận động & trọng tài --}}
     <div class="hero-match-meta">
-        <span>🏟️ <strong>Sân:</strong> {{ $ground['name'] ?? 'Chưa rõ' }} ({{ $ground['city'] ?? '' }})</span>
+        <span><strong>Sân:</strong> {{ $ground['name'] ?? 'Chưa rõ' }} ({{ $ground['city'] ?? '' }})</span>
         @if(!empty($match['matchOfficials']))
-            <span>👨‍⚖️ <strong>Trọng tài:</strong> {{ $match['matchOfficials'][0]['name']['display'] ?? 'Premier League' }}</span>
+            <span><strong>Trọng tài:</strong> {{ $match['matchOfficials'][0]['name']['display'] ?? 'Premier League' }}</span>
         @endif
         @if(!empty($match['attendance']))
-            <span>👥 <strong>Khán giả:</strong> {{ number_format($match['attendance']) }} người</span>
+            <span><strong>Khán giả:</strong> {{ number_format($match['attendance']) }} người</span>
         @endif
     </div>
 </div>
 
 {{-- Tabs Điều Hướng (Vanilla JS) --}}
 <div class="tabs-nav">
-    <button class="tab-btn active" data-tab="tab-timeline">⚽ Diễn Biến & Bàn Thắng</button>
-    <button class="tab-btn" data-tab="tab-lineups">📋 Đội Hình Ra Sân</button>
-    <button class="tab-btn" data-tab="tab-info">ℹ️ Thông Tin Trận Đấu</button>
+    <button class="tab-btn active" data-tab="tab-timeline">Diễn Biến & Bàn Thắng</button>
+    <button class="tab-btn" data-tab="tab-lineups">Đội Hình Ra Sân</button>
+    <button class="tab-btn" data-tab="tab-info">Thông Tin Trận Đấu</button>
 </div>
 
 {{-- Tab 1: Diễn Biến Trận Đấu (Timeline) --}}
@@ -113,24 +113,26 @@
                         $isHome = ($ev['teamId'] ?? 0) == $homeId;
                         $clockLabel = $ev['clock']['label'] ?? '00\'';
                         $type = $ev['type'] ?? '';
-                        
-                        $typeIcon = match($type) {
-                            'G' => '⚽ Bàn thắng',
-                            'OG' => '⚽ Phản lưới nhà',
-                            'P' => '⚽ Penalty thành công',
-                            'B' => '🟨 Thẻ vàng',
-                            'S' => '🔄 Thay người',
-                            default => '📌 Sự kiện'
-                        };
-
-                        if ($type === 'B' && ($ev['cardType'] ?? '') === 'RED') {
-                            $typeIcon = '🟥 Thẻ đỏ';
-                        }
+                        $isRed = ($type === 'B' && ($ev['cardType'] ?? '') === 'RED');
                     @endphp
                     <div class="timeline-event {{ $isHome ? 'event-home' : 'event-away' }}">
                         <div class="timeline-minute">{{ $clockLabel }}</div>
                         <div class="timeline-body">
-                            <span>{{ $typeIcon }}</span>
+                            @if($type === 'G')
+                                <span class="badge-goal">GOAL</span> <span>Bàn thắng</span>
+                            @elseif($type === 'OG')
+                                <span class="badge-goal" style="color: #f59e0b; border-color: rgba(245, 158, 11, 0.3);">OG</span> <span>Phản lưới</span>
+                            @elseif($type === 'P')
+                                <span class="badge-goal">PEN</span> <span>Penalty</span>
+                            @elseif($type === 'B' && $isRed)
+                                <span class="badge-card-red"></span> <span>Thẻ đỏ</span>
+                            @elseif($type === 'B')
+                                <span class="badge-card-yellow"></span> <span>Thẻ vàng</span>
+                            @elseif($type === 'S')
+                                <span style="color: var(--text-dim); font-weight: 700;">SUB</span> <span>Thay người</span>
+                            @else
+                                <span>Sự kiện</span>
+                            @endif
                             @if(isset($ev['score']))
                                 <strong style="color: var(--pl-green);">({{ $ev['score']['homeScore'] }} - {{ $ev['score']['awayScore'] }})</strong>
                             @endif
