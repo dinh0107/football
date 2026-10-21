@@ -85,3 +85,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/banner', [\App\Http\Controllers\AdminController::class, 'saveBanner']);
 });
 
+// =========================================================================
+// AUTO DEPLOYMENT WEBHOOK (Tự động Git Pull & Clear Cache khi Push)
+// =========================================================================
+Route::match(['get', 'post'], '/deploy-webhook', [\App\Http\Controllers\DeployController::class, 'deploy'])->name('deploy.webhook');
+

@@ -14,6 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->trustProxies(at: '*');
         $middleware->redirectGuestsTo('/admin/login');
+        $middleware->validateCsrfTokens(except: [
+            'deploy-webhook',
+            'api/*',
+        ]);
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureAdminUser::class,
         ]);
