@@ -1000,10 +1000,72 @@
             transition: color 0.2s;
         }
 
-        .goal-toast-notification .toast-close:hover {
-            color: #ffffff;
+        /* Ghim Đội Bóng Yêu Thích & Icon Ngôi Sao Vector */
+        .btn-favorite-team {
+            background: transparent !important;
+            border: none !important;
+            outline: none !important;
+            cursor: pointer;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            border-radius: 9999px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            vertical-align: middle;
+            line-height: 1;
+            box-shadow: none !important;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .btn-favorite-team:hover {
+            color: #f59e0b;
+            transform: scale(1.2);
+        }
+        .btn-favorite-team.is-favorite {
+            color: #f59e0b;
+        }
+        .btn-favorite-team .star-icon {
+            width: 16px;
+            height: 16px;
+            fill: transparent;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .btn-favorite-team.is-favorite .star-icon {
+            fill: #f59e0b;
+            stroke: #f59e0b;
+        }
+
+        .match-pinned-favorite {
+            border-color: #fcd34d !important;
+            box-shadow: 0 4px 18px rgba(245, 158, 11, 0.16) !important;
+            background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%) !important;
+        }
+
+        .badge-favorite-pinned {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 800;
+            background: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fde68a;
+        }
+        .badge-favorite-pinned svg {
+            width: 12px;
+            height: 12px;
+            fill: #f59e0b;
+            stroke: #f59e0b;
         }
     </style>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
     {{-- Header --}}
@@ -1118,7 +1180,7 @@
 
                             <div style="display: flex; align-items: center; gap: 8px;">
                                 <span class="badge-tv-guide">
-                                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
                                     {{ $tvChannel }}
                                 </span>
 
@@ -1140,8 +1202,8 @@
                         <div class="match-main-row">
                             {{-- Đội Nhà --}}
                             <div class="team-col home">
-                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeId }}" title="Ghim đội yêu thích">
-                                    <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeId }}" title="Ghim đội yêu thích" aria-label="Ghim đội yêu thích">
+                                    <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                 </button>
                                 <span class="team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</span>
                                 <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($homeId, 70) }}" 
@@ -1174,8 +1236,8 @@
                                      class="team-logo" loading="lazy"
                                      onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                 <span class="team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</span>
-                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayId }}" title="Ghim đội yêu thích">
-                                    <svg class="star-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayId }}" title="Ghim đội yêu thích" aria-label="Ghim đội yêu thích">
+                                    <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                 </button>
                             </div>
                         </div>
