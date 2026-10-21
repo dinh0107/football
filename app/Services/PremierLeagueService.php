@@ -457,6 +457,241 @@ class PremierLeagueService
     }
 
     /**
+     * Phase 4: Lấy thông tin chung trận đấu, sân vận động, trọng tài
+     */
+    public function getMatchDetails(int $matchId): ?array
+    {
+        return $this->getMatchDetail($matchId);
+    }
+
+    /**
+     * Phase 4: Lấy danh sách sự kiện bàn thắng, thẻ phạt, thay người theo phút
+     */
+    public function getMatchEvents(int $matchId): array
+    {
+        $match = $this->getMatchDetail($matchId);
+        if (!$match || empty($match['events'])) {
+            return [];
+        }
+
+        // Tạo map ID cầu thủ sang tên hiển thị
+        $playersMap = [];
+        foreach ($match['teamLists'] ?? [] as $tList) {
+            foreach (array_merge($tList['lineup'] ?? [], $tList['substitutes'] ?? []) as $p) {
+                $pId = (int) ($p['id'] ?? 0);
+                $playersMap[$pId] = $p['name']['display'] ?? 'Cầu thủ';
+            }
+        }
+
+        $homeId = (int) ($match['teams'][0]['team']['id'] ?? ($match['teams'][0]['team']['club']['id'] ?? 0));
+        $events = [];
+
+        foreach ($match['events'] as $e) {
+            $type = $e['type'] ?? '';
+            if (!in_array($type, ['G', 'OG', 'P', 'B', 'S'])) {
+                continue;
+            }
+
+            $personId = (int) ($e['personId'] ?? 0);
+            $assistId = (int) ($e['assistId'] ?? 0);
+            $teamId = (int) ($e['teamId'] ?? 0);
+            $isHome = ($teamId === $homeId);
+            $clock = $e['clock']['label'] ?? '00\'';
+            $secs = (int) ($e['clock']['secs'] ?? 0);
+
+            $icon = '⚽';
+            $desc = 'Bàn thắng';
+            if ($type === 'G') {
+                $icon = '⚽';
+                $desc = 'Bàn thắng';
+            } elseif ($type === 'OG') {
+                $icon = '⚽';
+                $desc = 'Phản lưới nhà';
+            } elseif ($type === 'P') {
+                $icon = '⚽';
+                $desc = 'Penalty thành công';
+            } elseif ($type === 'B') {
+                $isRed = (($e['cardType'] ?? '') === 'RED');
+                $icon = $isRed ? '🟥' : '🟨';
+                $desc = $isRed ? 'Thẻ đỏ' : 'Thẻ vàng';
+            } elseif ($type === 'S') {
+                $icon = '🔄';
+                $desc = 'Thay người';
+            }
+
+            $events[] = [
+                'type' => $type,
+                'clock' => $clock,
+                'secs' => $secs,
+                'minute' => (int) ceil($secs / 60),
+                'icon' => $icon,
+                'desc' => $desc,
+                'isHome' => $isHome,
+                'teamId' => $teamId,
+                'playerName' => $playersMap[$personId] ?? "Cầu thủ #{$personId}",
+                'assistName' => $assistId ? ($playersMap[$assistId] ?? null) : null,
+                'score' => isset($e['score']) ? ($e['score']['homeScore'] . ' - ' . $e['score']['awayScore']) : null,
+            ];
+        }
+
+        // Sắp xếp sự kiện theo thứ tự phút thi đấu tăng dần
+        usort($events, fn($a, $b) => $a['secs'] <=> $b['secs']);
+
+        return $events;
+    }
+
+    /**
+     * Phase 4: Lấy danh sách 11 cầu thủ đá chính, dự bị và sơ đồ chiến thuật 2D cho sân bóng
+     */
+    public function getMatchLineups(int $matchId): array
+    {
+        $match = $this->getMatchDetail($matchId);
+        if (!$match || empty($match['teamLists'])) {
+            return [
+                'hasLineups' => false,
+                'home' => null,
+                'away' => null
+            ];
+        }
+
+        $teamLists = $match['teamLists'];
+        $formatTeam = function ($tData, $teamMeta) {
+            $formationLabel = $tData['formation']['label'] ?? '4-4-2';
+            $playerMatrix = $tData['formation']['players'] ?? [];
+
+            // Map tất cả starters theo ID
+            $startersMap = [];
+            foreach ($tData['lineup'] ?? [] as $st) {
+                $startersMap[$st['id']] = [
+                    'id' => $st['id'],
+                    'name' => $st['name']['display'] ?? '',
+                    'lastName' => $st['name']['last'] ?? ($st['name']['display'] ?? ''),
+                    'shirtNum' => $st['matchShirtNumber'] ?? ($st['info']['shirtNum'] ?? '-'),
+                    'position' => $st['matchPosition'] ?? ($st['info']['position'] ?? ''),
+                    'isCaptain' => !empty($st['captain']),
+                ];
+            }
+
+            // Xây dựng danh sách hàng cầu thủ (formation lines) cho sân 2D
+            $pitchRows = [];
+            if (!empty($playerMatrix)) {
+                foreach ($playerMatrix as $rowIdx => $pIds) {
+                    $rowPlayers = [];
+                    foreach ($pIds as $pId) {
+                        if (isset($startersMap[$pId])) {
+                            $rowPlayers[] = $startersMap[$pId];
+                        }
+                    }
+                    if (!empty($rowPlayers)) {
+                        $pitchRows[] = $rowPlayers;
+                    }
+                }
+            }
+
+            // Danh sách dự bị
+            $subs = [];
+            foreach ($tData['substitutes'] ?? [] as $sub) {
+                $subs[] = [
+                    'id' => $sub['id'],
+                    'name' => $sub['name']['display'] ?? '',
+                    'shirtNum' => $sub['matchShirtNumber'] ?? ($sub['info']['shirtNum'] ?? '-'),
+                    'position' => $sub['matchPosition'] ?? ($sub['info']['position'] ?? ''),
+                ];
+            }
+
+            return [
+                'name' => $teamMeta['name'] ?? '',
+                'shortName' => $teamMeta['shortName'] ?? '',
+                'id' => $teamMeta['id'] ?? 0,
+                'badge' => self::getTeamBadgeUrl($teamMeta['club']['id'] ?? ($teamMeta['id'] ?? 0), 70),
+                'formation' => $formationLabel,
+                'pitchRows' => $pitchRows,
+                'starters' => array_values($startersMap),
+                'substitutes' => $subs,
+            ];
+        };
+
+        $homeMeta = $match['teams'][0]['team'] ?? [];
+        $awayMeta = $match['teams'][1]['team'] ?? [];
+
+        return [
+            'hasLineups' => true,
+            'home' => isset($teamLists[0]) ? $formatTeam($teamLists[0], $homeMeta) : null,
+            'away' => isset($teamLists[1]) ? $formatTeam($teamLists[1], $awayMeta) : null,
+        ];
+    }
+
+    /**
+     * Phase 4: Lấy thống kê kiểm soát bóng, sút, sút trúng đích, phạt góc, phạm lỗi
+     */
+    public function getMatchStats(int $matchId): array
+    {
+        $cacheKey = "epl_match_stats_{$matchId}";
+
+        return Cache::remember($cacheKey, 60, function () use ($matchId) {
+            $defaultStats = [
+                'possession' => ['home' => 50, 'away' => 50],
+                'shots' => ['home' => 0, 'away' => 0],
+                'shotsOnTarget' => ['home' => 0, 'away' => 0],
+                'corners' => ['home' => 0, 'away' => 0],
+                'fouls' => ['home' => 0, 'away' => 0],
+            ];
+
+            try {
+                $match = $this->getMatchDetail($matchId);
+                if (!$match) return $defaultStats;
+
+                $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
+                $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
+
+                $res = $this->client()->get("{$this->baseUrl}/stats/match/{$matchId}");
+                if ($res->successful()) {
+                    $data = $res->json('data', []);
+                    $extractTeamStats = function ($tId) use ($data) {
+                        $dict = [];
+                        foreach ($data[(string)$tId]['M'] ?? [] as $st) {
+                            $dict[$st['name']] = $st['value'];
+                        }
+                        return $dict;
+                    };
+
+                    $homeMap = $extractTeamStats($homeId);
+                    $awayMap = $extractTeamStats($awayId);
+
+                    $posHome = (float) ($homeMap['possession_percentage'] ?? 50.0);
+                    $posAway = (float) ($awayMap['possession_percentage'] ?? (100.0 - $posHome));
+
+                    $onTargetH = (int) ($homeMap['ontarget_scoring_att'] ?? 0);
+                    $onTargetA = (int) ($awayMap['ontarget_scoring_att'] ?? 0);
+                    $offTargetH = (int) ($homeMap['shot_off_target'] ?? 0);
+                    $offTargetA = (int) ($awayMap['shot_off_target'] ?? 0);
+
+                    $shotsH = (int) ($homeMap['total_scoring_att'] ?? ($onTargetH + $offTargetH));
+                    $shotsA = (int) ($awayMap['total_scoring_att'] ?? ($onTargetA + $offTargetA));
+
+                    $cornersH = (int) ($homeMap['won_corners'] ?? ($homeMap['corner_taken'] ?? 0));
+                    $cornersA = (int) ($awayMap['won_corners'] ?? ($awayMap['corner_taken'] ?? 0));
+
+                    $foulsH = (int) ($homeMap['fk_foul_lost'] ?? 0);
+                    $foulsA = (int) ($awayMap['fk_foul_lost'] ?? 0);
+
+                    return [
+                        'possession' => ['home' => $posHome, 'away' => $posAway],
+                        'shots' => ['home' => $shotsH, 'away' => $shotsA],
+                        'shotsOnTarget' => ['home' => $onTargetH, 'away' => $onTargetA],
+                        'corners' => ['home' => $cornersH, 'away' => $cornersA],
+                        'fouls' => ['home' => $foulsH, 'away' => $foulsA],
+                    ];
+                }
+            } catch (\Throwable $e) {
+                Log::error("Lỗi khi lấy match stats {$matchId}: " . $e->getMessage());
+            }
+
+            return $defaultStats;
+        });
+    }
+
+    /**
      * Lấy vòng đấu hiện tại
      */
     public function getCurrentGameweek(?int $seasonId = null): ?array

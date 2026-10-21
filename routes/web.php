@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FootballController;
 use App\Http\Controllers\StandingsController;
+use App\Http\Controllers\MatchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +24,12 @@ Route::get('/lich-thi-dau', [FootballController::class, 'fixtures'])->name('fixt
 // Trung Tâm Trực Tiếp Bóng Đá & Live Scores
 Route::get('/truc-tiep', [FootballController::class, 'live'])->name('live');
 
-// Xem Trực Tiếp Trận Đấu Theo ID (Chuyển tiếp chuẩn SEO đến slug)
-Route::get('/truc-tiep/{id}', [FootballController::class, 'liveMatchById'])
+// Phase 4: Trung Tâm Trận Đấu Chi Tiết (Header, Diễn biến, Sân bóng 2D, Thống kê)
+Route::get('/truc-tiep/{id}', [MatchController::class, 'show'])
     ->where('id', '[0-9]+')
     ->name('match.live_id');
 
-// Chi Tiết Trận Đấu - Slug Tiếng Việt Không Dấu + Schema.org SportsEvent
-Route::get('/tran-dau/{slug}', [FootballController::class, 'matchDetail'])
+Route::get('/tran-dau/{slug}', [MatchController::class, 'show'])
     ->where('slug', '[a-zA-Z0-9\-]+')
     ->name('match.detail');
 

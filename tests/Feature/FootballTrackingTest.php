@@ -51,13 +51,15 @@ class FootballTrackingTest extends TestCase
     }
 
     /**
-     * Test Phase 2: Route /truc-tiep/{id} chuyển hướng 302 đến slug trận đấu
+     * Test Phase 4: Route /truc-tiep/{id} tải trực tiếp Match Center (200 OK)
      */
-    public function test_live_match_by_id_route_redirects(): void
+    public function test_live_match_by_id_route_loads_match_center(): void
     {
         $response = $this->get('/truc-tiep/128923');
-        $response->assertStatus(302);
-        $response->assertRedirect('/tran-dau/arsenal-vs-coventry-city-128923');
+        $response->assertStatus(200);
+        $response->assertSee('Arsenal');
+        $response->assertSee('Coventry City');
+        $response->assertSee('tab-events');
     }
 
     /**
@@ -132,19 +134,51 @@ class FootballTrackingTest extends TestCase
     }
 
     /**
-     * Test Chi tiết trận đấu chuẩn SEO, Schema.org và 301 Canonical Redirect
+     * Test Phase 4: Chi tiết trận đấu chuẩn Match Center: Header, Diễn biến, Sân 2D & Thống kê
      */
-    public function test_match_detail_with_canonical_redirect_and_schema(): void
+    public function test_match_detail_match_center_features(): void
     {
-        $wrongSlugResponse = $this->get('/tran-dau/random-slug-128923');
-        $wrongSlugResponse->assertStatus(301);
-        $wrongSlugResponse->assertRedirect('/tran-dau/arsenal-vs-coventry-city-128923');
+        $response = $this->get('/tran-dau/arsenal-vs-coventry-city-128923');
+        $response->assertStatus(200);
+        $response->assertSee('Arsenal');
+        $response->assertSee('Coventry City');
+        $response->assertSee('tab-events');
+        $response->assertSee('tab-pitch');
+        $response->assertSee('tab-stats');
+        $response->assertSee('pitch-2d');
+        $response->assertSee('pitch-line-center');
+        $response->assertSee('dual-progress-bar');
+        $response->assertSee('Kiểm soát bóng');
+        $response->assertSee('SportsEvent');
 
-        $correctResponse = $this->get('/tran-dau/arsenal-vs-coventry-city-128923');
-        $correctResponse->assertStatus(200);
-        $correctResponse->assertSee('Arsenal');
-        $correctResponse->assertSee('Coventry City');
-        $correctResponse->assertSee('SportsEvent');
-        $correctResponse->assertSee('https://schema.org');
+        // Test truy cập trực tiếp qua ID /truc-tiep/{id}
+        $idResponse = $this->get('/truc-tiep/128923');
+        $idResponse->assertStatus(200);
+        $idResponse->assertSee('Arsenal');
+    }
+
+    /**
+     * Test Phase 4: PremierLeagueService match methods
+     */
+    public function test_phase_4_service_methods(): void
+    {
+        $service = app(PremierLeagueService::class);
+        
+        $details = $service->getMatchDetails(128923);
+        $this->assertNotNull($details);
+        $this->assertEquals('Arsenal', $details['teams'][0]['team']['name'] ?? '');
+
+        $events = $service->getMatchEvents(128923);
+        $this->assertIsArray($events);
+        $this->assertNotEmpty($events);
+
+        $lineups = $service->getMatchLineups(128923);
+        $this->assertTrue($lineups['hasLineups']);
+        $this->assertNotEmpty($lineups['home']['starters']);
+        $this->assertNotEmpty($lineups['home']['pitchRows']);
+
+        $stats = $service->getMatchStats(128923);
+        $this->assertArrayHasKey('possession', $stats);
+        $this->assertArrayHasKey('shots', $stats);
     }
 }
