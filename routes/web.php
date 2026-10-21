@@ -43,3 +43,21 @@ Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'ind
 
 // API nội bộ phục vụ Polling Live Scores mỗi 30s
 Route::get('/api/live-scores', [FootballController::class, 'apiLiveScores'])->name('api.live_scores');
+
+// =========================================================================
+// PHASE 8: TRANG QUẢN TRỊ ADMIN (AUTHENTICATION & DASHBOARD)
+// =========================================================================
+Route::get('/admin/login', [\App\Http\Controllers\AdminController::class, 'showLogin'])->name('admin.login');
+Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
+Route::post('/admin/login', [\App\Http\Controllers\AdminController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [\App\Http\Controllers\AdminController::class, 'logout'])->name('admin.logout');
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+    Route::post('/tv-channel', [\App\Http\Controllers\AdminController::class, 'updateTvChannel'])->name('tv_channel.update');
+    Route::post('/cache/clear', [\App\Http\Controllers\AdminController::class, 'clearCache'])->name('cache.clear');
+    Route::post('/maintenance/toggle', [\App\Http\Controllers\AdminController::class, 'toggleMaintenance'])->name('maintenance.toggle');
+    Route::post('/banners', [\App\Http\Controllers\AdminController::class, 'saveBanner'])->name('banner.save');
+    Route::post('/banner', [\App\Http\Controllers\AdminController::class, 'saveBanner']);
+});
+

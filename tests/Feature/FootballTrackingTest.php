@@ -519,6 +519,149 @@ class FootballTrackingTest extends TestCase
         $matchRes->assertSee('ai-assistant-card');
         $matchRes->assertSee('3 Điểm Nhấn');
     }
+
+    /**
+     * Test Phase 8: Đăng nhập Admin bảo mật & Auth Middleware
+     */
+    public function test_phase_8_admin_auth_and_middleware(): void
+    {
+        // 1. Khách chưa đăng nhập truy cập /admin phải bị chuyển hướng đến /admin/login
+        $guestRes = $this->get('/admin');
+        $guestRes->assertRedirect('/admin/login');
+
+        // 2. Trang đăng nhập hiển thị form đúng chuẩn
+        $loginPageRes = $this->get('/admin/login');
+        $loginPageRes->assertStatus(200);
+        $loginPageRes->assertSee('Đăng Nhập Quản Trị');
+        $loginPageRes->assertSee('name="email"', false);
+        $loginPageRes->assertSee('name="password"', false);
+
+        // 3. Người dùng thường (không phải admin) truy cập bị chặn 403 Forbidden
+        $regularUser = \App\Models\User::factory()->create([
+            'is_admin' => false,
+        ]);
+        $forbiddenRes = $this->actingAs($regularUser)->get('/admin');
+        $forbiddenRes->assertStatus(403);
+
+        // 4. Đăng nhập với tài khoản Admin thành công
+        $adminUser = \App\Models\User::factory()->create([
+            'email' => 'superadmin@premierleague.local',
+            'password' => bcrypt('secret123456'),
+            'is_admin' => true,
+        ]);
+
+        $postLoginRes = $this->post('/admin/login', [
+            'email' => 'superadmin@premierleague.local',
+            'password' => 'secret123456',
+        ]);
+        $postLoginRes->assertRedirect('/admin');
+        $this->assertAuthenticatedAs($adminUser);
+
+        // 5. Admin truy cập Dashboard /admin thành công
+        $dashRes = $this->actingAs($adminUser)->get('/admin');
+        $dashRes->assertStatus(200);
+        $dashRes->assertSee('Bảng Điều Khiển Quản Trị');
+        $dashRes->assertSee('Cập Nhật Nhanh Kênh Phát Sóng TV Guide');
+        $dashRes->assertSee('Quản Lý Chế Độ Bảo Trì & Xóa Cache', false);
+        $dashRes->assertSee('Quản Lý Các Vị Trí Đặt Banner Quảng Cáo');
+    }
+
+    /**
+     * Test Phase 8: Cập nhật nhanh thông tin kênh phát sóng TV cho trận đấu
+     */
+    public function test_phase_8_admin_tv_override_functionality(): void
+    {
+        $admin = \App\Models\User::factory()->create(['is_admin' => true]);
+
+        // Cập nhật đè kênh TV cho trận 128923 thành 'FPT Play Độc Quyền'
+        $updateRes = $this->actingAs($admin)->post('/admin/tv-channel', [
+            'match_id' => 128923,
+            'tv_channel' => 'FPT Play Độc Quyền',
+            'notes' => 'Trận cầu tâm điểm cuối tuần',
+        ]);
+
+        $updateRes->assertRedirect('/admin');
+        $updateRes->assertSessionHas('success');
+
+        // Kiểm tra cơ sở dữ liệu đã lưu
+        $this->assertDatabaseHas('match_overrides', [
+            'match_id' => 128923,
+            'tv_channel' => 'FPT Play Độc Quyền',
+        ]);
+
+        // Kiểm tra FootballSeoHelper::getTvChannel ưu tiên kênh override
+        $channel = \App\Helpers\FootballSeoHelper::getTvChannel(['id' => 128923]);
+        $this->assertEquals('FPT Play Độc Quyền', $channel);
+    }
+
+    /**
+     * Test Phase 8: Thao tác Xóa cache thủ công
+     */
+    public function test_phase_8_admin_cache_clear_control(): void
+    {
+        $admin = \App\Models\User::factory()->create(['is_admin' => true]);
+
+        \Illuminate\Support\Facades\Cache::put('test_epl_key', 'test_value', 60);
+        $this->assertTrue(\Illuminate\Support\Facades\Cache::has('test_epl_key'));
+
+        $clearRes = $this->actingAs($admin)->post('/admin/cache/clear');
+        $clearRes->assertRedirect('/admin');
+        $clearRes->assertSessionHas('success');
+
+        $this->assertFalse(\Illuminate\Support\Facades\Cache::has('test_epl_key'));
+    }
+
+    /**
+     * Test Phase 8: Quản lý banner quảng cáo và hiển thị trên giao diện người dùng
+     */
+    public function test_phase_8_ad_banner_management_and_view_rendering(): void
+    {
+        $admin = \App\Models\User::factory()->create(['is_admin' => true]);
+
+        // 1. Tạo banner đầu trang (banner_top)
+        $bannerTopRes = $this->actingAs($admin)->post('/admin/banner', [
+            'position' => 'banner_top',
+            'title' => 'Khuyến Mãi Độc Quyền K+',
+            'image_url' => 'https://example.com/banner-top.jpg',
+            'target_url' => 'https://kplus.vn/khuyen-mai',
+            'alt_text' => 'Xem Ngoại Hạng Anh trên K+',
+            'is_active' => '1',
+        ]);
+        $bannerTopRes->assertRedirect('/admin');
+
+        // 2. Tạo banner dưới tỷ số (banner_below_score)
+        $bannerScoreRes = $this->actingAs($admin)->post('/admin/banner', [
+            'position' => 'banner_below_score',
+            'title' => 'Đặt Cược Thể Thao FPT Play',
+            'image_url' => 'https://example.com/banner-score.jpg',
+            'target_url' => 'https://fptplay.vn',
+            'alt_text' => 'FPT Play Thể Thao',
+            'is_active' => '1',
+        ]);
+        $bannerScoreRes->assertRedirect('/admin');
+
+        // 3. Kiểm tra Model AdBanner::getActiveBanner
+        $activeTop = \App\Models\AdBanner::getActiveBanner('banner_top');
+        $this->assertNotNull($activeTop);
+        $this->assertEquals('Khuyến Mãi Độc Quyền K+', $activeTop->title);
+        $this->assertStringContainsString('https://example.com/banner-top.jpg', $activeTop->rendered_html);
+
+        $activeScore = \App\Models\AdBanner::getActiveBanner('banner_below_score');
+        $this->assertNotNull($activeScore);
+        $this->assertStringContainsString('https://example.com/banner-score.jpg', $activeScore->rendered_html);
+
+        // 4. Kiểm tra trang chủ hiển thị banner_top
+        $homeRes = $this->get('/');
+        $homeRes->assertStatus(200);
+        $homeRes->assertSee('banner-top');
+        $homeRes->assertSee('https://example.com/banner-top.jpg');
+
+        // 5. Kiểm tra trang Match Center hiển thị banner_below_score
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+        $matchRes->assertSee('banner-below-score');
+        $matchRes->assertSee('https://example.com/banner-score.jpg');
+    }
 }
 
 

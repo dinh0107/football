@@ -56,6 +56,16 @@ class FootballSeoHelper
         }
 
         $id = (int) ($match['id'] ?? 0);
+        if ($id > 0) {
+            try {
+                $override = \App\Models\MatchOverride::where('match_id', $id)->value('tv_channel');
+                if ($override) {
+                    return $override;
+                }
+            } catch (\Throwable $e) {
+                // Fallback nếu database chưa khởi tạo
+            }
+        }
         $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
         $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
 

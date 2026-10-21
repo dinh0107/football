@@ -1055,6 +1055,18 @@
     {{-- Main Content --}}
     <main class="main-content">
         <div class="container">
+            {{-- PHASE 8: Banner Quảng Cáo Đầu Trang (banner_top) --}}
+            @php
+                $bannerTop = \App\Models\AdBanner::getActiveBanner('banner_top');
+                $bannerBelowScore = \App\Models\AdBanner::getActiveBanner('banner_below_score');
+                $bannerFooter = \App\Models\AdBanner::getActiveBanner('banner_footer');
+            @endphp
+            @if($bannerTop && $bannerTop->rendered_html)
+                <div class="ad-banner-slot banner-top" style="margin-bottom: 16px;">
+                    {!! $bannerTop->rendered_html !!}
+                </div>
+            @endif
+
             {{-- Breadcrumb --}}
             <div class="breadcrumb-nav">
                 <a href="{{ route('home') }}">&larr; Lịch thi đấu</a>
@@ -1126,6 +1138,13 @@
                     <span>Kênh TV: <strong style="color: var(--pl-mint);">{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong></span>
                 </div>
             </div>
+
+            {{-- PHASE 8: Banner Quảng Cáo Dưới Tỷ Số (banner_below_score) --}}
+            @if(isset($bannerBelowScore) && $bannerBelowScore && $bannerBelowScore->rendered_html)
+                <div class="ad-banner-slot banner-below-score" style="margin-top: 18px; margin-bottom: 20px;">
+                    {!! $bannerBelowScore->rendered_html !!}
+                </div>
+            @endif
 
             {{-- PHASE 7: BÌNH CHỌN DỰ ĐOÁN KẾT QUẢ CỘNG ĐỒNG (COMMUNITY MATCH VOTING) --}}
             <div class="community-voting-card" id="matchVotingWidget" data-match-id="{{ (int)$match['id'] }}">
@@ -1456,6 +1475,13 @@
                     @endforeach
                 </div>
             </div>
+
+            {{-- PHASE 8: Banner Quảng Cáo Chân Trang (banner_footer) --}}
+            @if(isset($bannerFooter) && $bannerFooter && $bannerFooter->rendered_html)
+                <div class="ad-banner-slot banner-footer" style="margin-top: 24px; margin-bottom: 8px;">
+                    {!! $bannerFooter->rendered_html !!}
+                </div>
+            @endif
         </div>
     </main>
 

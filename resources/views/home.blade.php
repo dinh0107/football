@@ -795,6 +795,17 @@
     {{-- Main Content --}}
     <main class="main-content">
         <div class="container">
+            {{-- PHASE 8: Banner Quảng Cáo Đầu Trang (banner_top) --}}
+            @php
+                $bannerTop = \App\Models\AdBanner::getActiveBanner('banner_top');
+                $bannerFooter = \App\Models\AdBanner::getActiveBanner('banner_footer');
+            @endphp
+            @if($bannerTop && $bannerTop->rendered_html)
+                <div class="ad-banner-slot banner-top" style="margin-bottom: 20px;">
+                    {!! $bannerTop->rendered_html !!}
+                </div>
+            @endif
+
             {{-- Hero Section --}}
             <div class="hero-banner">
                 <h1 class="hero-title">Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh</h1>
@@ -963,6 +974,13 @@
                     </p>
                 </div>
             </div>
+
+            {{-- PHASE 8: Banner Quảng Cáo Chân Trang (banner_footer) --}}
+            @if(isset($bannerFooter) && $bannerFooter && $bannerFooter->rendered_html)
+                <div class="ad-banner-slot banner-footer" style="margin-top: 24px; margin-bottom: 10px;">
+                    {!! $bannerFooter->rendered_html !!}
+                </div>
+            @endif
         </div>
     </main>
 
