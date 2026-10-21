@@ -56,7 +56,7 @@
     <header class="header">
         <div class="container header-inner">
             <a href="{{ route('home') }}" class="logo-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;">
             </a>
 
             <nav class="nav-links">
@@ -108,15 +108,20 @@
     <footer class="footer">
         <div class="container footer-inner">
             <div>
-                <p><strong>Premier League Live Tracker</strong> &copy; {{ date('Y') }}. Dữ liệu chính thức từ PulseLive API.</p>
+                <p><strong>Premier League Live Tracker</strong> &copy; {{ date('Y') }}. Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh.</p>
                 <p style="font-size: 0.775rem; color: var(--text-dim); margin-top: 4px;">
-                    Thiết kế tối ưu SEO, tốc độ cao với Laravel Cache & Vanilla Frontend.
+                    Dữ liệu PulseLive API &bull; Không tổ chức cá độ &bull; Không phát sóng lậu.
                 </p>
             </div>
-            <div style="display: flex; gap: 16px;">
-                <a href="{{ route('standings') }}">Bảng xếp hạng</a>
-                <a href="{{ route('fixtures') }}">Lịch thi đấu</a>
-                <a href="{{ route('live') }}">Trực tiếp</a>
+            <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
+                <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">BXH</a>
+                <a href="{{ route('fixtures') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
+                <span style="color: var(--border-light);">|</span>
+                <a href="{{ route('about') }}">Giới thiệu</a>
+                <a href="{{ route('contact') }}">Liên hệ</a>
+                <a href="{{ route('privacy') }}">Bảo mật</a>
+                <a href="{{ route('disclaimer') }}">Miễn trừ trách nhiệm</a>
             </div>
         </div>
     </footer>

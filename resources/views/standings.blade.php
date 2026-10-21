@@ -745,7 +745,7 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="{{ route('home') }}" class="brand-logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" class="brand-logo-img" width="38" height="38">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="38" height="38">
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">
@@ -1022,12 +1022,17 @@
         <div class="container footer-content">
             <div>
                 <strong>Premier League Tracker &copy; {{ date('Y') }}</strong>
-                <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Dữ liệu trực tiếp từ PulseLive API &bull; Cache 30 phút theo yêu cầu</p>
+                <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh &bull; Không tổ chức cá độ &bull; Không phát sóng lậu</p>
             </div>
-            <div style="display: flex; gap: 14px;">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
                 <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
                 <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
                 <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
+                <span style="color: var(--pl-border);">|</span>
+                <a href="{{ route('about') }}">Giới thiệu</a>
+                <a href="{{ route('contact') }}">Liên hệ</a>
+                <a href="{{ route('privacy') }}">Bảo mật</a>
+                <a href="{{ route('disclaimer') }}">Miễn trừ trách nhiệm</a>
             </div>
         </div>
     </footer>

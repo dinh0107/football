@@ -43,7 +43,7 @@ class SeoHelperTest extends TestCase
         ];
         $upcomingTitle = SeoHelper::generateMatchTitle($upcomingMatch);
         $this->assertStringContainsString('Trực tiếp Arsenal vs Chelsea', $upcomingTitle);
-        $this->assertStringContainsString('TySoNgoaiHang', $upcomingTitle);
+        $this->assertStringContainsString('tysongoaihang', $upcomingTitle);
 
         $liveMatch = [
             'status' => 'L',
@@ -105,7 +105,7 @@ class SeoHelperTest extends TestCase
         $this->assertStringContainsString('Coventry City', $paragraph);
         $this->assertStringContainsString('Vòng 1', $paragraph);
         $this->assertStringContainsString('Emirates Stadium', $paragraph);
-        $this->assertStringContainsString('TySoNgoaiHang.site', $paragraph);
+        $this->assertStringContainsString('tysongoaihang.site', $paragraph);
     }
 
     public function test_generate_breadcrumb_schema(): void

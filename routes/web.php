@@ -29,6 +29,22 @@ Route::get('/truc-tiep/{slug}', [MatchController::class, 'show'])
     ->where('slug', '[a-zA-Z0-9\-]+')
     ->name('match.detail');
 
+use App\Http\Controllers\PageController;
+
+// Các trang Thông tin, Pháp lý & Tin cậy (Trust, E-E-A-T & Google AdSense Policy)
+Route::get('/gioi-thieu', [PageController::class, 'about'])->name('about');
+Route::get('/lien-he', [PageController::class, 'contact'])->name('contact');
+Route::post('/lien-he', [PageController::class, 'sendContact'])->name('contact.send');
+Route::get('/chinh-sach-bao-mat', [PageController::class, 'privacy'])->name('privacy');
+Route::get('/mien-tru-trach-nhiem', [PageController::class, 'disclaimer'])->name('disclaimer');
+
+// Chuyển hướng 301 cho các URL tiếng Anh tương ứng
+Route::permanentRedirect('/about', '/gioi-thieu');
+Route::permanentRedirect('/contact', '/lien-he');
+Route::permanentRedirect('/privacy', '/chinh-sach-bao-mat');
+Route::permanentRedirect('/privacy-policy', '/chinh-sach-bao-mat');
+Route::permanentRedirect('/disclaimer', '/mien-tru-trach-nhiem');
+
 // Tương thích ngược & SEO Redirects 301: Chuyển hướng các URL cũ về chuẩn SEO
 Route::permanentRedirect('/standings', '/bang-xep-hang');
 Route::permanentRedirect('/fixtures', '/lich-thi-dau');

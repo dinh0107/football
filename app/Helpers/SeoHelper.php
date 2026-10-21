@@ -8,7 +8,7 @@ use App\Services\PremierLeagueService;
 use App\Models\MatchOverride;
 
 /**
- * Class SeoHelper - Hệ thống Programmatic SEO tự động cho website TySoNgoaiHang.site
+ * Class SeoHelper - Hệ thống Programmatic SEO tự động cho website tysongoaihang.site
  *
  * Chuyên trách:
  * 1. Tự động sinh URL Slug chuẩn SEO có tiền tố truc-tiep và vòng đấu.
@@ -21,8 +21,8 @@ class SeoHelper
     /**
      * Tên thương hiệu mặc định phục vụ branding SEO
      */
-    public const SITE_NAME = 'TySoNgoaiHang';
-    public const DOMAIN = 'TySoNgoaiHang.site';
+    public const SITE_NAME = 'tysongoaihang';
+    public const DOMAIN = 'tysongoaihang.site';
 
     /**
      * Hàm sinh URL Slug tiếng Việt không dấu chuẩn SEO:
@@ -123,9 +123,9 @@ class SeoHelper
 
     /**
      * Sinh tiêu đề (Title) chuẩn SEO tự động theo trạng thái trận đấu:
-     * - Trước trận: "Trực tiếp {Home} vs {Away} ({Giờ} hôm nay) - Kênh chiếu, Tỷ số, Đội hình | TySoNgoaiHang"
+     * - Trước trận: "Trực tiếp {Home} vs {Away} ({Giờ} hôm nay) - Kênh chiếu, Tỷ số, Đội hình | tysongoaihang"
      * - Đang đá: "🔴 [LIVE {Phút}'] {Home} {ScoreHome} - {ScoreAway} {Away} - Tỷ số, Đội hình | Ngoại Hạng Anh"
-     * - Sau trận: "Trực tiếp {Home} vs {Away} - Kết quả ({ScoreHome} - {ScoreAway}): Tóm tắt diễn biến, Tỷ số, Đội hình | TySoNgoaiHang"
+     * - Sau trận: "Trực tiếp {Home} vs {Away} - Kết quả ({ScoreHome} - {ScoreAway}): Tóm tắt diễn biến, Tỷ số, Đội hình | tysongoaihang"
      */
     public static function generateMatchTitle(array $match): string
     {

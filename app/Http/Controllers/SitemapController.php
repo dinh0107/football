@@ -117,6 +117,30 @@ class SitemapController extends Controller
                 'changefreq' => 'daily',
                 'priority' => '0.8',
             ],
+            [
+                'loc' => url('/gioi-thieu'),
+                'lastmod' => $nowIso,
+                'changefreq' => 'monthly',
+                'priority' => '0.6',
+            ],
+            [
+                'loc' => url('/lien-he'),
+                'lastmod' => $nowIso,
+                'changefreq' => 'monthly',
+                'priority' => '0.6',
+            ],
+            [
+                'loc' => url('/chinh-sach-bao-mat'),
+                'lastmod' => $nowIso,
+                'changefreq' => 'monthly',
+                'priority' => '0.5',
+            ],
+            [
+                'loc' => url('/mien-tru-trach-nhiem'),
+                'lastmod' => $nowIso,
+                'changefreq' => 'monthly',
+                'priority' => '0.5',
+            ],
         ];
 
         // 2. Thu thập danh sách trận đấu và phân loại tự động

@@ -336,7 +336,7 @@
     <nav class="admin-nav">
         <div class="container admin-nav-inner">
             <a href="{{ route('admin.dashboard') }}" class="brand-logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" class="brand-logo-img" width="32" height="32">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="32" height="32">
                 <span>EPL Admin Center</span>
             </a>
 
