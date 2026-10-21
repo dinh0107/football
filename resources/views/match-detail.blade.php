@@ -661,6 +661,33 @@
             letter-spacing: 0.05em;
         }
 
+        .ui-rect-card {
+            display: inline-block;
+            width: 10px;
+            height: 14px;
+            border-radius: 2px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
+        .ui-rect-card.yellow {
+            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+            box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+            border: 1px solid #fde68a;
+        }
+
+        .ui-rect-card.red {
+            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.5);
+            border: 1px solid #fecaca;
+        }
+
+        .svg-icon-inline {
+            display: inline-block;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+
         /* Từng hàng sự kiện */
         .timeline-row {
             display: flex;
@@ -2020,7 +2047,12 @@
                             <div class="hero-goalscorers home-scorers">
                                 @foreach($homeGoals as $g)
                                     <span class="hero-goal-item">
-                                        <span class="ball-icon">⚽</span>
+                                        <span class="ball-icon">
+                                            <svg class="svg-icon-inline" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <circle cx="12" cy="12" r="4"></circle>
+                                            </svg>
+                                        </span>
                                         <strong>{{ $g['playerName'] }}</strong>
                                         <span class="goal-minute">{{ $g['clock'] }}</span>
                                     </span>
@@ -2069,7 +2101,12 @@
                             <div class="hero-goalscorers away-scorers">
                                 @foreach($awayGoals as $g)
                                     <span class="hero-goal-item">
-                                        <span class="ball-icon">⚽</span>
+                                        <span class="ball-icon">
+                                            <svg class="svg-icon-inline" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <circle cx="12" cy="12" r="4"></circle>
+                                            </svg>
+                                        </span>
                                         <strong>{{ $g['playerName'] }}</strong>
                                         <span class="goal-minute">{{ $g['clock'] }}</span>
                                     </span>
@@ -2112,19 +2149,24 @@
             {{-- Hệ thống Tab điều hướng Match Center --}}
             <div class="match-nav-tabs">
                 <button class="match-tab-btn active" data-target="tab-events">
-                    <span>⚡</span> Diễn Biến (Timeline)
+                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                    Diễn Biến (Timeline)
                 </button>
                 <button class="match-tab-btn" data-target="tab-pitch">
-                    <span>📋</span> Đội Hình Ra Sân (Lineups 2D)
+                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="12" x2="21" y2="12"></line><circle cx="12" cy="12" r="3"></circle></svg>
+                    Đội Hình Ra Sân (Lineups 2D)
                 </button>
                 <button class="match-tab-btn" data-target="tab-stats">
-                    <span>📊</span> Thống Kê (Stats)
+                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    Thống Kê (Stats)
                 </button>
                 <button class="match-tab-btn" data-target="tab-ai">
-                    <span>🤖</span> AI Nhận Định
+                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path></svg>
+                    AI Nhận Định
                 </button>
                 <button class="match-tab-btn" data-target="tab-voting">
-                    <span>🗳️</span> Dự Đoán
+                    <svg class="svg-icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="m9 12 2 2 4-4"></path><path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path><path d="M22 19H2"></path></svg>
+                    Dự Đoán
                 </button>
             </div>
 
@@ -2146,13 +2188,16 @@
                                 Tất Cả
                             </button>
                             <button type="button" class="tl-filter-btn" data-filter="goal">
-                                ⚽ Bàn Thắng
+                                <svg class="svg-icon-inline" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle></svg>
+                                Bàn Thắng
                             </button>
                             <button type="button" class="tl-filter-btn" data-filter="card">
-                                🟨 Thẻ Phạt
+                                <span class="ui-rect-card yellow" style="width: 8px; height: 11px;"></span>
+                                Thẻ Phạt
                             </button>
                             <button type="button" class="tl-filter-btn" data-filter="sub">
-                                🔄 Thay Người
+                                <svg class="svg-icon-inline" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                                Thay Người
                             </button>
                         </div>
                     </div>
@@ -2164,7 +2209,7 @@
                                     {{-- Mốc thời gian bắt đầu / kết thúc hiệp đấu --}}
                                     <div class="timeline-period-divider" data-category="period">
                                         <div class="tl-period-pill {{ ($event['clock'] ?? '') === 'FT' ? 'period-ft' : '' }}">
-                                            <span style="font-size: 1.1rem;">{{ $event['icon'] }}</span>
+                                            <svg class="svg-icon-inline" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                                             <span>{{ $event['desc'] }}</span>
                                             @if(!empty($event['score']))
                                                 <span class="tl-period-score">{{ $event['score'] }}</span>
@@ -2179,7 +2224,7 @@
                                         $badgeClass = 'badge-general';
                                         if ($cat === 'goal') $badgeClass = 'badge-goal';
                                         elseif ($cat === 'card') {
-                                            $badgeClass = (($event['icon'] ?? '') === '🟥') ? 'badge-card-red' : 'badge-card-yellow';
+                                            $badgeClass = (($event['desc'] ?? '') === 'Thẻ đỏ') ? 'badge-card-red' : 'badge-card-yellow';
                                         } elseif ($cat === 'sub') {
                                             $badgeClass = 'badge-sub';
                                         }
@@ -2203,15 +2248,33 @@
 
                                                 <div style="display: flex; align-items: center; gap: 6px;">
                                                     @if($cat === 'goal')
-                                                        <span class="event-badge-tag badge-tag-goal">⚽ {{ $event['desc'] }}</span>
+                                                        <span class="event-badge-tag badge-tag-goal">
+                                                            <svg class="svg-icon-inline" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                                                                <circle cx="12" cy="12" r="10"></circle>
+                                                                <circle cx="12" cy="12" r="4"></circle>
+                                                            </svg>
+                                                            {{ $event['desc'] }}
+                                                        </span>
                                                     @elseif($cat === 'card')
-                                                        @if(($event['icon'] ?? '') === '🟥')
-                                                            <span class="event-badge-tag badge-tag-card-red">🟥 THẺ ĐỎ</span>
+                                                        @if(($event['desc'] ?? '') === 'Thẻ đỏ')
+                                                            <span class="event-badge-tag badge-tag-card-red">
+                                                                <span class="ui-rect-card red"></span> THẺ ĐỎ
+                                                            </span>
                                                         @else
-                                                            <span class="event-badge-tag badge-tag-card-yellow">🟨 THẺ VÀNG</span>
+                                                            <span class="event-badge-tag badge-tag-card-yellow">
+                                                                <span class="ui-rect-card yellow"></span> THẺ VÀNG
+                                                            </span>
                                                         @endif
                                                     @elseif($cat === 'sub')
-                                                        <span class="event-badge-tag badge-tag-sub">🔄 THAY NGƯỜI</span>
+                                                        <span class="event-badge-tag badge-tag-sub">
+                                                            <svg class="svg-icon-inline" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+                                                                <polyline points="17 1 21 5 17 9"></polyline>
+                                                                <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                                                                <polyline points="7 23 3 19 7 15"></polyline>
+                                                                <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                                                            </svg>
+                                                            THAY NGƯỜI
+                                                        </span>
                                                     @endif
 
                                                     @if(!empty($event['score']))
@@ -2226,7 +2289,10 @@
                                                 <div class="tl-sub-duo">
                                                     @if(!empty($event['subIn']))
                                                         <div class="tl-sub-row">
-                                                            <span class="tl-sub-action-badge sub-badge-in">▲ VÀO</span>
+                                                            <span class="tl-sub-action-badge sub-badge-in">
+                                                                <svg class="svg-icon-inline" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                                                                VÀO
+                                                            </span>
                                                             <img src="{{ $event['subIn']['photo'] ?? '' }}" 
                                                                  alt="{{ $event['subIn']['name'] }}" 
                                                                  class="tl-sub-face" 
@@ -2240,7 +2306,10 @@
                                                     @endif
                                                     @if(!empty($event['subOut']))
                                                         <div class="tl-sub-row">
-                                                            <span class="tl-sub-action-badge sub-badge-out">▼ RA</span>
+                                                            <span class="tl-sub-action-badge sub-badge-out">
+                                                                <svg class="svg-icon-inline" width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                                RA
+                                                            </span>
                                                             <img src="{{ $event['subOut']['photo'] ?? '' }}" 
                                                                  alt="{{ $event['subOut']['name'] }}" 
                                                                  class="tl-sub-face" 
@@ -2275,7 +2344,8 @@
                                                             <span>{{ $event['desc'] }}</span>
                                                             @if(!empty($event['assistName']))
                                                                 <span class="event-assist-pill">
-                                                                    👟 Kiến tạo: <strong>{{ $event['assistName'] }}</strong>
+                                                                    <svg class="svg-icon-inline" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M2 17l10 5 10-5M2 12l10 5 10-5M12 2L2 7l10 5 10-5-10-5z"></path></svg>
+                                                                    Kiến tạo: <strong>{{ $event['assistName'] }}</strong>
                                                                 </span>
                                                             @endif
                                                         </div>
@@ -2289,7 +2359,12 @@
                         </div>
                     @else
                         <div style="text-align: center; padding: 48px 16px; color: var(--pl-text-muted);">
-                            <div style="font-size: 2.2rem; margin-bottom: 10px;">⏱️</div>
+                            <div style="display: flex; justify-content: center; margin-bottom: 12px; color: var(--pl-text-muted);">
+                                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
                             @if($status === 'U')
                                 <strong style="color: var(--pl-text-dark); display: block; margin-bottom: 6px;">Trận đấu chưa bắt đầu</strong>
                                 Diễn biến bàn thắng, thẻ phạt và thay người sẽ được cập nhật liên tục từng phút ngay khi bóng lăn.
@@ -2430,7 +2505,13 @@
                         </div>
                     @else
                         <div style="text-align: center; padding: 48px 16px; color: var(--pl-text-muted);">
-                            <div style="font-size: 2.5rem; margin-bottom: 10px;">📋</div>
+                            <div style="display: flex; justify-content: center; margin-bottom: 12px; color: var(--pl-text-muted);">
+                                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+                                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
                             <strong style="color: var(--pl-text-dark); display: block; margin-bottom: 6px; font-size: 1.05rem;">Đội hình ra sân chưa được công bố</strong>
                             Đội hình chính thức và sơ đồ chiến thuật 2 đội thường được ban tổ chức Premier League xác nhận 60 phút trước giờ bóng lăn.
                         </div>
@@ -2548,7 +2629,11 @@
                     </div>
                 @else
                     <div class="stats-card" style="text-align: center; padding: 48px 16px; color: var(--pl-text-muted);">
-                        <div style="font-size: 2.5rem; margin-bottom: 10px;">🤖</div>
+                        <div style="display: flex; justify-content: center; margin-bottom: 12px; color: var(--pl-text-muted);">
+                            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"></path>
+                            </svg>
+                        </div>
                         <strong style="color: var(--pl-text-dark); display: block; margin-bottom: 6px;">Trợ lý AI đang xử lý dữ liệu</strong>
                         Phân tích nhận định chuyên sâu và điểm nhấn chiến thuật sẽ sẵn sàng trong giây lát.
                     </div>

@@ -951,7 +951,16 @@
                     </a>
                 @empty
                     <div class="empty-state">
-                        <div style="font-size: 2.5rem; margin-bottom: 12px; color: var(--pl-purple);">⚽</div>
+                        <div style="margin-bottom: 12px; color: var(--pl-purple); display: flex; justify-content: center;">
+                            <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m4.93 4.93 4.24 4.24"></path>
+                                <path d="m14.83 9.17 4.24-4.24"></path>
+                                <path d="m14.83 14.83 4.24 4.24"></path>
+                                <path d="m9.17 14.83-4.24 4.24"></path>
+                                <circle cx="12" cy="12" r="4"></circle>
+                            </svg>
+                        </div>
                         <h3 class="empty-title">Không có trận đấu Ngoại Hạng Anh nào diễn ra trong ngày này</h3>
                         <p class="empty-desc">
                             Ngày {{ $dateNav['formattedSelected'] }} không có lịch thi đấu. Hãy chọn mốc ngày khác hoặc xem lịch thi đấu các vòng đấu sắp tới.

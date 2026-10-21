@@ -54,7 +54,7 @@ class LiveMatchController extends Controller
                             'type' => 'G',
                             'clock' => "78'",
                             'minute' => 78,
-                            'icon' => '⚽',
+                            'icon' => 'goal',
                             'desc' => 'Bàn thắng',
                             'isHome' => true,
                             'playerName' => 'Bukayo Saka',

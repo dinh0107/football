@@ -597,7 +597,7 @@ class PremierLeagueService
                     'secs' => $secs,
                     'phase' => (int) $phase,
                     'pOrder' => 0,
-                    'icon' => '⏱️',
+                    'icon' => 'whistle',
                     'desc' => ($phase === '1') ? 'Bắt đầu Hiệp 1' : 'Bắt đầu Hiệp 2',
                     'isHome' => null,
                     'playerName' => ($phase === '1') ? 'Trọng tài nổi còi bắt đầu trận đấu' : 'Bắt đầu hiệp thi đấu thứ hai',
@@ -615,7 +615,7 @@ class PremierLeagueService
                     'secs' => $secs,
                     'phase' => (int) $phase,
                     'pOrder' => 2,
-                    'icon' => ($phase === '1') ? '⏸️' : '🏁',
+                    'icon' => ($phase === '1') ? 'half-time' : 'full-time',
                     'desc' => ($phase === '1') ? 'Hết Hiệp 1 (Nghỉ giữa hiệp)' : 'Hết Giờ (Kết thúc trận đấu)',
                     'isHome' => null,
                     'playerName' => ($phase === '1') ? 'Tạm dừng hiệp 1' : 'Trọng tài nổi còi mãn cuộc',
@@ -647,25 +647,25 @@ class PremierLeagueService
                 'photo' => 'https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png'
             ];
 
-            $icon = '⚽';
+            $icon = 'goal';
             $desc = 'Bàn thắng';
             $category = 'goal';
 
             if ($type === 'G') {
-                $icon = '⚽';
+                $icon = 'goal';
                 $desc = 'Bàn thắng';
                 $category = 'goal';
             } elseif ($type === 'OG') {
-                $icon = '⚽';
+                $icon = 'own-goal';
                 $desc = 'Phản lưới nhà (OG)';
                 $category = 'goal';
             } elseif ($type === 'P') {
-                $icon = '⚽';
+                $icon = 'penalty';
                 $desc = 'Phạt đền (Penalty)';
                 $category = 'goal';
             } elseif ($type === 'B') {
                 $isRed = (($e['cardType'] ?? '') === 'RED' || ($e['description'] ?? '') === 'R');
-                $icon = $isRed ? '🟥' : '🟨';
+                $icon = $isRed ? 'red-card' : 'yellow-card';
                 $desc = $isRed ? 'Thẻ đỏ' : 'Thẻ vàng';
                 $category = 'card';
             }
@@ -737,7 +737,7 @@ class PremierLeagueService
                 'phase' => $phase,
                 'pOrder' => 1,
                 'minute' => (int) ceil($secs / 60),
-                'icon' => '🔄',
+                'icon' => 'sub',
                 'desc' => 'Thay người',
                 'isHome' => $isHome,
                 'teamId' => $teamId,
