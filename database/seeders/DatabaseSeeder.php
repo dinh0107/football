@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\Hash;
+
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
@@ -15,11 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Tạo tài khoản Admin chính thức (Không dùng Factory/fake để tương thích 100% Production Plesk)
+        User::updateOrCreate(
+            ['email' => 'admin@tysongoaihang.site'],
+            [
+                'name' => 'Administrator',
+                'password' => Hash::make('Admin@123456'),
+                'is_admin' => true,
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        $this->call(AdminUserSeeder::class);
     }
 }
