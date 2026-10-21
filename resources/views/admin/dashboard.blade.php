@@ -1,376 +1,153 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
-@push('styles')
-<style>
-    /* Admin Control Panel Styles */
-    .admin-header-bar {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-        border-radius: var(--radius-lg);
-        padding: 28px 32px;
-        color: #ffffff;
-        margin-bottom: 28px;
-        box-shadow: var(--shadow-md);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 16px;
-    }
-    .admin-title-area h1 {
-        font-size: 1.5rem;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-        margin-bottom: 6px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .admin-title-area p {
-        font-size: 0.875rem;
-        color: #94a3b8;
-    }
-    .admin-user-badge {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: rgba(255, 255, 255, 0.08);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        padding: 8px 16px;
-        border-radius: var(--radius-full);
-    }
-    .admin-user-badge span {
-        font-size: 0.85rem;
-        color: #e2e8f0;
-    }
-    .btn-admin-logout {
-        background: rgba(239, 68, 68, 0.2);
-        color: #fca5a5;
-        border: 1px solid rgba(239, 68, 68, 0.4);
-        padding: 6px 14px;
-        border-radius: var(--radius-full);
-        font-weight: 700;
-        font-size: 0.8rem;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .btn-admin-logout:hover {
-        background: #ef4444;
-        color: #ffffff;
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 18px;
-        margin-bottom: 28px;
-    }
-    .stat-card {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 20px 22px;
-        box-shadow: var(--shadow-subtle);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-    }
-    .stat-label {
-        font-size: 0.775rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        letter-spacing: 0.04em;
-    }
-    .stat-value {
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: var(--pl-purple);
-        margin: 6px 0;
-    }
-    .stat-status-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 0.75rem;
-        font-weight: 800;
-        padding: 3px 10px;
-        border-radius: var(--radius-full);
-    }
-    .pill-green {
-        background: #ecfdf5;
-        color: #059669;
-        border: 1px solid #a7f3d0;
-    }
-    .pill-red {
-        background: #fef2f2;
-        color: #dc2626;
-        border: 1px solid #fecaca;
-    }
-
-    /* Panels */
-    .panel-card {
-        background: #ffffff;
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 26px 28px;
-        margin-bottom: 26px;
-        box-shadow: var(--shadow-subtle);
-    }
-    .panel-title {
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: var(--pl-purple);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 6px;
-    }
-
-    /* Form Controls */
-    .form-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-        gap: 16px;
-        margin-top: 16px;
-        align-items: flex-end;
-    }
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    .form-label {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: var(--text-dark);
-    }
-    .form-control {
-        width: 100%;
-        padding: 10px 14px;
-        border: 1px solid var(--border-light);
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-family: inherit;
-        background: #f8fafc;
-        color: var(--text-dark);
-        outline: none;
-        transition: all 0.2s;
-    }
-    .form-control:focus {
-        border-color: var(--pl-pink);
-        background: #ffffff;
-        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-    }
-
-    /* Buttons */
-    .btn-action {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 10px 20px;
-        border-radius: 8px;
-        font-weight: 800;
-        font-size: 0.85rem;
-        cursor: pointer;
-        border: none;
-        transition: all 0.2s;
-    }
-    .btn-primary {
-        background: var(--pl-purple);
-        color: #ffffff;
-    }
-    .btn-primary:hover {
-        background: #1e293b;
-        transform: translateY(-1px);
-    }
-    .btn-warning {
-        background: #f59e0b;
-        color: #ffffff;
-    }
-    .btn-warning:hover {
-        background: #d97706;
-    }
-    .btn-danger {
-        background: #ef4444;
-        color: #ffffff;
-    }
-    .btn-danger:hover {
-        background: #dc2626;
-    }
-
-    /* Table */
-    .table-wrap {
-        overflow-x: auto;
-        margin-top: 18px;
-        border-radius: 8px;
-        border: 1px solid var(--border-light);
-    }
-    .data-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.85rem;
-        text-align: left;
-    }
-    .data-table th {
-        background: #f1f5f9;
-        padding: 12px 16px;
-        font-weight: 800;
-        color: var(--text-muted);
-        text-transform: uppercase;
-        font-size: 0.75rem;
-    }
-    .data-table td {
-        padding: 12px 16px;
-        border-top: 1px solid var(--border-light);
-        color: var(--text-dark);
-    }
-
-    /* Banner Grid */
-    .banner-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 20px;
-        margin-top: 18px;
-    }
-    .banner-box {
-        border: 1px solid var(--border-light);
-        border-radius: var(--radius-md);
-        padding: 18px;
-        background: #f8fafc;
-    }
-    .banner-box-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
-    }
-    .banner-pos-tag {
-        font-size: 0.75rem;
-        font-weight: 800;
-        text-transform: uppercase;
-        padding: 3px 8px;
-        border-radius: 6px;
-        background: #e0e7ff;
-        color: #3730a3;
-    }
-
-    /* Alerts */
-    .alert {
-        padding: 12px 18px;
-        border-radius: 8px;
-        font-size: 0.875rem;
-        font-weight: 700;
-        margin-bottom: 22px;
-    }
-    .alert-success {
-        background: #ecfdf5;
-        color: #065f46;
-        border: 1px solid #a7f3d0;
-    }
-    .alert-error {
-        background: #fef2f2;
-        color: #991b1b;
-        border: 1px solid #fecaca;
-    }
-</style>
-@endpush
+@section('title', 'Dashboard Quản Trị Hệ Thống')
 
 @section('content')
-<div style="padding: 20px 0 40px;">
-    {{-- Breadcrumb điều hướng --}}
-    <nav class="breadcrumb-nav" aria-label="Breadcrumb" style="margin-bottom: 18px;">
-        <ol class="breadcrumb-list" style="display: flex; align-items: center; gap: 8px; list-style: none; padding: 0; margin: 0; font-size: 0.85rem; color: var(--text-dim);">
-            <li>
-                <a href="{{ route('home') }}" style="display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); font-weight: 600;">
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width: 14px; height: 14px;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                    Trang Chủ
-                </a>
-            </li>
-            <li style="color: var(--border-light);">/</li>
-            <li aria-current="page" style="color: var(--pl-purple); font-weight: 800;">Quản Trị Hệ Thống</li>
-        </ol>
-    </nav>
-
-    {{-- Admin Header Bar --}}
-    <div class="admin-header-bar">
-        <div class="admin-title-area">
-            <h1>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+{{-- Page Header --}}
+<div class="page-header d-print-none mb-4">
+    <div class="row g-2 align-items-center">
+        <div class="col">
+            <div class="page-pretitle text-uppercase text-secondary fw-bold">Tổng Quan Hệ Thống</div>
+            <h2 class="page-title fw-black fs-2 text-dark">
                 Bảng Điều Khiển Quản Trị
-            </h1>
-            <p>Quản lý kênh TV Guide, tối ưu bộ nhớ Cache, bảo trì hệ thống và banner quảng cáo</p>
+            </h2>
         </div>
+        <div class="col-auto ms-auto d-print-none">
+            <div class="btn-list">
+                <a href="{{ route('home') }}" target="_blank" class="btn btn-outline-secondary d-none d-sm-inline-block">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" /></svg>
+                    Xem Trang Chủ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <div class="admin-user-badge">
-            <span>Xin chào, <strong>{{ Auth::user()->name ?? 'Admin' }}</strong></span>
-            <form action="{{ route('admin.logout') }}" method="POST" style="margin: 0;">
-                @csrf
-                <button type="submit" class="btn-admin-logout">Đăng Xuất</button>
-            </form>
+{{-- Flash Messages --}}
+@if(session('success'))
+    <div class="alert alert-important alert-success alert-dismissible" role="alert">
+        <div class="d-flex">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10" /></svg>
+            </div>
+            <div>{{ session('success') }}</div>
+        </div>
+        <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-important alert-danger alert-dismissible" role="alert">
+        <div class="d-flex">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M12 17h.01" /></svg>
+            </div>
+            <div>{{ session('error') }}</div>
+        </div>
+        <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
+    </div>
+@endif
+
+{{-- 4 THẺ THỐNG KÊ TABLER STATS --}}
+<div class="row row-deck row-cards mb-4">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="avatar bg-primary-lt">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M16 3l-4 4l-4 -4" /></svg>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium text-secondary text-uppercase fs-6">Ghi Đè Kênh TV Guide</div>
+                        <div class="h1 mb-0">{{ $overrides->count() }}</div>
+                        <div class="text-success small fw-bold">Đã phân bổ kênh</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-error">{{ session('error') }}</div>
-    @endif
-
-    {{-- Stat Cards --}}
-    <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-label">Ghi Đè Kênh TV Guide</span>
-            <div class="stat-value">{{ $overrides->count() }}</div>
-            <span class="stat-status-pill pill-green">Đã thiết lập</span>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-label">Trạng Thái Hệ Thống</span>
-            <div class="stat-value" style="font-size: 1.25rem;">
-                {{ $isMaintenance ? 'Bảo Trì (Down)' : 'Hoạt Động (Live)' }}
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="avatar {{ $isMaintenance ? 'bg-danger-lt' : 'bg-success-lt' }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 9v4" /><path d="M12 16v.01" /></svg>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium text-secondary text-uppercase fs-6">Trạng Thái Hệ Thống</div>
+                        <div class="h2 mb-0">{{ $isMaintenance ? 'Bảo Trì (Down)' : 'Hoạt Động (Live)' }}</div>
+                        <div class="{{ $isMaintenance ? 'text-danger' : 'text-success' }} small fw-bold">
+                            {{ $isMaintenance ? 'Tạm dừng phục vụ' : 'Đang phục vụ bình thường' }}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span class="stat-status-pill {{ $isMaintenance ? 'pill-red' : 'pill-green' }}">
-                {{ $isMaintenance ? 'Đang bật bảo trì' : 'Đang phục vụ bình thường' }}
-            </span>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-label">Bộ Nhớ Cache & Session</span>
-            <div class="stat-value" style="font-size: 1.25rem;">{{ config('cache.default', 'file') }}</div>
-            <span class="stat-status-pill pill-green">Chịu tải cao (High Concurrency)</span>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-label">Banner Quảng Cáo Hoạt Động</span>
-            <div class="stat-value">
-                {{ collect($banners)->filter(fn($b) => $b && $b->is_active)->count() }} / 3
-            </div>
-            <span class="stat-status-pill pill-green">Đầu trang, Tỷ số, Footer</span>
         </div>
     </div>
 
-    {{-- PANEL 1: CẬP NHẬT KÊNH PHÁT SÓNG TV GUIDE CUỐI TUẦN --}}
-    <div class="panel-card">
-        <h2 class="panel-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-            Cập Nhật Nhanh Kênh Phát Sóng TV Guide Cho Trận Đấu
-        </h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-            Chỉ định kênh phát sóng độc quyền (K+ Sport 1, TV360, FPT Play, VTVcab ON) cho từng trận đấu để hiển thị chính xác cho người dùng.
-        </p>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="avatar bg-purple-lt">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 9h16" /><path d="M9 4v16" /></svg>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium text-secondary text-uppercase fs-6">Bộ Nhớ Cache</div>
+                        <div class="h2 mb-0">{{ strtoupper(config('cache.default', 'file')) }}</div>
+                        <div class="text-secondary small fw-bold">High Concurrency</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <div class="col-sm-6 col-lg-3">
+        <div class="card card-sm">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <span class="avatar bg-yellow-lt">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                        </span>
+                    </div>
+                    <div class="col">
+                        <div class="font-weight-medium text-secondary text-uppercase fs-6">Banner Đang Bật</div>
+                        <div class="h1 mb-0">{{ collect($banners)->filter(fn($b) => $b && $b->is_active)->count() }} / 3</div>
+                        <div class="text-secondary small fw-bold">Vị trí quảng cáo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- PANEL 1: CẬP NHẬT KÊNH TV GUIDE --}}
+<div class="card mb-4" id="panel-tv">
+    <div class="card-header bg-light">
+        <div>
+            <h3 class="card-title fw-bold text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-primary" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v9a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M16 3l-4 4l-4 -4" /></svg>
+                Cập Nhật Nhanh Kênh Phát Sóng TV Guide Cho Trận Đấu
+            </h3>
+            <p class="card-subtitle text-secondary mb-0">Chỉ định kênh độc quyền (K+ Sport 1, TV360, FPT Play, VTVcab ON) cho từng trận đấu để hiển thị chính xác cho người dùng.</p>
+        </div>
+    </div>
+
+    <div class="card-body">
         <form action="{{ route('admin.tv_channel.update') }}" method="POST">
             @csrf
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label" for="match_id">Chọn Trận Đấu</label>
-                    <select id="match_id" name="match_id" class="form-control" required>
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold" for="match_id">Chọn Trận Đấu</label>
+                    <select id="match_id" name="match_id" class="form-select" required>
                         <option value="">-- Chọn trận đấu --</option>
                         @foreach($fixtures as $f)
                             @php
@@ -385,9 +162,9 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="tv_channel">Kênh Phát Sóng (TV Guide)</label>
-                    <select id="tv_channel" name="tv_channel" class="form-control" required>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold" for="tv_channel">Kênh Phát Sóng (TV Guide)</label>
+                    <select id="tv_channel" name="tv_channel" class="form-select" required>
                         <option value="K+ Sport 1">K+ Sport 1 (Độc quyền)</option>
                         <option value="TV360">TV360 (Viettel)</option>
                         <option value="FPT Play">FPT Play</option>
@@ -395,85 +172,95 @@
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="notes">Ghi chú (Tùy chọn)</label>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold" for="notes">Ghi chú (Tùy chọn)</label>
                     <input type="text" id="notes" name="notes" class="form-control" placeholder="Trận cầu tâm điểm Big 6...">
                 </div>
 
-                <button type="submit" class="btn-action btn-primary">
-                    Lưu Kênh TV
-                </button>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Lưu Kênh TV
+                    </button>
+                </div>
             </div>
         </form>
-
-        @if($overrides->isNotEmpty())
-            <div class="table-wrap">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Match ID</th>
-                            <th>Kênh Phát Sóng</th>
-                            <th>Ghi Chú</th>
-                            <th>Thời Gian Cập Nhật</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($overrides as $ov)
-                            <tr>
-                                <td><strong>#{{ $ov->match_id }}</strong></td>
-                                <td><span class="badge-tv" style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 6px; font-weight: 800;">{{ $ov->tv_channel }}</span></td>
-                                <td>{{ $ov->notes ?? '-' }}</td>
-                                <td>{{ $ov->updated_at->format('d/m/Y H:i') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @endif
     </div>
 
-    {{-- PANEL 2: QUẢN LÝ BẢO TRÌ & XÓA CACHE THỦ CÔNG --}}
-    <div class="panel-card">
-        <h2 class="panel-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.36 6.64a9 9 0 1 1-12.73 0M12 2v10"></path></svg>
-            Quản Lý Chế Độ Bảo Trì & Xóa Cache Hệ Thống
-        </h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-            Dùng khi cần cập nhật hệ thống khẩn cấp hoặc xóa sạch bộ nhớ đệm Redis/File để dữ liệu mới nhất được làm mới ngay lập tức.
-        </p>
+    @if($overrides->isNotEmpty())
+        <div class="table-responsive border-top">
+            <table class="table table-vcenter table-hover card-table">
+                <thead>
+                    <tr>
+                        <th>Match ID</th>
+                        <th>Kênh Phát Sóng</th>
+                        <th>Ghi Chú</th>
+                        <th>Thời Gian Cập Nhật</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($overrides as $ov)
+                        <tr>
+                            <td><span class="badge bg-dark-lt fw-bold">#{{ $ov->match_id }}</span></td>
+                            <td><span class="badge bg-yellow-lt fw-bold fs-5">{{ $ov->tv_channel }}</span></td>
+                            <td><span class="text-secondary">{{ $ov->notes ?? '-' }}</span></td>
+                            <td><span class="text-muted small">{{ $ov->updated_at->format('d/m/Y H:i') }}</span></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
+</div>
 
-        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+{{-- PANEL 2: QUẢN LÝ BẢO TRÌ & XÓA CACHE --}}
+<div class="card mb-4" id="panel-maintenance">
+    <div class="card-header bg-light">
+        <div>
+            <h3 class="card-title fw-bold text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-warning" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
+                Quản Lý Chế Độ Bảo Trì & Xóa Cache Hệ Thống
+            </h3>
+            <p class="card-subtitle text-secondary mb-0">Dùng khi cần cập nhật hệ thống khẩn cấp hoặc xóa sạch bộ nhớ đệm để dữ liệu mới nhất được làm mới ngay lập tức.</p>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="d-flex flex-wrap gap-3">
             {{-- Nút Xóa Cache --}}
-            <form action="{{ route('admin.cache.clear') }}" method="POST">
+            <form action="{{ route('admin.cache.clear') }}" method="POST" class="m-0">
                 @csrf
-                <button type="submit" class="btn-action btn-warning" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ Cache hệ thống?');">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+                <button type="submit" class="btn btn-warning" onclick="return confirm('Bạn có chắc chắn muốn xóa toàn bộ Cache hệ thống?');">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M20 11a8.1 8.1 0 0 0 -15.5 -2m-.5 -4v4h4" /><path d="M4 13a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4" /></svg>
                     Xóa Sạch Cache Hệ Thống
                 </button>
             </form>
 
             {{-- Nút Chuyển Đổi Bảo Trì --}}
-            <form action="{{ route('admin.maintenance.toggle') }}" method="POST">
+            <form action="{{ route('admin.maintenance.toggle') }}" method="POST" class="m-0">
                 @csrf
-                <button type="submit" class="btn-action {{ $isMaintenance ? 'btn-primary' : 'btn-danger' }}" onclick="return confirm('Xác nhận chuyển đổi trạng thái bảo trì hệ thống?');">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <button type="submit" class="btn {{ $isMaintenance ? 'btn-success' : 'btn-danger' }}" onclick="return confirm('Xác nhận chuyển đổi trạng thái bảo trì hệ thống?');">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 9v4" /><path d="M12 16v.01" /></svg>
                     {{ $isMaintenance ? 'Tắt Chế Độ Bảo Trì (Mở Lại Website)' : 'Bật Chế Độ Bảo Trì (Tạm Dừng Website)' }}
                 </button>
             </form>
         </div>
     </div>
+</div>
 
-    {{-- PANEL 3: QUẢN LÝ CÁC VỊ TRÍ ĐẶT BANNER QUẢNG CÁO --}}
-    <div class="panel-card">
-        <h2 class="panel-title">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-            Quản Lý Các Vị Trí Đặt Banner Quảng Cáo (Ads Placement)
-        </h2>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">
-            Cấu hình ảnh banner và đường dẫn cho 3 vị trí vàng trên website: Đầu trang, Dưới tỷ số trận đấu, và Chân trang.
-        </p>
+{{-- PANEL 3: QUẢN LÝ VỊ TRÍ BANNER QUẢNG CÁO --}}
+<div class="card" id="panel-banners">
+    <div class="card-header bg-light">
+        <div>
+            <h3 class="card-title fw-bold text-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2 text-info" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z" /><path d="M4 9h16" /><path d="M9 4v16" /></svg>
+                Quản Lý Các Vị Trí Đặt Banner Quảng Cáo (Ads Placement)
+            </h3>
+            <p class="card-subtitle text-secondary mb-0">Cấu hình ảnh banner và đường dẫn cho 3 vị trí vàng trên website: Đầu trang, Dưới tỷ số trận đấu, và Chân trang.</p>
+        </div>
+    </div>
 
-        <div class="banner-grid">
+    <div class="card-body">
+        <div class="row row-cards">
             @php
                 $positions = [
                     'banner_top' => 'Đầu Trang (Header Top Banner)',
@@ -486,45 +273,51 @@
                 @php
                     $banner = $banners[$posKey] ?? null;
                 @endphp
-                <div class="banner-box">
-                    <div class="banner-box-header">
-                        <span class="banner-pos-tag">{{ $posKey }}</span>
-                        <span style="font-size: 0.75rem; font-weight: 700; color: {{ ($banner && $banner->is_active) ? '#059669' : '#94a3b8' }}">
-                            {{ ($banner && $banner->is_active) ? '● Đang Bật' : '○ Đang Tắt' }}
-                        </span>
+                <div class="col-md-4">
+                    <div class="card bg-light border">
+                        <div class="card-status-top {{ ($banner && $banner->is_active) ? 'bg-success' : 'bg-secondary' }}"></div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-blue-lt text-uppercase">{{ $posKey }}</span>
+                                <span class="badge {{ ($banner && $banner->is_active) ? 'bg-success-lt' : 'bg-secondary-lt' }}">
+                                    {{ ($banner && $banner->is_active) ? 'Đang Bật' : 'Đang Tắt' }}
+                                </span>
+                            </div>
+
+                            <h4 class="card-title fw-bold mb-3 text-dark">{{ $posTitle }}</h4>
+
+                            <form action="{{ route('admin.banner.save') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="position" value="{{ $posKey }}">
+
+                                <div class="mb-2">
+                                    <label class="form-label small fw-bold">Tiêu đề Banner</label>
+                                    <input type="text" name="title" class="form-control form-control-sm" value="{{ $banner->title ?? 'Banner ' . $posKey }}" required>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label class="form-label small fw-bold">Link Ảnh Banner (Image URL)</label>
+                                    <input type="url" name="image_url" class="form-control form-control-sm" value="{{ $banner->image_url ?? '' }}" placeholder="https://example.com/banner.jpg">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold">Đường Dẫn Đích (Target URL)</label>
+                                    <input type="url" name="target_url" class="form-control form-control-sm" value="{{ $banner->target_url ?? '' }}" placeholder="https://fptplay.vn...">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-check form-switch m-0">
+                                        <input class="form-check-input" type="checkbox" name="is_active" value="1" {{ ($banner && $banner->is_active) ? 'checked' : '' }}>
+                                        <span class="form-check-label fw-bold small">Kích hoạt hiển thị banner này</span>
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                    Lưu Banner
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                    <h3 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 12px; color: var(--pl-purple);">{{ $posTitle }}</h3>
-
-                    <form action="{{ route('admin.banner.save') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="position" value="{{ $posKey }}">
-
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label class="form-label">Tiêu đề Banner</label>
-                            <input type="text" name="title" class="form-control" value="{{ $banner->title ?? 'Banner ' . $posKey }}" required>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label class="form-label">Link Ảnh Banner (Image URL)</label>
-                            <input type="url" name="image_url" class="form-control" value="{{ $banner->image_url ?? '' }}" placeholder="https://example.com/banner.jpg">
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 10px;">
-                            <label class="form-label">Đường Dẫn Đích (Target URL)</label>
-                            <input type="url" name="target_url" class="form-control" value="{{ $banner->target_url ?? '' }}" placeholder="https://fptplay.vn...">
-                        </div>
-
-                        <div style="margin: 12px 0;">
-                            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer;">
-                                <input type="checkbox" name="is_active" value="1" {{ ($banner && $banner->is_active) ? 'checked' : '' }}>
-                                Kích hoạt hiển thị banner này
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn-action btn-primary" style="width: 100%;">
-                            Lưu Banner
-                        </button>
-                    </form>
                 </div>
             @endforeach
         </div>
