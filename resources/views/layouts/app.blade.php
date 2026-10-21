@@ -56,7 +56,7 @@
     <header class="header">
         <div class="container header-inner">
             <a href="{{ route('home') }}" class="logo-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;" onerror="this.onerror=null; this.src='/images/logo.png';">
             </a>
 
             <nav class="nav-links">

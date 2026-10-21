@@ -2229,7 +2229,7 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="{{ route('home') }}" class="brand-logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="38" height="38">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="38" height="38" onerror="this.onerror=null; this.src='/images/logo.png';">
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">

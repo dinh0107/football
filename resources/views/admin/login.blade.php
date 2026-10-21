@@ -163,7 +163,7 @@
 <body>
     <div class="login-card">
         <div class="brand-header">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" width="56" height="56" style="border-radius: 14px; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" width="56" height="56" style="border-radius: 14px; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);" onerror="this.onerror=null; this.src='/images/logo.png';">
             <h1 class="brand-title">Admin Dashboard</h1>
             <p class="brand-subtitle">Hệ thống Quản trị Website Ngoại Hạng Anh</p>
         </div>
