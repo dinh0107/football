@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Services\PremierLeagueService;
 use App\Services\AiMatchService;
+use App\Helpers\SeoHelper;
 use App\Helpers\FootballSeoHelper;
 use App\Models\MatchVote;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 /**
- * Controller phục vụ Trang Trung tâm trận đấu (Match Center) chi tiết
+ * Controller phục vụ Trang Trung tâm trận đấu (Match Center) chi tiết & Programmatic SEO
  */
 class MatchController extends Controller
 {
@@ -19,14 +21,15 @@ class MatchController extends Controller
     ) {}
 
     /**
-     * Hiển thị chi tiết trận đấu: Header, Diễn biến, Sân 2D, Thống kê, AI Insight & Vote
+     * Hiển thị chi tiết trận đấu: Header, Diễn biến, Sân 2D, Thống kê, AI Insight & SEO
      *
-     * @param int|string $id
-     * @return View
+     * @param string $slug
+     * @return View|RedirectResponse
      */
-    public function show(int|string $id): View
+    public function show(string $slug): View|RedirectResponse
     {
-        $matchId = FootballSeoHelper::extractIdFromSlug((string) $id);
+        // Trích xuất match ID từ đuôi URL slug
+        $matchId = SeoHelper::extractIdFromSlug($slug);
         if (!$matchId) {
             abort(404, 'Mã trận đấu không hợp lệ.');
         }
@@ -35,6 +38,24 @@ class MatchController extends Controller
         $details = $this->premierLeagueService->getMatchDetails($matchId);
         if (!$details) {
             abort(404, 'Không tìm thấy thông tin trận đấu.');
+        }
+
+        // Xử lý 301 Permanent Redirect nếu URL slug bị sai tên đội hoặc sai định dạng cấu trúc
+        $homeTeamName = $details['teams'][0]['team']['name'] ?? 'doi-nha';
+        $awayTeamName = $details['teams'][1]['team']['name'] ?? 'doi-khach';
+
+        $canonicalSlugWithPrefix = SeoHelper::generateMatchSlug($details, withPrefix: true);
+        $canonicalSlugWithoutPrefix = SeoHelper::generateMatchSlug($details, withPrefix: false);
+        $canonicalSimpleSlug = \Illuminate\Support\Str::slug("{$homeTeamName} vs {$awayTeamName}") . "-{$matchId}";
+
+        $validSlugs = [
+            $canonicalSlugWithPrefix,
+            $canonicalSlugWithoutPrefix,
+            $canonicalSimpleSlug,
+        ];
+
+        if (!is_numeric($slug) && !in_array($slug, $validSlugs)) {
+            return redirect()->route('match.detail', ['slug' => $canonicalSlugWithPrefix], 301);
         }
 
         // 2. Lấy sự kiện trận đấu (bàn thắng, thẻ phạt, thay người theo phút)
@@ -47,16 +68,17 @@ class MatchController extends Controller
         $stats = $this->premierLeagueService->getMatchStats($matchId);
 
         // 5. Kênh phát sóng tại Việt Nam (TV Guide) & SEO Metadata đầy đủ
-        $tvChannel = FootballSeoHelper::getTvChannel($details);
+        $tvChannel = SeoHelper::getTvChannel($details);
         $details['tv_channel'] = $tvChannel;
 
         $seo = FootballSeoHelper::generateSeoMetadata($details);
+        $seoParagraph = SeoHelper::generateMatchSeoParagraph($details);
 
-        // 6. Phase 7: Thống kê bình chọn dự đoán trận đấu (Community Match Voting)
+        // 6. Thống kê bình chọn dự đoán trận đấu (Community Match Voting)
         $userIp = (string) request()->ip();
         $voteStats = MatchVote::getStatsForMatch($matchId, $userIp);
 
-        // 7. Phase 7: Trợ lý AI Tự động nhận định & Tóm tắt trận đấu
+        // 7. Trợ lý AI Tự động nhận định & Tóm tắt trận đấu
         $status = $details['status'] ?? 'U';
         $homeTeam = $details['teams'][0]['team'] ?? [];
         $awayTeam = $details['teams'][1]['team'] ?? [];
@@ -77,6 +99,7 @@ class MatchController extends Controller
             'lineups' => $lineups,
             'stats' => $stats,
             'seo' => $seo,
+            'seoParagraph' => $seoParagraph,
             'tvChannel' => $tvChannel,
             'voteStats' => $voteStats,
             'aiInsight' => $aiInsight,

@@ -264,4 +264,12 @@ class FootballSeoHelper
             'schema' => self::generateSportsEventSchema($match, $canonicalUrl),
         ];
     }
+
+    /**
+     * Tự động sinh đoạn văn bản SEO chuẩn ngữ pháp tiếng Việt dài 3-4 câu
+     */
+    public static function generateMatchSeoParagraph(array $match): string
+    {
+        return SeoHelper::generateMatchSeoParagraph($match);
+    }
 }

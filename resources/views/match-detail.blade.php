@@ -267,14 +267,60 @@
             font-size: 1.25rem;
             font-weight: 800;
             color: #ffffff;
-            margin: 12px 0 16px;
+            margin: 12px 0 6px;
             letter-spacing: -0.01em;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .seo-section-h2 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #94a3b8;
+            margin: 0 0 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .seo-intro-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-md);
+            padding: 14px 18px;
+            margin: 0 auto 20px;
+            max-width: 900px;
+            text-align: left;
+            backdrop-filter: blur(10px);
+        }
+
+        .seo-intro-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.775rem;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .seo-intro-text {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #cbd5e1;
+            margin: 0;
+            font-weight: 500;
         }
 
         @media (max-width: 640px) {
             .match-hero-h1-title {
                 font-size: 1.05rem;
+            }
+            .seo-intro-card {
+                padding: 12px 14px;
             }
         }
 
@@ -2096,8 +2142,25 @@
 
                 {{-- Tiêu đề H1 Duy Nhất Chuẩn SEO On-Page --}}
                 <h1 class="match-hero-h1-title">
-                    Trực tiếp {{ $homeTeam['name'] ?? 'Đội nhà' }} vs {{ $awayTeam['name'] ?? 'Đội khách' }}
+                    Trực tiếp {{ $homeTeam['name'] ?? 'Đội nhà' }} vs {{ $awayTeam['name'] ?? 'Đội khách' }} - Vòng {{ $match['gameweek']['gameweek'] ?? 1 }} Ngoại Hạng Anh
                 </h1>
+
+                {{-- Tiêu đề H2 Kênh phát sóng & Giờ thi đấu --}}
+                <h2 class="seo-section-h2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Kênh phát sóng trực tiếp và Thời gian thi đấu
+                </h2>
+
+                {{-- Khối Văn Bản SEO Tự Động (Programmatic SEO Content) --}}
+                @if(!empty($seoParagraph))
+                <div class="seo-intro-card">
+                    <div class="seo-intro-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Tổng quan trước trận đấu
+                    </div>
+                    <p class="seo-intro-text">{{ $seoParagraph }}</p>
+                </div>
+                @endif
 
                 {{-- Bảng Tỷ Số Chính --}}
                 <div class="hero-scoreboard">
@@ -2110,7 +2173,7 @@
                                  loading="lazy"
                                  onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
-                        <h2 class="hero-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</h2>
+                        <div class="hero-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</div>
 
                         {{-- Cầu thủ ghi bàn Đội Nhà --}}
                         @if(!empty($homeGoals))
@@ -2166,7 +2229,7 @@
                                  loading="lazy"
                                  onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
-                        <h2 class="hero-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</h2>
+                        <div class="hero-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</div>
 
                         {{-- Cầu thủ ghi bàn Đội Khách --}}
                         @if(!empty($awayGoals))
