@@ -61,7 +61,7 @@ class FootballTrackingTest extends TestCase
     }
 
     /**
-     * Test Bảng xếp hạng load 200 OK và chứa từ khóa chính
+     * Test Phase 3: Bảng xếp hạng load 200 OK với đầy đủ cột, đánh dấu khu vực và Tab Top Vua Phá Lưới
      */
     public function test_standings_page_loads_successfully(): void
     {
@@ -69,6 +69,31 @@ class FootballTrackingTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Bảng Xếp Hạng Ngoại Hạng Anh');
         $response->assertSee('Manchester City');
+        $response->assertSee('Top Vua Phá Lưới');
+        $response->assertSee('zone-ucl');
+        $response->assertSee('zone-uel');
+        $response->assertSee('zone-rel');
+    }
+
+    /**
+     * Test Phase 3: PremierLeagueService::getLiveStandings() và getTopScorers()
+     */
+    public function test_phase_3_live_standings_and_top_scorers_service(): void
+    {
+        $service = app(PremierLeagueService::class);
+        
+        // 1. Kiểm tra live standings
+        $liveStandings = $service->getLiveStandings();
+        $this->assertIsArray($liveStandings);
+        $this->assertArrayHasKey('entries', $liveStandings);
+        $this->assertCount(20, $liveStandings['entries']);
+
+        // 2. Kiểm tra top scorers
+        $topScorers = $service->getTopScorers();
+        $this->assertIsArray($topScorers);
+        $this->assertCount(10, $topScorers);
+        $this->assertArrayHasKey('goals', $topScorers[0]);
+        $this->assertArrayHasKey('assists', $topScorers[0]);
     }
 
     /**

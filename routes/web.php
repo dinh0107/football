@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FootballController;
+use App\Http\Controllers\StandingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +14,8 @@ use App\Http\Controllers\FootballController;
 // Phase 2: Trang Chủ - Lịch Thi Đấu & Kết Quả Theo Ngày (Fixtures & Results)
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Bảng Xếp Hạng Ngoại Hạng Anh (Standings)
-Route::get('/bang-xep-hang', [FootballController::class, 'standings'])->name('standings');
+// Phase 3: Bảng Xếp Hạng Ngoại Hạng Anh & Live Table As-It-Stands
+Route::get('/bang-xep-hang', [StandingsController::class, 'index'])->name('standings');
 
 // Lịch Thi Đấu Theo Vòng Đấu
 Route::get('/lich-thi-dau', [FootballController::class, 'fixtures'])->name('fixtures');

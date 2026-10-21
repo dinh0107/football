@@ -165,14 +165,15 @@ class PremierLeagueService
     }
 
     /**
-     * Lấy Bảng Xếp Hạng
+     * Lấy Bảng Xếp Hạng (Standings) gốc từ PulseLive
+     * Cache trong 30 phút (1800 giây) theo yêu cầu Phase 3
      */
     public function getStandings(?int $seasonId = null): array
     {
         $season = $seasonId ?: $this->getCurrentCompSeason()['id'];
         $cacheKey = "epl_standings_{$season}";
 
-        return Cache::remember($cacheKey, 3600, function () use ($season) {
+        return Cache::remember($cacheKey, 1800, function () use ($season) {
             try {
                 $response = $this->client()->get("{$this->baseUrl}/compseasons/{$season}/standings");
                 if ($response->successful()) {
@@ -189,6 +190,204 @@ class PremierLeagueService
             }
 
             return ['season' => [], 'entries' => []];
+        });
+    }
+
+    /**
+     * Lấy Bảng Xếp Hạng Trực Tiếp (Live Table As-It-Stands)
+     * Tự động kết hợp tỷ số tạm thời của các trận đang đá (status 'L')
+     * Cộng tạm điểm (+3 thắng, +1 hòa) và tính lại hiệu số, sau đó sắp xếp lại thứ hạng thời gian thực
+     */
+    public function getLiveStandings(?int $seasonId = null): array
+    {
+        $season = $seasonId ?: $this->getCurrentCompSeason()['id'];
+        $standingsData = $this->getStandings($season);
+        $liveMatches = $this->getLiveMatches($season);
+
+        $entries = $standingsData['entries'] ?? [];
+        $hasLive = !empty($liveMatches);
+
+        if (!$hasLive || empty($entries)) {
+            // Không có trận live: giữ nguyên bảng xếp hạng gốc
+            foreach ($entries as $index => &$entry) {
+                $entry['originalPosition'] = (int) ($entry['position'] ?? ($index + 1));
+                $entry['isLiveNow'] = false;
+                $entry['movement'] = 0;
+            }
+            return [
+                'isLive' => false,
+                'season' => $standingsData['season'] ?? [],
+                'entries' => $entries,
+                'liveMatchesCount' => 0
+            ];
+        }
+
+        // Tạo mảng đánh chỉ mục theo ID CLB để xử lý cộng điểm
+        $indexed = [];
+        foreach ($entries as $index => $entry) {
+            $teamId = (int) ($entry['team']['club']['id'] ?? ($entry['team']['id'] ?? 0));
+            $entry['originalPosition'] = (int) ($entry['position'] ?? ($index + 1));
+            $entry['isLiveNow'] = false;
+            $indexed[$teamId] = $entry;
+        }
+
+        // Tính điểm và hiệu số tạm thời từ các trận đang live
+        foreach ($liveMatches as $match) {
+            $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
+            $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
+            
+            $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
+            $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
+
+            if (isset($indexed[$homeId])) {
+                $indexed[$homeId]['isLiveNow'] = true;
+                $indexed[$homeId]['overall']['played'] += 1;
+                $indexed[$homeId]['overall']['goalsFor'] += $homeScore;
+                $indexed[$homeId]['overall']['goalsAgainst'] += $awayScore;
+                $indexed[$homeId]['overall']['goalsDifference'] = $indexed[$homeId]['overall']['goalsFor'] - $indexed[$homeId]['overall']['goalsAgainst'];
+
+                if ($homeScore > $awayScore) {
+                    $indexed[$homeId]['overall']['won'] += 1;
+                    $indexed[$homeId]['overall']['points'] += 3;
+                } elseif ($homeScore === $awayScore) {
+                    $indexed[$homeId]['overall']['drawn'] += 1;
+                    $indexed[$homeId]['overall']['points'] += 1;
+                } else {
+                    $indexed[$homeId]['overall']['lost'] += 1;
+                }
+            }
+
+            if (isset($indexed[$awayId])) {
+                $indexed[$awayId]['isLiveNow'] = true;
+                $indexed[$awayId]['overall']['played'] += 1;
+                $indexed[$awayId]['overall']['goalsFor'] += $awayScore;
+                $indexed[$awayId]['overall']['goalsAgainst'] += $homeScore;
+                $indexed[$awayId]['overall']['goalsDifference'] = $indexed[$awayId]['overall']['goalsFor'] - $indexed[$awayId]['overall']['goalsAgainst'];
+
+                if ($awayScore > $homeScore) {
+                    $indexed[$awayId]['overall']['won'] += 1;
+                    $indexed[$awayId]['overall']['points'] += 3;
+                } elseif ($homeScore === $awayScore) {
+                    $indexed[$awayId]['overall']['drawn'] += 1;
+                    $indexed[$awayId]['overall']['points'] += 1;
+                } else {
+                    $indexed[$awayId]['overall']['lost'] += 1;
+                }
+            }
+        }
+
+        // Sắp xếp lại thứ hạng theo luật Premier League:
+        // 1. Điểm số (points) giảm dần
+        // 2. Hiệu số bàn thắng bại (goalsDifference) giảm dần
+        // 3. Số bàn thắng ghi được (goalsFor) giảm dần
+        // 4. Tên đội bóng (name) tăng dần
+        $sorted = array_values($indexed);
+        usort($sorted, function ($a, $b) {
+            $ptsA = $a['overall']['points'] ?? 0;
+            $ptsB = $b['overall']['points'] ?? 0;
+            if ($ptsA !== $ptsB) {
+                return $ptsB <=> $ptsA;
+            }
+
+            $gdA = $a['overall']['goalsDifference'] ?? 0;
+            $gdB = $b['overall']['goalsDifference'] ?? 0;
+            if ($gdA !== $gdB) {
+                return $gdB <=> $gdA;
+            }
+
+            $gfA = $a['overall']['goalsFor'] ?? 0;
+            $gfB = $b['overall']['goalsFor'] ?? 0;
+            if ($gfA !== $gfB) {
+                return $gfB <=> $gfA;
+            }
+
+            return strcmp($a['team']['name'] ?? '', $b['team']['name'] ?? '');
+        });
+
+        // Cập nhật lại vị trí hiển thị và mức độ di chuyển hạng
+        foreach ($sorted as $idx => &$item) {
+            $newPos = $idx + 1;
+            $item['position'] = $newPos;
+            $orig = $item['originalPosition'] ?? $newPos;
+            $item['movement'] = $orig - $newPos; // >0: tăng hạng, <0: tụt hạng, 0: giữ nguyên
+        }
+
+        return [
+            'isLive' => true,
+            'season' => $standingsData['season'] ?? [],
+            'entries' => $sorted,
+            'liveMatchesCount' => count($liveMatches)
+        ];
+    }
+
+    /**
+     * Lấy danh sách Top 10 cầu thủ ghi bàn nhiều nhất mùa giải (Top Scorers) kèm số kiến tạo
+     * Cache trong 1 giờ (3600s)
+     */
+    public function getTopScorers(?int $seasonId = null): array
+    {
+        $season = $seasonId ?: $this->getCurrentCompSeason()['id'];
+        $cacheKey = "epl_top_scorers_{$season}";
+
+        return Cache::remember($cacheKey, 3600, function () use ($season) {
+            try {
+                // 1. Lấy danh sách ghi bàn (Goals)
+                $goalsRes = $this->client()->get("{$this->baseUrl}/stats/ranked/players/goals", [
+                    'comps' => self::COMPETITION_ID,
+                    'compSeasons' => $season,
+                    'page' => 0,
+                    'pageSize' => 10,
+                ]);
+
+                // 2. Lấy danh sách kiến tạo (Assists)
+                $assistsRes = $this->client()->get("{$this->baseUrl}/stats/ranked/players/goal_assist", [
+                    'comps' => self::COMPETITION_ID,
+                    'compSeasons' => $season,
+                    'page' => 0,
+                    'pageSize' => 30,
+                ]);
+
+                $assistsMap = [];
+                if ($assistsRes->successful()) {
+                    $assistContent = $assistsRes->json('stats.content', []);
+                    foreach ($assistContent as $ast) {
+                        $pId = (int) ($ast['owner']['id'] ?? ($ast['owner']['playerId'] ?? 0));
+                        $assistsMap[$pId] = (int) ($ast['value'] ?? 0);
+                    }
+                }
+
+                if ($goalsRes->successful()) {
+                    $content = $goalsRes->json('stats.content', []);
+                    $topScorers = [];
+
+                    foreach ($content as $item) {
+                        $owner = $item['owner'] ?? [];
+                        $pId = (int) ($owner['id'] ?? ($owner['playerId'] ?? 0));
+                        $club = $owner['currentTeam']['club'] ?? ($owner['currentTeam'] ?? []);
+                        $clubId = (int) ($club['id'] ?? 0);
+
+                        $topScorers[] = [
+                            'rank' => (int) ($item['rank'] ?? 1),
+                            'playerId' => $pId,
+                            'name' => $owner['name']['display'] ?? 'Cầu thủ',
+                            'position' => $owner['info']['positionInfo'] ?? ($owner['info']['position'] ?? 'Tiền đạo'),
+                            'nationality' => $owner['nationalTeam']['country'] ?? ($owner['nationalTeam']['demonym'] ?? ''),
+                            'teamName' => $owner['currentTeam']['name'] ?? 'CLB',
+                            'teamShort' => $owner['currentTeam']['shortName'] ?? '',
+                            'teamBadge' => self::getTeamBadgeUrl($clubId, 50),
+                            'goals' => (int) ($item['value'] ?? 0),
+                            'assists' => $assistsMap[$pId] ?? 0,
+                            'photo' => "https://resources.premierleague.com/premierleague/photos/players/250x250/p{$pId}.png",
+                        ];
+                    }
+
+                    return $topScorers;
+                }
+            } catch (\Throwable $e) {
+                Log::error('Lỗi khi lấy danh sách Top Scorers: ' . $e->getMessage());
+            }
+
+            return [];
         });
     }
 
