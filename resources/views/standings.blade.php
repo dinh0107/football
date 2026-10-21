@@ -67,13 +67,13 @@
 
         /* Top Header */
         .site-header {
-            background-color: var(--pl-purple);
-            color: #ffffff;
-            border-bottom: 3px solid var(--pl-pink);
+            background-color: #ffffff;
+            color: var(--pl-text-dark);
+            border-bottom: 1px solid var(--pl-border);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
         }
 
         .header-content {
@@ -90,12 +90,13 @@
             font-weight: 800;
             font-size: 1.25rem;
             letter-spacing: -0.02em;
+            color: var(--pl-purple);
         }
 
         .brand-badge {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, var(--pl-pink) 0%, var(--pl-purple-light) 100%);
+            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-pink) 100%);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -103,11 +104,11 @@
             color: #ffffff;
             font-weight: 900;
             font-size: 0.95rem;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 3px 8px rgba(233, 0, 82, 0.25);
         }
 
         .brand-text span {
-            color: var(--pl-mint);
+            color: var(--pl-pink);
         }
 
         .header-nav {
@@ -117,19 +118,23 @@
         }
 
         .header-link {
-            padding: 6px 14px;
+            padding: 7px 16px;
             border-radius: var(--radius-full);
             font-size: 0.85rem;
             font-weight: 700;
-            color: #ffffff;
-            opacity: 0.85;
+            color: var(--pl-text-muted);
             transition: all 0.2s ease;
         }
 
-        .header-link:hover, .header-link.active {
-            opacity: 1;
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--pl-mint);
+        .header-link:hover {
+            color: var(--pl-purple);
+            background: #f3e8ff;
+        }
+
+        .header-link.active {
+            color: #ffffff;
+            background: var(--pl-purple);
+            box-shadow: 0 4px 12px rgba(56, 0, 60, 0.25);
         }
 
         /* Main Content */
@@ -140,12 +145,12 @@
 
         /* Page Hero */
         .hero-banner {
-            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-purple-light) 100%);
+            background: linear-gradient(135deg, #38003c 0%, #6b21a8 50%, #db2777 100%);
             border-radius: var(--radius-lg);
             padding: 28px 24px;
             color: #ffffff;
             margin-bottom: 24px;
-            box-shadow: 0 8px 20px rgba(56, 0, 60, 0.12);
+            box-shadow: 0 10px 28px rgba(107, 33, 168, 0.18);
             position: relative;
             overflow: hidden;
         }
@@ -159,8 +164,8 @@
 
         .hero-subtitle {
             font-size: 0.925rem;
-            opacity: 0.85;
-            color: #f1f5f9;
+            opacity: 0.9;
+            color: #fdf2f8;
         }
 
         /* Live Table As-It-Stands Banner */
@@ -493,12 +498,13 @@
 
         /* Footer */
         .site-footer {
-            background: var(--pl-purple);
-            color: #ffffff;
+            background: #ffffff;
+            color: var(--pl-text-muted);
             padding: 24px 0;
             margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--pl-border);
             font-size: 0.825rem;
+            box-shadow: 0 -2px 10px rgba(15, 23, 42, 0.02);
         }
 
         .footer-content {
@@ -802,9 +808,9 @@
                 <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Dữ liệu trực tiếp từ PulseLive API &bull; Cache 30 phút theo yêu cầu</p>
             </div>
             <div style="display: flex; gap: 14px;">
-                <a href="{{ route('home') }}" style="color: #ffffff; opacity: 0.85;">Lịch đấu</a>
-                <a href="{{ route('standings') }}" style="color: #ffffff; opacity: 0.85;">Bảng xếp hạng</a>
-                <a href="{{ route('live') }}" style="color: #ffffff; opacity: 0.85;">Trực tiếp</a>
+                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
+                <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
             </div>
         </div>
     </footer>

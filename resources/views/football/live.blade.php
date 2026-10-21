@@ -30,7 +30,7 @@
                        data-home-score="{{ $home['score'] ?? 0 }}"
                        data-away-score="{{ $away['score'] ?? 0 }}"
                        data-status="L"
-                       style="border-color: rgba(233, 0, 82, 0.4); background: linear-gradient(135deg, rgba(233, 0, 82, 0.08) 0%, var(--bg-card) 100%);">
+                       style="border-color: #fecdd3; background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%);">
                         <div class="match-card-header">
                             <span class="match-card-venue">
                                 <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
@@ -51,7 +51,7 @@
                             </div>
 
                             <div class="match-score-box">
-                                <div class="score-display" data-score-display style="border-color: rgba(233, 0, 82, 0.5); color: #fff;">
+                                <div class="score-display" data-score-display style="border-color: #fecdd3; color: var(--text-main);">
                                     <span class="home-score" data-score-home>{{ $home['score'] ?? 0 }}</span> - <span class="away-score" data-score-away>{{ $away['score'] ?? 0 }}</span>
                                 </div>
                                 <span style="font-size: 0.7rem; color: var(--pl-pink); margin-top: 6px; font-weight: 700;">TRỰC TIẾP</span>
@@ -75,11 +75,11 @@
         </div>
     @else
         {{-- Thông báo khi chưa có trận nào đang đá --}}
-        <div class="card" style="text-align: center; padding: 40px 20px; margin-bottom: 32px; border-color: rgba(0, 255, 135, 0.2);">
+        <div class="card" style="text-align: center; padding: 40px 20px; margin-bottom: 32px; border-color: var(--border-light);">
             <div style="margin-bottom: 12px;">
                 <svg class="svg-icon-lg" style="width: 40px; height: 40px; color: var(--pl-green);" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
             </div>
-            <h3 style="font-size: 1.25rem; font-weight: 800; color: #fff; margin-bottom: 8px;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 8px;">
                 Hiện tại không có trận đấu nào đang đá trực tiếp
             </h3>
             <p style="color: var(--text-muted); max-width: 500px; margin: 0 auto 20px; font-size: 0.9rem;">
@@ -94,7 +94,7 @@
     {{-- Danh Sách Trận Đấu Vòng Này --}}
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h2 style="font-size: 1.15rem; font-weight: 800; color: #fff;">
+            <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple);">
                 Lịch Đấu & Kết Quả Vòng {{ $currentGw['gameweek'] ?? 'Hiện Tại' }}
             </h2>
             <span style="font-size: 0.8rem; color: var(--text-muted);">Giờ Việt Nam (GMT+7)</span>

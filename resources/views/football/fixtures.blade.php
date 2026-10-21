@@ -30,7 +30,7 @@
 {{-- Tiêu đề Vòng được chọn --}}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <div>
-        <h2 style="font-size: 1.25rem; font-weight: 800; color: #fff;">
+        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple);">
             Trận Đấu Vòng {{ $selectedGw['gameweek'] ?? 'Hiện tại' }}
         </h2>
         <span style="font-size: 0.825rem; color: var(--text-muted);">
@@ -39,7 +39,7 @@
             @endif
         </span>
     </div>
-    <span style="background: rgba(255, 255, 255, 0.05); padding: 4px 12px; border-radius: var(--radius-full); font-size: 0.8rem; color: var(--text-muted);">
+    <span style="background: #f1f5f9; border: 1px solid var(--border-light); padding: 4px 14px; border-radius: var(--radius-full); font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">
         {{ count($fixtures) }} trận đấu
     </span>
 </div>
