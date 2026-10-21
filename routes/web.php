@@ -42,8 +42,11 @@ Route::get('/tran-dau/{slug}', function ($slug) {
     return redirect('/truc-tiep/' . $slug, 301);
 });
 
-// Phase 6: Sitemap XML động cho Google Search Console
+// Hệ thống Sitemap Index Đa Tầng chuẩn Google Search Console
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+Route::get('/sitemap-upcoming.xml', [\App\Http\Controllers\SitemapController::class, 'upcoming'])->name('sitemap.upcoming');
+Route::get('/sitemap-results.xml', [\App\Http\Controllers\SitemapController::class, 'results'])->name('sitemap.results');
+Route::get('/sitemap-static.xml', [\App\Http\Controllers\SitemapController::class, 'staticPages'])->name('sitemap.static');
 
 // API nội bộ phục vụ Polling Live Scores mỗi 30s
 Route::get('/api/live-scores', [FootballController::class, 'apiLiveScores'])->name('api.live_scores');

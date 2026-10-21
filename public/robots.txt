@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /api/
 
 # Sitemaps
-Sitemap: http://localhost:8000/sitemap.xml
+Sitemap: http://tysongoaihang.site/sitemap.xml

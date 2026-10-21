@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>{{ $seo['title'] ?? 'Chi Tiết Trận Đấu | Premier League Match Center' }}</title>
+    <title>{{ $seo['title'] ?? 'Chi Tiết Trận Đấu' }}</title>
     <meta name="description" content="{{ $seo['description'] ?? 'Xem trực tiếp diễn biến trận đấu, đội hình ra sân 2D và thống kê chi tiết giải Ngoại Hạng Anh.' }}">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
     <meta name="robots" content="index, follow">

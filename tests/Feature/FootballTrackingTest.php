@@ -384,14 +384,22 @@ class FootballTrackingTest extends TestCase
      */
     public function test_phase_6_sitemap_xml_and_console_command(): void
     {
-        // 1. Kiểm tra Route /sitemap.xml
+        // 1. Kiểm tra Route /sitemap.xml (Sitemap Index)
         $response = $this->get('/sitemap.xml');
         $response->assertStatus(200);
         $this->assertStringContainsString('application/xml', $response->headers->get('Content-Type'));
-        $response->assertSee('<urlset', false);
-        $response->assertSee('/bang-xep-hang', false);
-        $response->assertSee('/lich-thi-dau', false);
-        $response->assertSee('/truc-tiep', false);
+        $response->assertSee('<sitemapindex', false);
+        $response->assertSee('sitemap-upcoming.xml', false);
+        $response->assertSee('sitemap-results.xml', false);
+        $response->assertSee('sitemap-static.xml', false);
+
+        // Kiểm tra Route /sitemap-static.xml
+        $staticRes = $this->get('/sitemap-static.xml');
+        $staticRes->assertStatus(200);
+        $staticRes->assertSee('<urlset', false);
+        $staticRes->assertSee('/bang-xep-hang', false);
+        $staticRes->assertSee('/lich-thi-dau', false);
+        $staticRes->assertSee('/truc-tiep', false);
 
         // 2. Kiểm tra Artisan Command sitemap:generate
         $this->artisan('sitemap:generate')
@@ -399,8 +407,13 @@ class FootballTrackingTest extends TestCase
             ->assertExitCode(0);
 
         $this->assertFileExists(public_path('sitemap.xml'));
+        $this->assertFileExists(public_path('sitemap-upcoming.xml'));
+        $this->assertFileExists(public_path('sitemap-results.xml'));
+        $this->assertFileExists(public_path('sitemap-static.xml'));
+
         $xmlContent = file_get_contents(public_path('sitemap.xml'));
         $this->assertStringContainsString('<?xml version="1.0" encoding="UTF-8"?>', $xmlContent);
+        $this->assertStringContainsString('<sitemapindex', $xmlContent);
         $this->assertStringContainsString('<loc>', $xmlContent);
     }
 
