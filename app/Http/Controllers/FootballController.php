@@ -195,4 +195,18 @@ class FootballController extends Controller
             'matches' => $formatted
         ]);
     }
+
+    /**
+     * Chuyển hướng hoặc xem trực tiếp trận đấu theo ID (Ví dụ: /truc-tiep/128923)
+     */
+    public function liveMatchById(int $id): RedirectResponse
+    {
+        $match = $this->pulseLiveService->getMatchDetail($id);
+        if (!$match) {
+            abort(404, 'Không tìm thấy thông tin trận đấu.');
+        }
+
+        $slug = FootballSeoHelper::generateMatchSlug($match);
+        return redirect()->route('match.detail', ['slug' => $slug]);
+    }
 }
