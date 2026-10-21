@@ -354,6 +354,28 @@
             gap: 5px;
         }
 
+        .badge-tv-guide {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 0.725rem;
+            font-weight: 800;
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
+            white-space: nowrap;
+        }
+
+        .badge-tv-guide svg {
+            width: 12px;
+            height: 12px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2.2;
+        }
+
         .badge-live {
             background: rgba(233, 0, 82, 0.1);
             color: var(--pl-pink);
@@ -828,6 +850,8 @@
             <div class="matches-container" id="matchesContainer">
                 @forelse($allMatches as $match)
                     @php
+                        $slug = \App\Helpers\FootballSeoHelper::generateMatchSlug($match);
+                        $tvChannel = \App\Helpers\FootballSeoHelper::getTvChannel($match);
                         $status = $match['status'] ?? 'U';
                         $homeTeam = $match['teams'][0]['team'] ?? [];
                         $awayTeam = $match['teams'][1]['team'] ?? [];
@@ -839,7 +863,7 @@
                         $ground = $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh';
                         $clock = $match['clock']['label'] ?? 'LIVE';
                     @endphp
-                    <a href="{{ url('/truc-tiep/' . (int)$match['id']) }}" 
+                    <a href="{{ route('match.detail', ['slug' => $slug]) }}" 
                        class="match-card match-item" 
                        data-fixture-id="{{ (int)$match['id'] }}"
                        data-home-score="{{ $homeScore ?? 0 }}"
@@ -850,18 +874,25 @@
                         <div class="match-card-top">
                             <span class="match-venue">{{ $ground }}</span>
 
-                            @if($status === 'L')
-                                <span class="status-badge badge-live">
-                                    <span class="pulse-dot"></span>
-                                    <span class="live-clock-flash" data-fixture-clock>{{ $clock }}</span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge-tv-guide">
+                                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+                                    {{ $tvChannel }}
                                 </span>
-                            @elseif($status === 'C')
-                                <span class="status-badge badge-ft">Hết giờ (FT)</span>
-                            @else
-                                <span class="status-badge badge-upcoming">
-                                    {{ $kickoff ? \App\Services\PremierLeagueService::formatKickoffVietnam($kickoff, 'H:i') : 'Sắp diễn ra' }}
-                                </span>
-                            @endif
+
+                                @if($status === 'L')
+                                    <span class="status-badge badge-live">
+                                        <span class="pulse-dot"></span>
+                                        <span class="live-clock-flash" data-fixture-clock>{{ $clock }}</span>
+                                    </span>
+                                @elseif($status === 'C')
+                                    <span class="status-badge badge-ft">Hết giờ (FT)</span>
+                                @else
+                                    <span class="status-badge badge-upcoming">
+                                        {{ $kickoff ? \App\Services\PremierLeagueService::formatKickoffVietnam($kickoff, 'H:i') : 'Sắp diễn ra' }}
+                                    </span>
+                                @endif
+                            </div>
                         </div>
 
                         <div class="match-main-row">

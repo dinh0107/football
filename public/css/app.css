@@ -579,6 +579,28 @@ a {
   border: 1px solid #bae6fd;
 }
 
+.badge-tv-guide {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.725rem;
+  font-weight: 800;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  white-space: nowrap;
+}
+
+.badge-tv-guide svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.2;
+}
+
 .match-teams-box {
   display: flex;
   align-items: center;

@@ -7,7 +7,22 @@
 
     <title>{{ $seo['title'] ?? 'Chi Tiết Trận Đấu | Premier League Match Center' }}</title>
     <meta name="description" content="{{ $seo['description'] ?? 'Xem trực tiếp diễn biến trận đấu, đội hình ra sân 2D và thống kê chi tiết giải Ngoại Hạng Anh.' }}">
-    <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
+    <meta name="robots" content="index, follow">
+
+    {{-- Open Graph / Facebook & Zalo Meta Tags --}}
+    <meta property="og:type" content="{{ $seo['og']['type'] ?? 'website' }}">
+    <meta property="og:title" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
+    <meta property="og:description" content="{{ $seo['og']['description'] ?? ($seo['description'] ?? '') }}">
+    <meta property="og:url" content="{{ $seo['og']['url'] ?? url()->current() }}">
+    <meta property="og:image" content="{{ $seo['og']['image'] ?? asset('favicon.ico') }}">
+    <meta property="og:site_name" content="{{ $seo['og']['site_name'] ?? 'Premier League Live Tracker' }}">
+
+    {{-- Twitter Card Meta Tags --}}
+    <meta name="twitter:card" content="{{ $seo['twitter']['card'] ?? 'summary_large_image' }}">
+    <meta name="twitter:title" content="{{ $seo['twitter']['title'] ?? ($seo['title'] ?? '') }}">
+    <meta name="twitter:description" content="{{ $seo['twitter']['description'] ?? ($seo['description'] ?? '') }}">
+    <meta name="twitter:image" content="{{ $seo['twitter']['image'] ?? ($seo['og']['image'] ?? '') }}">
 
     {{-- Schema.org / SportsEvent JSON-LD --}}
     @if(!empty($seo['schema']))
@@ -186,7 +201,36 @@
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+        }
+
+        .hero-competition-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
             margin-bottom: 20px;
+        }
+
+        .hero-tv-guide-bar {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            padding: 4px 14px;
+            border-radius: var(--radius-full);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .hero-tv-guide-bar strong {
+            color: var(--pl-mint);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
         .hero-scoreboard {
@@ -1026,9 +1070,15 @@
                  data-home-name="{{ $homeTeam['name'] ?? 'Đội nhà' }}"
                  data-away-name="{{ $awayTeam['name'] ?? 'Đội khách' }}"
                  data-status="{{ $status }}">
-                <span class="hero-competition-tag">
-                    Premier League &bull; Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}
-                </span>
+                <div class="hero-competition-bar">
+                    <span class="hero-competition-tag">
+                        Premier League &bull; Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}
+                    </span>
+                    <span class="hero-tv-guide-bar">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+                        Trực tiếp trên: <strong>{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong>
+                    </span>
+                </div>
 
                 <div class="hero-scoreboard">
                     {{-- Đội Nhà --}}
@@ -1073,6 +1123,7 @@
                         <span>Trọng tài: <strong>{{ $match['matchOfficials'][0]['name']['display'] ?? 'Premier League' }}</strong></span>
                     @endif
                     <span>Thời gian: <strong>{{ $kickoff ? \App\Services\PremierLeagueService::formatKickoffVietnam($kickoff, 'H:i - d/m/Y') : '' }}</strong> (GMT+7)</span>
+                    <span>Kênh TV: <strong style="color: var(--pl-mint);">{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong></span>
                 </div>
             </div>
 

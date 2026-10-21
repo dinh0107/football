@@ -22,6 +22,7 @@
                 @foreach($liveMatches as $match)
                     @php
                         $slug = \App\Helpers\FootballSeoHelper::generateMatchSlug($match);
+                        $tvChannel = \App\Helpers\FootballSeoHelper::getTvChannel($match);
                         $home = $match['teams'][0] ?? [];
                         $away = $match['teams'][1] ?? [];
                     @endphp
@@ -36,10 +37,16 @@
                                 <svg class="svg-icon" viewBox="0 0 24 24" style="color: var(--text-dim); width: 14px; height: 14px;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                                 {{ $match['ground']['name'] ?? 'Premier League' }}
                             </span>
-                            <span class="match-status-tag status-live">
-                                <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
-                                <span class="match-clock" data-fixture-clock>{{ $match['clock']['label'] ?? 'LIVE' }}</span>
-                            </span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span class="badge-tv-guide">
+                                    <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+                                    {{ $tvChannel }}
+                                </span>
+                                <span class="match-status-tag status-live">
+                                    <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
+                                    <span class="match-clock" data-fixture-clock>{{ $match['clock']['label'] ?? 'LIVE' }}</span>
+                                </span>
+                            </div>
                         </div>
 
                         <div class="match-teams-box">
@@ -104,6 +111,7 @@
             @forelse($fixtures as $match)
                 @php
                     $slug = \App\Helpers\FootballSeoHelper::generateMatchSlug($match);
+                    $tvChannel = \App\Helpers\FootballSeoHelper::getTvChannel($match);
                     $status = $match['status'] ?? 'U';
                     $homeTeam = $match['teams'][0]['team'] ?? [];
                     $awayTeam = $match['teams'][1]['team'] ?? [];
@@ -118,18 +126,25 @@
                             {{ $match['ground']['name'] ?? 'SVĐ Ngoại Hạng Anh' }}
                         </span>
                         
-                        @if($status === 'L')
-                            <span class="match-status-tag status-live">
-                                <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
-                                <span class="match-clock">{{ $match['clock']['label'] ?? 'LIVE' }}</span>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span class="badge-tv-guide">
+                                <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+                                {{ $tvChannel }}
                             </span>
-                        @elseif($status === 'C')
-                            <span class="match-status-tag status-ft">Hết giờ (FT)</span>
-                        @else
-                            <span class="match-status-tag status-upcoming">
-                                {{ $kickoff ? \App\Services\PulseLiveService::formatKickoffVietnam($kickoff, 'd/m H:i') : 'Sắp diễn ra' }}
-                            </span>
-                        @endif
+
+                            @if($status === 'L')
+                                <span class="match-status-tag status-live">
+                                    <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
+                                    <span class="match-clock">{{ $match['clock']['label'] ?? 'LIVE' }}</span>
+                                </span>
+                            @elseif($status === 'C')
+                                <span class="match-status-tag status-ft">Hết giờ (FT)</span>
+                            @else
+                                <span class="match-status-tag status-upcoming">
+                                    {{ $kickoff ? \App\Services\PulseLiveService::formatKickoffVietnam($kickoff, 'd/m H:i') : 'Sắp diễn ra' }}
+                                </span>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="match-teams-box">

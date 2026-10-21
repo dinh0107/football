@@ -138,7 +138,7 @@ class FootballTrackingTest extends TestCase
      */
     public function test_match_detail_match_center_features(): void
     {
-        $response = $this->get('/tran-dau/arsenal-vs-coventry-city-128923');
+        $response = $this->get('/truc-tiep/arsenal-vs-coventry-city-128923');
         $response->assertStatus(200);
         $response->assertSee('Arsenal');
         $response->assertSee('Coventry City');
@@ -155,6 +155,15 @@ class FootballTrackingTest extends TestCase
         $idResponse = $this->get('/truc-tiep/128923');
         $idResponse->assertStatus(200);
         $idResponse->assertSee('Arsenal');
+
+        // Test 301 Redirect tương thích ngược từ /tran-dau/{slug} và /match/{id}
+        $redirect1 = $this->get('/tran-dau/arsenal-vs-coventry-city-128923');
+        $redirect1->assertStatus(301);
+        $redirect1->assertRedirect('/truc-tiep/arsenal-vs-coventry-city-128923');
+
+        $redirect2 = $this->get('/match/128923');
+        $redirect2->assertStatus(301);
+        $redirect2->assertRedirect('/truc-tiep/128923');
     }
 
     /**
@@ -268,4 +277,114 @@ class FootballTrackingTest extends TestCase
         $matchRes->assertSee('data-score-home', false);
         $matchRes->assertSee('data-score-away', false);
     }
+
+    /**
+     * Test Phase 6: URL thân thiện chuẩn SEO /truc-tiep/{slug}-{id} và Helper FootballSeoHelper
+     */
+    public function test_phase_6_seo_urls_and_slug_generation(): void
+    {
+        $mockMatch = [
+            'id' => 93452,
+            'gameweek' => ['gameweek' => 10],
+            'teams' => [
+                ['team' => ['name' => 'Arsenal']],
+                ['team' => ['name' => 'Chelsea']],
+            ]
+        ];
+
+        $slug = \App\Helpers\FootballSeoHelper::generateMatchSlug($mockMatch);
+        $this->assertEquals('arsenal-vs-chelsea-vong-10-93452', $slug);
+
+        $extractedId = \App\Helpers\FootballSeoHelper::extractIdFromSlug($slug);
+        $this->assertEquals(93452, $extractedId);
+
+        // Test truy cập trận đấu qua URL slug chuẩn SEO
+        $res = $this->get('/truc-tiep/arsenal-vs-coventry-city-vong-1-128923');
+        $res->assertStatus(200);
+        $res->assertSee('Arsenal');
+        $res->assertSee('Coventry City');
+    }
+
+    /**
+     * Test Phase 6: Tiện ích Kênh phát sóng tại Việt Nam (TV Guide)
+     */
+    public function test_phase_6_tv_channel_guide_badges(): void
+    {
+        // 1. Kiểm tra FootballSeoHelper gán kênh bản quyền VN
+        $mockMatch = [
+            'id' => 128923,
+            'teams' => [
+                ['team' => ['id' => 1, 'name' => 'Arsenal']],
+                ['team' => ['id' => 99, 'name' => 'Other Team']],
+            ]
+        ];
+        $channel = \App\Helpers\FootballSeoHelper::getTvChannel($mockMatch);
+        $this->assertContains($channel, ['K+ Sport 1', 'TV360', 'FPT Play', 'VTVcab ON']);
+
+        // 2. Kiểm tra badge kênh phát sóng trên Trang chủ
+        $homeRes = $this->get('/?date=2026-10-24');
+        $homeRes->assertStatus(200);
+        $homeRes->assertSee('badge-tv-guide');
+
+        // 3. Kiểm tra thông tin kênh phát sóng trên trang chi tiết trận đấu
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+        $matchRes->assertSee('Trực tiếp trên:');
+        $matchRes->assertSee('Kênh TV:');
+    }
+
+    /**
+     * Test Phase 6: Dynamic Meta Tags, OpenGraph và Schema.org/SportsEvent JSON-LD
+     */
+    public function test_phase_6_dynamic_meta_tags_and_schema(): void
+    {
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+
+        // Title chuẩn SEO động
+        $matchRes->assertSee('<title>Trực tiếp Arsenal vs Coventry City', false);
+        $matchRes->assertSee('Tỷ số, Đội hình', false);
+
+        // Meta Description chuẩn SEO chứa đầy đủ từ khóa
+        $matchRes->assertSee('Xem trực tiếp tỷ số trận Arsenal vs Coventry City', false);
+        $matchRes->assertSee('kênh phát sóng trên', false);
+
+        // OpenGraph và Twitter Tags
+        $matchRes->assertSee('og:title', false);
+        $matchRes->assertSee('og:description', false);
+        $matchRes->assertSee('og:image', false);
+        $matchRes->assertSee('og:url', false);
+        $matchRes->assertSee('twitter:card', false);
+
+        // Schema.org SportsEvent Rich Snippets
+        $matchRes->assertSee('application/ld+json', false);
+        $matchRes->assertSee('SportsEvent', false);
+        $matchRes->assertSee('BroadcastEvent', false);
+    }
+
+    /**
+     * Test Phase 6: Route /sitemap.xml và Artisan Command sitemap:generate
+     */
+    public function test_phase_6_sitemap_xml_and_console_command(): void
+    {
+        // 1. Kiểm tra Route /sitemap.xml
+        $response = $this->get('/sitemap.xml');
+        $response->assertStatus(200);
+        $this->assertStringContainsString('application/xml', $response->headers->get('Content-Type'));
+        $response->assertSee('<urlset', false);
+        $response->assertSee('/bang-xep-hang', false);
+        $response->assertSee('/lich-thi-dau', false);
+        $response->assertSee('/truc-tiep', false);
+
+        // 2. Kiểm tra Artisan Command sitemap:generate
+        $this->artisan('sitemap:generate')
+            ->expectsOutputToContain('sitemap.xml')
+            ->assertExitCode(0);
+
+        $this->assertFileExists(public_path('sitemap.xml'));
+        $xmlContent = file_get_contents(public_path('sitemap.xml'));
+        $this->assertStringContainsString('<?xml version="1.0" encoding="UTF-8"?>', $xmlContent);
+        $this->assertStringContainsString('<loc>', $xmlContent);
+    }
 }
+

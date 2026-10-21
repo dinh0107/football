@@ -43,12 +43,11 @@ class MatchController extends Controller
         // 4. Lấy thống kê so sánh 2 đội (kiểm soát bóng, sút, phạt góc, phạm lỗi)
         $stats = $this->premierLeagueService->getMatchStats($matchId);
 
-        // 5. Schema.org & SEO Metadata
-        $seo = [
-            'title' => FootballSeoHelper::generateTitle($details),
-            'description' => FootballSeoHelper::generateMetaDescription($details),
-            'schema' => FootballSeoHelper::generateSportsEventSchema($details),
-        ];
+        // 5. Kênh phát sóng tại Việt Nam (TV Guide) & SEO Metadata đầy đủ
+        $tvChannel = FootballSeoHelper::getTvChannel($details);
+        $details['tv_channel'] = $tvChannel;
+
+        $seo = FootballSeoHelper::generateSeoMetadata($details);
 
         return view('match-detail', [
             'match' => $details,
@@ -56,6 +55,7 @@ class MatchController extends Controller
             'lineups' => $lineups,
             'stats' => $stats,
             'seo' => $seo,
+            'tvChannel' => $tvChannel,
         ]);
     }
 }

@@ -24,14 +24,22 @@ Route::get('/lich-thi-dau', [FootballController::class, 'fixtures'])->name('fixt
 // Trung Tâm Trực Tiếp Bóng Đá & Live Scores
 Route::get('/truc-tiep', [FootballController::class, 'live'])->name('live');
 
-// Phase 4: Trung Tâm Trận Đấu Chi Tiết (Header, Diễn biến, Sân bóng 2D, Thống kê)
-Route::get('/truc-tiep/{id}', [MatchController::class, 'show'])
-    ->where('id', '[0-9]+')
-    ->name('match.live_id');
-
-Route::get('/tran-dau/{slug}', [MatchController::class, 'show'])
+// Phase 6: URL Trận Đấu Chuẩn SEO: /truc-tiep/{slug}-{id} (Ví dụ: /truc-tiep/arsenal-vs-chelsea-vong-10-93452)
+Route::get('/truc-tiep/{slug}', [MatchController::class, 'show'])
     ->where('slug', '[a-zA-Z0-9\-]+')
     ->name('match.detail');
+
+// Tương thích ngược: /match/{id} và /tran-dau/{slug} tự động chuyển hướng 301
+Route::get('/match/{id}', function ($id) {
+    return redirect('/truc-tiep/' . $id, 301);
+});
+
+Route::get('/tran-dau/{slug}', function ($slug) {
+    return redirect('/truc-tiep/' . $slug, 301);
+});
+
+// Phase 6: Sitemap XML động cho Google Search Console
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
 // API nội bộ phục vụ Polling Live Scores mỗi 30s
 Route::get('/api/live-scores', [FootballController::class, 'apiLiveScores'])->name('api.live_scores');
