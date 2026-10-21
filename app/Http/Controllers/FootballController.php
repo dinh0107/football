@@ -101,7 +101,7 @@ class FootballController extends Controller
         $titlePrefix = $liveCount > 0 ? "[{$liveCount} Trận Đang Đá]" : "[Trực Tiếp]";
 
         $seo = [
-            'title' => "{$titlePrefix} Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay | Livescore 24/7",
+            'title' => "{$titlePrefix} Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay",
             'description' => "Theo dõi trực tiếp tỷ số Ngoại Hạng Anh hôm nay với tốc độ cập nhật siêu nhanh. Tường thuật trực tiếp diễn biến trận đấu, bàn thắng, thẻ phạt và BXH trực tuyến.",
             'canonical' => route('live'),
             'type' => 'website'

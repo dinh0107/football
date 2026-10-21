@@ -11,7 +11,18 @@ class FootballTrackingTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        if (file_exists(storage_path('framework/down'))) {
+            @unlink(storage_path('framework/down'));
+        }
         $this->artisan('migrate');
+    }
+
+    protected function tearDown(): void
+    {
+        if (file_exists(storage_path('framework/down'))) {
+            @unlink(storage_path('framework/down'));
+        }
+        parent::tearDown();
     }
 
     /**

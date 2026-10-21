@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }} | Premier League Live</title>
-    <meta name="description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}. Cập nhật livescore từng phút, đội hình và diễn biến trận đấu.">
+    <meta name="description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}. Cập nhật tỷ số từng phút, đội hình và diễn biến trận đấu.">
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Google Font --}}

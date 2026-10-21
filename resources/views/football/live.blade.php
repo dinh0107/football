@@ -4,7 +4,7 @@
 <div class="page-hero">
     <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(233, 0, 82, 0.15); border: 1px solid rgba(233, 0, 82, 0.3); padding: 4px 14px; border-radius: var(--radius-full); margin-bottom: 12px;">
         <span class="live-badge-dot"></span>
-        <span style="font-weight: 800; font-size: 0.8rem; color: var(--pl-pink); text-transform: uppercase;">Trung Tâm Trực Tiếp (Livescore 24/7)</span>
+        <span style="font-weight: 800; font-size: 0.8rem; color: var(--pl-pink); text-transform: uppercase;">Trung Tâm Trực Tiếp</span>
     </div>
     <h1 class="page-title">Trực Tiếp Tỷ Số Ngoại Hạng Anh</h1>
     <p class="page-subtitle">Dữ liệu thời gian thực được đồng bộ qua PulseLive API & Laravel Cache 30s. Tự động cập nhật không cần reload.</p>
