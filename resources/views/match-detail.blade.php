@@ -1840,25 +1840,107 @@
             gap: 12px;
         }
 
+        /* Bottom Nav Bar cho thiết bị di động */
+        .bottom-nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--pl-border);
+            z-index: 9999;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--pl-text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            position: relative;
+            min-width: 64px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bottom-nav-item:hover,
+        .bottom-nav-item.active {
+            color: var(--pl-pink);
+            transform: translateY(-1px);
+        }
+
+        .bottom-nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+
+        .bottom-nav-item.active .bottom-nav-icon {
+            transform: scale(1.1);
+        }
+
+        .bottom-nav-live-dot {
+            position: absolute;
+            top: 5px;
+            right: 18px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
+            animation: pulse-dot 1.2s infinite;
+        }
+
         /* Responsive Mobile */
         @media (max-width: 640px) {
+            body {
+                padding-bottom: 74px !important;
+            }
+            .bottom-nav-mobile {
+                display: flex;
+            }
+            .header-nav {
+                display: none;
+            }
+            .header-content {
+                height: 56px;
+            }
             .hero-crest-wrap {
-                width: 68px;
-                height: 68px;
-                padding: 8px;
+                width: 64px;
+                height: 64px;
+                padding: 7px;
             }
             .hero-team-logo {
-                width: 50px;
-                height: 50px;
+                width: 48px;
+                height: 48px;
             }
             .hero-team-name {
-                font-size: 1.05rem;
+                font-size: 1rem;
             }
             .hero-score-display {
-                font-size: 2.75rem;
+                font-size: 2.5rem;
             }
             .hero-score-vs {
-                font-size: 1.7rem;
+                font-size: 1.6rem;
+            }
+            .match-tab-btn {
+                min-width: 105px;
+                padding: 8px 10px;
+                font-size: 0.775rem;
             }
             .pitch-2d {
                 height: 620px;
@@ -1907,6 +1989,52 @@
             .timeline-row.away-event .event-card {
                 border-right: 1px solid var(--pl-border);
                 border-left: 4px solid var(--pl-pink);
+            }
+            .site-footer {
+                padding: 20px 0 16px;
+                font-size: 0.775rem;
+            }
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            .goal-sound-toggle-btn {
+                bottom: 80px !important;
+                right: 16px !important;
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 1.2rem !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-crest-wrap {
+                width: 54px;
+                height: 54px;
+                padding: 5px;
+            }
+            .hero-team-logo {
+                width: 38px;
+                height: 38px;
+            }
+            .hero-team-name {
+                font-size: 0.875rem;
+                margin-top: 6px;
+            }
+            .hero-score-display {
+                font-size: 2.1rem;
+            }
+            .hero-score-vs {
+                font-size: 1.35rem;
+            }
+            .hero-goalscorers {
+                font-size: 0.7rem;
+                max-width: 120px;
+            }
+            .match-hero-meta {
+                gap: 6px;
             }
         }
 
@@ -2887,6 +3015,9 @@
             @endif
         </div>
     </main>
+
+    {{-- Mobile Bottom Bar --}}
+    @include('partials.bottom-nav')
 
     {{-- Footer --}}
     <footer class="site-footer">

@@ -584,22 +584,158 @@
             gap: 12px;
         }
 
+        /* Bottom Nav Bar cho thiết bị di động */
+        .bottom-nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--pl-border);
+            z-index: 9999;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--pl-text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            position: relative;
+            min-width: 64px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bottom-nav-item:hover,
+        .bottom-nav-item.active {
+            color: var(--pl-pink);
+            transform: translateY(-1px);
+        }
+
+        .bottom-nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+
+        .bottom-nav-item.active .bottom-nav-icon {
+            transform: scale(1.1);
+        }
+
+        .bottom-nav-live-dot {
+            position: absolute;
+            top: 5px;
+            right: 18px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
+            animation: pulse-dot 1.2s infinite;
+        }
+
+        /* Responsive Mobile */
         @media (max-width: 640px) {
+            body {
+                padding-bottom: 74px !important;
+            }
+            .bottom-nav-mobile {
+                display: flex;
+            }
+            .header-nav {
+                display: none;
+            }
+            .header-content {
+                height: 56px;
+            }
             .hero-title {
-                font-size: 1.35rem;
+                font-size: 1.25rem;
+            }
+            .hero-subtitle {
+                font-size: 0.8rem;
             }
             .hero-banner {
-                padding: 20px 16px;
+                padding: 18px 14px;
+                border-radius: var(--radius-md);
+            }
+            .standings-tabs {
+                gap: 6px;
+                margin-bottom: 16px;
+            }
+            .tab-btn {
+                flex: 1;
+                padding: 8px 8px;
+                font-size: 0.775rem;
+                text-align: center;
             }
             .table-toolbar {
                 flex-direction: column;
                 align-items: stretch;
+                gap: 10px;
+                padding: 12px;
+            }
+            .search-box {
+                width: 100%;
             }
             .search-box input {
                 width: 100%;
             }
             .data-table td, .data-table th {
-                padding: 10px 8px;
+                padding: 8px 6px;
+                font-size: 0.775rem;
+            }
+            .pos-cell {
+                width: 38px !important;
+                font-size: 0.8rem;
+            }
+            .club-badge {
+                width: 24px;
+                height: 24px;
+            }
+            .club-col {
+                gap: 6px;
+                font-size: 0.8rem;
+                min-width: 120px;
+            }
+            .points-col {
+                font-size: 0.95rem !important;
+                padding: 8px 4px !important;
+            }
+            .form-pills {
+                gap: 2px;
+            }
+            .form-pill {
+                width: 18px;
+                height: 18px;
+                font-size: 0.65rem;
+            }
+            .col-hide-mobile {
+                display: none;
+            }
+            .site-footer {
+                padding: 20px 0 16px;
+                font-size: 0.775rem;
+            }
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
             }
         }
     </style>
@@ -681,7 +817,7 @@
                                     <th style="text-align: center;">Thắng</th>
                                     <th style="text-align: center;">Hòa</th>
                                     <th style="text-align: center;">Thua</th>
-                                    <th style="text-align: center;">BT-BB</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">BT-BB</th>
                                     <th style="text-align: center;">Hiệu số</th>
                                     <th style="text-align: center; width: 70px;">Điểm</th>
                                     <th style="text-align: center;">5 Trận Gần Nhất</th>
@@ -743,7 +879,7 @@
                                         <td style="text-align: center; color: #10b981; font-weight: 700;">{{ $overall['won'] ?? 0 }}</td>
                                         <td style="text-align: center; color: var(--pl-text-muted);">{{ $overall['drawn'] ?? 0 }}</td>
                                         <td style="text-align: center; color: #ef4444; font-weight: 700;">{{ $overall['lost'] ?? 0 }}</td>
-                                        <td style="text-align: center; color: var(--pl-text-muted);">{{ $overall['goalsFor'] ?? 0 }}-{{ $overall['goalsAgainst'] ?? 0 }}</td>
+                                        <td class="col-hide-mobile" style="text-align: center; color: var(--pl-text-muted);">{{ $overall['goalsFor'] ?? 0 }}-{{ $overall['goalsAgainst'] ?? 0 }}</td>
                                         <td style="text-align: center; font-weight: 700; color: {{ ($overall['goalsDifference'] ?? 0) >= 0 ? 'var(--pl-mint-dark)' : '#ef4444' }};">
                                             {{ ($overall['goalsDifference'] ?? 0) > 0 ? '+' : '' }}{{ $overall['goalsDifference'] ?? 0 }}
                                         </td>
@@ -877,6 +1013,9 @@
             </div>
         </div>
     </main>
+
+    {{-- Mobile Bottom Bar --}}
+    @include('partials.bottom-nav')
 
     {{-- Footer --}}
     <footer class="site-footer">

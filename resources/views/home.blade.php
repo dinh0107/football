@@ -603,52 +603,219 @@
             gap: 12px;
         }
 
+        /* Bottom Nav Bar cho thiết bị di động */
+        .bottom-nav-mobile {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--pl-border);
+            z-index: 9999;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            color: var(--pl-text-muted);
+            text-decoration: none;
+            padding: 6px 12px;
+            position: relative;
+            min-width: 64px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .bottom-nav-item:hover,
+        .bottom-nav-item.active {
+            color: var(--pl-pink);
+            transform: translateY(-1px);
+        }
+
+        .bottom-nav-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+
+        .bottom-nav-item.active .bottom-nav-icon {
+            transform: scale(1.1);
+        }
+
+        .bottom-nav-live-dot {
+            position: absolute;
+            top: 5px;
+            right: 18px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.9);
+            animation: pulse-dot 1.2s infinite;
+        }
+
         /* Responsive Mobile Styles */
         @media (max-width: 640px) {
+            body {
+                padding-bottom: 74px !important;
+            }
+
+            .bottom-nav-mobile {
+                display: flex;
+            }
+
+            .header-nav {
+                display: none;
+            }
+
             .header-content {
                 height: 56px;
             }
 
             .hero-title {
-                font-size: 1.35rem;
+                font-size: 1.25rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.8rem;
             }
 
             .hero-banner {
-                padding: 20px 16px;
+                padding: 18px 14px;
+                border-radius: var(--radius-md);
             }
 
             .date-nav-card {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 12px;
+                gap: 10px;
             }
 
             .date-buttons {
                 justify-content: space-between;
+                width: 100%;
+                gap: 6px;
             }
 
             .date-btn {
                 flex: 1;
                 text-align: center;
-                padding: 8px 10px;
-                font-size: 0.8rem;
+                padding: 8px 6px;
+                font-size: 0.775rem;
+            }
+
+            .datepicker-form {
+                width: 100%;
+                justify-content: center;
+                background: #f8fafc;
+                padding: 6px 12px;
+                border-radius: var(--radius-full);
+                border: 1px solid var(--pl-border);
+            }
+
+            .filter-tabs {
+                gap: 6px;
+                padding-bottom: 6px;
+                margin-bottom: 14px;
+            }
+
+            .filter-tab {
+                padding: 6px 12px;
+                font-size: 0.775rem;
+            }
+
+            .matches-container {
+                gap: 10px;
+            }
+
+            .match-card {
+                padding: 14px 12px;
+                border-radius: 12px;
+            }
+
+            .match-card-top {
+                flex-wrap: wrap;
+                gap: 6px;
+                margin-bottom: 10px;
+            }
+
+            .match-venue {
+                max-width: 52%;
+                font-size: 0.725rem;
+            }
+
+            .badge-tv-guide {
+                font-size: 0.675rem;
+                padding: 2px 6px;
+            }
+
+            .match-main-row {
+                gap: 6px;
+            }
+
+            .team-col {
+                gap: 6px;
+                min-width: 0;
             }
 
             .team-name {
-                font-size: 0.825rem;
+                font-size: 0.8rem;
+                font-weight: 700;
+                line-height: 1.25;
             }
 
             .team-logo {
-                width: 34px;
-                height: 34px;
-            }
-
-            .score-value {
-                font-size: 1.3rem;
-                padding: 2px 10px;
+                width: 30px;
+                height: 30px;
             }
 
             .score-box {
-                min-width: 75px;
+                min-width: 66px;
+            }
+
+            .score-value {
+                font-size: 1.2rem;
+                padding: 2px 8px;
+            }
+
+            .kickoff-time {
+                font-size: 0.9rem;
+                padding: 3px 8px;
+            }
+
+            .site-footer {
+                padding: 20px 0 16px;
+                font-size: 0.775rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .goal-sound-toggle-btn {
+                bottom: 80px !important;
+                right: 16px !important;
+                width: 44px !important;
+                height: 44px !important;
+                font-size: 1.2rem !important;
             }
         }
 
@@ -913,7 +1080,7 @@
             <div class="filter-tabs" id="filterTabs">
                 <button class="filter-tab active" data-filter="all">Tất cả ({{ count($allMatches) }})</button>
                 <button class="filter-tab" data-filter="L">
-                    Đang đá 🔴 ({{ count($liveMatches) }})
+                    Đang đá <span class="pulse-dot" style="display: inline-block; vertical-align: middle; width: 6px; height: 6px; margin: 0 3px;"></span> ({{ count($liveMatches) }})
                 </button>
                 <button class="filter-tab" data-filter="U">Sắp đá ({{ count($upcomingMatches) }})</button>
                 <button class="filter-tab" data-filter="C">Đã kết thúc ({{ count($finishedMatches) }})</button>
@@ -1056,6 +1223,9 @@
             @endif
         </div>
     </main>
+
+    {{-- Mobile Bottom Bar --}}
+    @include('partials.bottom-nav')
 
     {{-- Footer --}}
     <footer class="site-footer">
