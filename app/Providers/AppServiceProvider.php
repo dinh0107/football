@@ -25,10 +25,12 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         // Đảm bảo toàn bộ asset (ảnh logo, css, js) sinh ra chuẩn HTTPS khi chạy trên Production/Hosting
-        if (config('app.env') === 'production' ||
+        if ($this->app->environment('production') && (
             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
             (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
-            str_contains(config('app.url'), 'https://')) {
+            request()->isSecure() ||
+            str_starts_with(config('app.url'), 'https://')
+        )) {
             URL::forceScheme('https');
         }
     }
