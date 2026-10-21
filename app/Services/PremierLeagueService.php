@@ -554,21 +554,84 @@ class PremierLeagueService
             return [];
         }
 
-        // Tạo map ID cầu thủ sang tên hiển thị
+        // Tạo map ID cầu thủ sang thông tin chi tiết (tên, số áo, ảnh chân dung Opta)
         $playersMap = [];
         foreach ($match['teamLists'] ?? [] as $tList) {
             foreach (array_merge($tList['lineup'] ?? [], $tList['substitutes'] ?? []) as $p) {
                 $pId = (int) ($p['id'] ?? 0);
-                $playersMap[$pId] = $p['name']['display'] ?? 'Cầu thủ';
+                $optaId = $p['altIds']['opta'] ?? null;
+                $playersMap[$pId] = [
+                    'name' => $p['name']['display'] ?? 'Cầu thủ',
+                    'shortName' => $p['name']['last'] ?? ($p['name']['display'] ?? 'Cầu thủ'),
+                    'shirtNum' => $p['shirtNum'] ?? '',
+                    'photo' => $optaId
+                        ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
+                        : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png"
+                ];
             }
         }
 
         $homeId = (int) ($match['teams'][0]['team']['id'] ?? ($match['teams'][0]['team']['club']['id'] ?? 0));
+        $awayId = (int) ($match['teams'][1]['team']['id'] ?? ($match['teams'][1]['team']['club']['id'] ?? 0));
+        $homeName = $match['teams'][0]['team']['name'] ?? 'Đội nhà';
+        $awayName = $match['teams'][1]['team']['name'] ?? 'Đội khách';
+        $homeBadge = $this->getTeamBadgeUrl($homeId);
+        $awayBadge = $this->getTeamBadgeUrl($awayId);
+
         $events = [];
+        $subGroups = [];
 
         foreach ($match['events'] as $e) {
             $type = $e['type'] ?? '';
-            if (!in_array($type, ['G', 'OG', 'P', 'B', 'S'])) {
+            $clock = preg_replace("/'00$/", "'", $e['clock']['label'] ?? '00\'');
+            $secs = (int) ($e['clock']['secs'] ?? 0);
+            $phase = (string) ($e['phase'] ?? '1');
+            $score = isset($e['score']) ? ($e['score']['homeScore'] . ' - ' . $e['score']['awayScore']) : null;
+
+            // Bắt đầu hiệp đấu
+            if ($type === 'PS') {
+                $events[] = [
+                    'type' => 'PERIOD',
+                    'category' => 'period',
+                    'clock' => ($phase === '1') ? "1'" : "46'",
+                    'secs' => $secs,
+                    'phase' => (int) $phase,
+                    'pOrder' => 0,
+                    'icon' => '⏱️',
+                    'desc' => ($phase === '1') ? 'Bắt đầu Hiệp 1' : 'Bắt đầu Hiệp 2',
+                    'isHome' => null,
+                    'playerName' => ($phase === '1') ? 'Trọng tài nổi còi bắt đầu trận đấu' : 'Bắt đầu hiệp thi đấu thứ hai',
+                    'score' => $score,
+                ];
+                continue;
+            }
+
+            // Kết thúc hiệp đấu
+            if ($type === 'PE') {
+                $events[] = [
+                    'type' => 'PERIOD',
+                    'category' => 'period',
+                    'clock' => ($phase === '1') ? 'HT' : 'FT',
+                    'secs' => $secs,
+                    'phase' => (int) $phase,
+                    'pOrder' => 2,
+                    'icon' => ($phase === '1') ? '⏸️' : '🏁',
+                    'desc' => ($phase === '1') ? 'Hết Hiệp 1 (Nghỉ giữa hiệp)' : 'Hết Giờ (Kết thúc trận đấu)',
+                    'isHome' => null,
+                    'playerName' => ($phase === '1') ? 'Tạm dừng hiệp 1' : 'Trọng tài nổi còi mãn cuộc',
+                    'score' => $score,
+                ];
+                continue;
+            }
+
+            // Gom nhóm các sự kiện thay người theo mã id
+            if ($type === 'S') {
+                $subKey = $e['id'] ?? ($secs . '_' . ($e['teamId'] ?? ''));
+                $subGroups[$subKey][] = $e;
+                continue;
+            }
+
+            if (!in_array($type, ['G', 'OG', 'P', 'B'])) {
                 continue;
             }
 
@@ -576,46 +639,127 @@ class PremierLeagueService
             $assistId = (int) ($e['assistId'] ?? 0);
             $teamId = (int) ($e['teamId'] ?? 0);
             $isHome = ($teamId === $homeId);
-            $clock = $e['clock']['label'] ?? '00\'';
-            $secs = (int) ($e['clock']['secs'] ?? 0);
+
+            $pInfo = $playersMap[$personId] ?? [
+                'name' => "Cầu thủ #{$personId}",
+                'shortName' => 'Cầu thủ',
+                'shirtNum' => '',
+                'photo' => 'https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png'
+            ];
 
             $icon = '⚽';
             $desc = 'Bàn thắng';
+            $category = 'goal';
+
             if ($type === 'G') {
                 $icon = '⚽';
                 $desc = 'Bàn thắng';
+                $category = 'goal';
             } elseif ($type === 'OG') {
                 $icon = '⚽';
-                $desc = 'Phản lưới nhà';
+                $desc = 'Phản lưới nhà (OG)';
+                $category = 'goal';
             } elseif ($type === 'P') {
                 $icon = '⚽';
-                $desc = 'Penalty thành công';
+                $desc = 'Phạt đền (Penalty)';
+                $category = 'goal';
             } elseif ($type === 'B') {
-                $isRed = (($e['cardType'] ?? '') === 'RED');
+                $isRed = (($e['cardType'] ?? '') === 'RED' || ($e['description'] ?? '') === 'R');
                 $icon = $isRed ? '🟥' : '🟨';
                 $desc = $isRed ? 'Thẻ đỏ' : 'Thẻ vàng';
-            } elseif ($type === 'S') {
-                $icon = '🔄';
-                $desc = 'Thay người';
+                $category = 'card';
             }
 
             $events[] = [
                 'type' => $type,
+                'category' => $category,
                 'clock' => $clock,
                 'secs' => $secs,
+                'phase' => (int) $phase,
+                'pOrder' => 1,
                 'minute' => (int) ceil($secs / 60),
                 'icon' => $icon,
                 'desc' => $desc,
                 'isHome' => $isHome,
                 'teamId' => $teamId,
-                'playerName' => $playersMap[$personId] ?? "Cầu thủ #{$personId}",
-                'assistName' => $assistId ? ($playersMap[$assistId] ?? null) : null,
-                'score' => isset($e['score']) ? ($e['score']['homeScore'] . ' - ' . $e['score']['awayScore']) : null,
+                'teamName' => $isHome ? $homeName : $awayName,
+                'teamBadge' => $isHome ? $homeBadge : $awayBadge,
+                'playerName' => $pInfo['name'],
+                'playerPhoto' => $pInfo['photo'],
+                'playerNum' => $pInfo['shirtNum'],
+                'assistName' => $assistId ? ($playersMap[$assistId]['name'] ?? null) : null,
+                'score' => $score,
             ];
         }
 
-        // Sắp xếp sự kiện theo thứ tự phút thi đấu tăng dần
-        usort($events, fn($a, $b) => $a['secs'] <=> $b['secs']);
+        // Xử lý các cặp thay người
+        foreach ($subGroups as $subKey => $group) {
+            $in = null;
+            $out = null;
+            $teamId = 0;
+            $secs = 0;
+            $clock = "00'";
+            $phase = 1;
+            $score = null;
+
+            foreach ($group as $item) {
+                $teamId = (int) ($item['teamId'] ?? 0);
+                $secs = (int) ($item['clock']['secs'] ?? 0);
+                $clock = preg_replace("/'00$/", "'", $item['clock']['label'] ?? "00'");
+                $phase = (int) ($item['phase'] ?? 1);
+                if (isset($item['score'])) {
+                    $score = $item['score']['homeScore'] . ' - ' . $item['score']['awayScore'];
+                }
+                $desc = strtoupper($item['description'] ?? '');
+                $pId = (int) ($item['personId'] ?? 0);
+                $pData = $playersMap[$pId] ?? [
+                    'name' => "Cầu thủ #{$pId}",
+                    'shortName' => 'Cầu thủ',
+                    'shirtNum' => '',
+                    'photo' => 'https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png'
+                ];
+                if ($desc === 'ON') {
+                    $in = $pData;
+                } else {
+                    $out = $pData;
+                }
+            }
+
+            $isHome = ($teamId === $homeId);
+            $inName = $in['name'] ?? 'Cầu thủ vào';
+            $outName = $out['name'] ?? 'Cầu thủ ra';
+
+            $events[] = [
+                'type' => 'S',
+                'category' => 'sub',
+                'clock' => $clock,
+                'secs' => $secs,
+                'phase' => $phase,
+                'pOrder' => 1,
+                'minute' => (int) ceil($secs / 60),
+                'icon' => '🔄',
+                'desc' => 'Thay người',
+                'isHome' => $isHome,
+                'teamId' => $teamId,
+                'teamName' => $isHome ? $homeName : $awayName,
+                'teamBadge' => $isHome ? $homeBadge : $awayBadge,
+                'playerName' => "{$inName} vào sân (thay {$outName})",
+                'subIn' => $in,
+                'subOut' => $out,
+                'score' => $score,
+            ];
+        }
+
+        // Sắp xếp các sự kiện theo đúng thứ tự thời gian trận đấu
+        usort($events, function ($a, $b) {
+            if ($a['phase'] !== $b['phase']) {
+                return $a['phase'] <=> $b['phase'];
+            }
+            if ($a['pOrder'] !== $b['pOrder']) {
+                return $a['pOrder'] <=> $b['pOrder'];
+            }
+            return $a['secs'] <=> $b['secs'];
+        });
 
         return $events;
     }

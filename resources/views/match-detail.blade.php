@@ -547,87 +547,209 @@
             box-shadow: var(--shadow-card);
         }
 
+        /* =====================================================================
+           TAB 1: DIỄN BIẾN TRẬN ĐẤU (TIMELINE) - SOFASCORE & FOTMOB STYLE
+           ===================================================================== */
+        .timeline-header-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--pl-border);
+        }
+
         .timeline-section-title {
             font-size: 1.15rem;
             font-weight: 800;
             color: var(--pl-purple);
-            margin-bottom: 24px;
             display: flex;
             align-items: center;
             gap: 8px;
+            margin: 0;
+        }
+
+        .timeline-filter-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .tl-filter-btn {
+            background: #ffffff;
+            border: 1px solid var(--pl-border);
+            color: var(--pl-text-muted);
+            font-size: 0.775rem;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tl-filter-btn:hover {
+            border-color: var(--pl-purple);
+            color: var(--pl-purple);
+        }
+
+        .tl-filter-btn.active {
+            background: var(--pl-purple);
+            color: #ffffff;
+            border-color: var(--pl-purple);
+            box-shadow: 0 2px 8px rgba(56, 0, 60, 0.2);
         }
 
         .timeline-stream {
             position: relative;
-            padding: 20px 0;
-            max-width: 760px;
+            padding: 24px 0 10px 0;
+            max-width: 820px;
             margin: 0 auto;
         }
 
         .timeline-stream::before {
             content: '';
             position: absolute;
-            top: 0;
-            bottom: 0;
+            top: 10px;
+            bottom: 10px;
             left: 50%;
             width: 2px;
-            background: linear-gradient(180deg, var(--pl-mint) 0%, var(--pl-purple) 50%, var(--pl-border) 100%);
+            background: linear-gradient(180deg, rgba(0, 255, 133, 0.6) 0%, rgba(56, 0, 60, 0.3) 50%, rgba(233, 0, 82, 0.6) 100%);
             transform: translateX(-50%);
+            border-radius: 2px;
         }
 
+        /* Phân đoạn thời gian (Period Divider: Bắt đầu H1, Hết H1, Bắt đầu H2, Hết Giờ) */
+        .timeline-period-divider {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            margin: 28px 0;
+            width: 100%;
+        }
+
+        .tl-period-pill {
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+            color: #ffffff;
+            padding: 6px 18px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            box-shadow: 0 4px 14px rgba(30, 27, 75, 0.25);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .tl-period-pill.period-ft {
+            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-pink) 100%);
+            box-shadow: 0 4px 18px rgba(233, 0, 82, 0.35);
+        }
+
+        .tl-period-score {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 900;
+            letter-spacing: 0.05em;
+        }
+
+        /* Từng hàng sự kiện */
         .timeline-row {
             display: flex;
             align-items: center;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
             position: relative;
             width: 100%;
+            transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         .timeline-row.home-event {
             justify-content: flex-start;
-            padding-right: 53%;
+            padding-right: 52%;
         }
 
         .timeline-row.away-event {
             justify-content: flex-end;
-            padding-left: 53%;
+            padding-left: 52%;
         }
 
+        /* Huy hiệu phút ở chính giữa trục dọc */
         .event-minute-badge {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
-            width: 38px;
-            height: 38px;
-            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-purple-light) 100%);
-            color: var(--pl-mint);
+            width: 44px;
+            height: 44px;
+            background: #ffffff;
+            color: var(--pl-text-dark);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 900;
-            font-size: 0.775rem;
-            border: 3px solid #ffffff;
-            box-shadow: 0 4px 12px rgba(56, 0, 60, 0.2);
+            font-size: 0.8rem;
+            border: 3px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
             z-index: 2;
+            letter-spacing: -0.02em;
+            transition: transform 0.2s ease;
         }
 
+        .timeline-row:hover .event-minute-badge {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .event-minute-badge.badge-goal {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: #ffffff;
+            border-color: #a7f3d0;
+            box-shadow: 0 0 16px rgba(16, 185, 129, 0.45);
+        }
+
+        .event-minute-badge.badge-card-yellow {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+            color: #ffffff;
+            border-color: #fde68a;
+            box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+        }
+
+        .event-minute-badge.badge-card-red {
+            background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+            color: #ffffff;
+            border-color: #fecaca;
+            box-shadow: 0 0 16px rgba(239, 68, 68, 0.45);
+        }
+
+        .event-minute-badge.badge-sub {
+            background: linear-gradient(135deg, #0284c7 0%, #38bdf8 100%);
+            color: #ffffff;
+            border-color: #bae6fd;
+            box-shadow: 0 0 14px rgba(2, 132, 199, 0.35);
+        }
+
+        /* Thẻ nội dung sự kiện */
         .event-card {
             background: #ffffff;
             border: 1px solid var(--pl-border);
-            border-radius: 14px;
-            padding: 12px 16px;
-            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            border-radius: 16px;
+            padding: 14px 18px;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.05);
             width: 100%;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.25s ease;
+            position: relative;
         }
 
         .event-card:hover {
             transform: translateY(-2px);
-            box-shadow: var(--shadow-card);
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.1);
         }
 
         .timeline-row.home-event .event-card {
@@ -636,19 +758,113 @@
 
         .timeline-row.away-event .event-card {
             border-right: 4px solid var(--pl-pink);
-            flex-direction: row-reverse;
-            text-align: right;
         }
 
-        .event-icon-pill {
-            font-size: 1.35rem;
-            line-height: 1;
+        .event-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #f1f5f9;
+        }
+
+        .event-team-meta {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 0.775rem;
+            font-weight: 800;
+            color: var(--pl-text-dark);
+        }
+
+        .event-team-meta img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .event-badge-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-tag-goal {
+            background: rgba(16, 185, 129, 0.12);
+            color: #059669;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+
+        .badge-tag-card-yellow {
+            background: rgba(245, 158, 11, 0.12);
+            color: #b45309;
+            border: 1px solid rgba(245, 158, 11, 0.25);
+        }
+
+        .badge-tag-card-red {
+            background: rgba(239, 68, 68, 0.12);
+            color: #dc2626;
+            border: 1px solid rgba(239, 68, 68, 0.25);
+        }
+
+        .badge-tag-sub {
+            background: rgba(2, 132, 199, 0.1);
+            color: #0284c7;
+            border: 1px solid rgba(2, 132, 199, 0.25);
+        }
+
+        .event-body-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Avatar khuôn mặt cầu thủ trong timeline */
+        .tl-player-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            overflow: hidden;
             flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .tl-player-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .tl-player-num {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--pl-purple);
+            color: #ffffff;
+            font-size: 0.6rem;
+            font-weight: 900;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ffffff;
         }
 
         .event-player-name {
             font-weight: 800;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: var(--pl-text-dark);
             line-height: 1.3;
         }
@@ -656,13 +872,78 @@
         .event-score-tag {
             color: var(--pl-pink);
             font-weight: 900;
-            margin-left: 4px;
+            background: rgba(233, 0, 82, 0.08);
+            padding: 2px 7px;
+            border-radius: 6px;
+            margin-left: 6px;
+            font-size: 0.85rem;
         }
 
         .event-detail-desc {
             font-size: 0.775rem;
             color: var(--pl-text-muted);
-            margin-top: 2px;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .event-assist-pill {
+            background: #f1f5f9;
+            color: #334155;
+            padding: 2px 7px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Thay người 2 hàng In/Out */
+        .tl-sub-duo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .tl-sub-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--pl-text-dark);
+        }
+
+        .tl-sub-face {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            flex-shrink: 0;
+        }
+
+        .tl-sub-action-badge {
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.04em;
+        }
+
+        .sub-badge-in {
+            background: rgba(16, 185, 129, 0.15);
+            color: #059669;
+        }
+
+        .sub-badge-out {
+            background: rgba(239, 68, 68, 0.15);
+            color: #dc2626;
         }
 
         /* =====================================================================
@@ -1436,22 +1717,27 @@
                 grid-template-columns: 1fr;
             }
             .timeline-stream::before {
-                left: 20px;
+                left: 22px;
             }
             .event-minute-badge {
-                left: 20px;
+                left: 22px;
                 transform: none;
             }
-            .timeline-row.home-event, .timeline-row.away-event {
+            .timeline-row:hover .event-minute-badge {
+                transform: scale(1.05);
+            }
+            .timeline-period-divider {
+                justify-content: flex-start;
                 padding-left: 54px;
+            }
+            .timeline-row.home-event, .timeline-row.away-event {
+                padding-left: 56px;
                 padding-right: 0;
                 justify-content: flex-start;
                 text-align: left;
             }
             .timeline-row.away-event .event-card {
-                flex-direction: row;
-                text-align: left;
-                border-right: none;
+                border-right: 1px solid var(--pl-border);
                 border-left: 4px solid var(--pl-pink);
             }
         }
@@ -1845,34 +2131,160 @@
             {{-- TAB 1: DIỄN BIẾN (TIMELINE) --}}
             <div id="tab-events" class="tab-pane active">
                 <div class="timeline-card">
-                    <h3 class="timeline-section-title">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        Dòng Thời Gian Diễn Biến Trận Đấu
-                    </h3>
+                    <div class="timeline-header-bar">
+                        <h3 class="timeline-section-title">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                            Dòng Thời Gian Diễn Biến Trận Đấu
+                            @if($status === 'L')
+                                <span class="live-dot-pulse" style="margin-left: 6px;"></span>
+                            @endif
+                        </h3>
+
+                        {{-- Bộ lọc sự kiện thông minh: Tất Cả / Bàn Thắng / Thẻ Phạt / Thay Người --}}
+                        <div class="timeline-filter-group">
+                            <button type="button" class="tl-filter-btn active" data-filter="all">
+                                Tất Cả
+                            </button>
+                            <button type="button" class="tl-filter-btn" data-filter="goal">
+                                ⚽ Bàn Thắng
+                            </button>
+                            <button type="button" class="tl-filter-btn" data-filter="card">
+                                🟨 Thẻ Phạt
+                            </button>
+                            <button type="button" class="tl-filter-btn" data-filter="sub">
+                                🔄 Thay Người
+                            </button>
+                        </div>
+                    </div>
 
                     @if(!empty($events))
                         <div class="timeline-stream">
                             @foreach($events as $event)
-                                <div class="timeline-row {{ $event['isHome'] ? 'home-event' : 'away-event' }}">
-                                    <div class="event-minute-badge">{{ $event['clock'] }}</div>
-                                    <div class="event-card">
-                                        <span class="event-icon-pill">{{ $event['icon'] }}</span>
-                                        <div>
-                                            <div class="event-player-name">
-                                                {{ $event['playerName'] }}
-                                                @if(!empty($event['score']))
-                                                    <span class="event-score-tag">({{ $event['score'] }})</span>
-                                                @endif
-                                            </div>
-                                            <div class="event-detail-desc">
-                                                {{ $event['desc'] }}
-                                                @if(!empty($event['assistName']))
-                                                    &bull; Kiến tạo: <strong>{{ $event['assistName'] }}</strong>
-                                                @endif
-                                            </div>
+                                @if(($event['type'] ?? '') === 'PERIOD')
+                                    {{-- Mốc thời gian bắt đầu / kết thúc hiệp đấu --}}
+                                    <div class="timeline-period-divider" data-category="period">
+                                        <div class="tl-period-pill {{ ($event['clock'] ?? '') === 'FT' ? 'period-ft' : '' }}">
+                                            <span style="font-size: 1.1rem;">{{ $event['icon'] }}</span>
+                                            <span>{{ $event['desc'] }}</span>
+                                            @if(!empty($event['score']))
+                                                <span class="tl-period-score">{{ $event['score'] }}</span>
+                                            @endif
                                         </div>
                                     </div>
-                                </div>
+                                @else
+                                    {{-- Từng hàng sự kiện bàn thắng, thẻ phạt, thay người --}}
+                                    @php
+                                        $cat = $event['category'] ?? 'other';
+                                        $isHome = !empty($event['isHome']);
+                                        $badgeClass = 'badge-general';
+                                        if ($cat === 'goal') $badgeClass = 'badge-goal';
+                                        elseif ($cat === 'card') {
+                                            $badgeClass = (($event['icon'] ?? '') === '🟥') ? 'badge-card-red' : 'badge-card-yellow';
+                                        } elseif ($cat === 'sub') {
+                                            $badgeClass = 'badge-sub';
+                                        }
+                                    @endphp
+                                    <div class="timeline-row {{ $isHome ? 'home-event' : 'away-event' }}" data-category="{{ $cat }}">
+                                        {{-- Huy hiệu phút chính giữa --}}
+                                        <div class="event-minute-badge {{ $badgeClass }}">
+                                            {{ $event['clock'] }}
+                                        </div>
+
+                                        {{-- Thẻ chi tiết sự kiện --}}
+                                        <div class="event-card">
+                                            {{-- Header của card: Logo đội bóng + Loại sự kiện + Tỷ số lúc đó --}}
+                                            <div class="event-card-header">
+                                                <div class="event-team-meta">
+                                                    @if(!empty($event['teamBadge']))
+                                                        <img src="{{ $event['teamBadge'] }}" alt="" loading="lazy">
+                                                    @endif
+                                                    <span>{{ $event['teamName'] ?? ($isHome ? ($homeTeam['name'] ?? 'Đội nhà') : ($awayTeam['name'] ?? 'Đội khách')) }}</span>
+                                                </div>
+
+                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                    @if($cat === 'goal')
+                                                        <span class="event-badge-tag badge-tag-goal">⚽ {{ $event['desc'] }}</span>
+                                                    @elseif($cat === 'card')
+                                                        @if(($event['icon'] ?? '') === '🟥')
+                                                            <span class="event-badge-tag badge-tag-card-red">🟥 THẺ ĐỎ</span>
+                                                        @else
+                                                            <span class="event-badge-tag badge-tag-card-yellow">🟨 THẺ VÀNG</span>
+                                                        @endif
+                                                    @elseif($cat === 'sub')
+                                                        <span class="event-badge-tag badge-tag-sub">🔄 THAY NGƯỜI</span>
+                                                    @endif
+
+                                                    @if(!empty($event['score']))
+                                                        <span class="event-score-tag">{{ $event['score'] }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+
+                                            {{-- Thân sự kiện --}}
+                                            @if($cat === 'sub' && (!empty($event['subIn']) || !empty($event['subOut'])))
+                                                {{-- Cặp cầu thủ Thay người Vào/Ra --}}
+                                                <div class="tl-sub-duo">
+                                                    @if(!empty($event['subIn']))
+                                                        <div class="tl-sub-row">
+                                                            <span class="tl-sub-action-badge sub-badge-in">▲ VÀO</span>
+                                                            <img src="{{ $event['subIn']['photo'] ?? '' }}" 
+                                                                 alt="{{ $event['subIn']['name'] }}" 
+                                                                 class="tl-sub-face" 
+                                                                 loading="lazy"
+                                                                 onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                            <span>{{ $event['subIn']['name'] }}</span>
+                                                            @if(!empty($event['subIn']['shirtNum']))
+                                                                <span style="font-size: 0.75rem; color: var(--pl-text-muted);">#{{ $event['subIn']['shirtNum'] }}</span>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+                                                    @if(!empty($event['subOut']))
+                                                        <div class="tl-sub-row">
+                                                            <span class="tl-sub-action-badge sub-badge-out">▼ RA</span>
+                                                            <img src="{{ $event['subOut']['photo'] ?? '' }}" 
+                                                                 alt="{{ $event['subOut']['name'] }}" 
+                                                                 class="tl-sub-face" 
+                                                                 loading="lazy"
+                                                                 onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                            <span style="color: var(--pl-text-muted);">{{ $event['subOut']['name'] }}</span>
+                                                            @if(!empty($event['subOut']['shirtNum']))
+                                                                <span style="font-size: 0.75rem; color: var(--pl-text-muted);">#{{ $event['subOut']['shirtNum'] }}</span>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @else
+                                                {{-- Bàn thắng & Thẻ phạt --}}
+                                                <div class="event-body-main">
+                                                    {{-- Avatar khuôn mặt cầu thủ --}}
+                                                    <div class="tl-player-avatar">
+                                                        <img src="{{ $event['playerPhoto'] ?? 'https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png' }}" 
+                                                             alt="{{ $event['playerName'] }}" 
+                                                             loading="lazy"
+                                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                        @if(!empty($event['playerNum']))
+                                                            <span class="tl-player-num">{{ $event['playerNum'] }}</span>
+                                                        @endif
+                                                    </div>
+
+                                                    <div style="flex: 1; min-width: 0;">
+                                                        <div class="event-player-name">
+                                                            {{ $event['playerName'] }}
+                                                        </div>
+                                                        <div class="event-detail-desc">
+                                                            <span>{{ $event['desc'] }}</span>
+                                                            @if(!empty($event['assistName']))
+                                                                <span class="event-assist-pill">
+                                                                    👟 Kiến tạo: <strong>{{ $event['assistName'] }}</strong>
+                                                                </span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
                             @endforeach
                         </div>
                     @else
@@ -2247,6 +2659,36 @@
                     if (targetPane) {
                         targetPane.classList.add('active');
                     }
+                });
+            });
+        });
+    </script>
+
+    {{-- Vanilla JS Bộ Lọc Dòng Thời Gian Diễn Biến (Timeline) --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tlFilterBtns = document.querySelectorAll('.tl-filter-btn');
+            const tlRows = document.querySelectorAll('.timeline-row');
+            const tlDividers = document.querySelectorAll('.timeline-period-divider');
+
+            tlFilterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    tlFilterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const filter = this.getAttribute('data-filter');
+
+                    tlRows.forEach(row => {
+                        const cat = row.getAttribute('data-category');
+                        if (filter === 'all' || cat === filter) {
+                            row.style.display = 'flex';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+
+                    tlDividers.forEach(div => {
+                        div.style.display = (filter === 'all' || filter === 'goal') ? 'flex' : 'none';
+                    });
                 });
             });
         });
