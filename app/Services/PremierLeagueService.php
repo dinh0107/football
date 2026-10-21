@@ -423,6 +423,86 @@ class PremierLeagueService
     }
 
     /**
+     * Phase 5: Lấy Feed dữ liệu các trận đấu đang live cho Realtime Engine
+     * Trả về danh sách gồm: id, home_score, away_score, minute, status, home_team, away_team, latest_events
+     * Cache 15-20 giây theo yêu cầu kỹ thuật
+     */
+    public function getLiveFeed(?int $fixtureId = null): array
+    {
+        $cacheKey = 'epl_api_live_feed_' . ($fixtureId ?: 'all');
+
+        return Cache::remember($cacheKey, 15, function () use ($fixtureId) {
+            $feed = [];
+
+            if ($fixtureId) {
+                $detail = $this->getMatchDetail($fixtureId);
+                if ($detail) {
+                    $feed[] = $this->formatLiveFixtureData($detail);
+                }
+                return $feed;
+            }
+
+            $liveMatches = $this->getLiveMatches();
+            foreach ($liveMatches as $match) {
+                $feed[] = $this->formatLiveFixtureData($match);
+            }
+
+            return $feed;
+        });
+    }
+
+    /**
+     * Định dạng dữ liệu một trận đấu chuẩn hóa cho API realtime
+     */
+    public function formatLiveFixtureData(array $match): array
+    {
+        $fixtureId = (int) ($match['id'] ?? 0);
+        $home = $match['teams'][0] ?? [];
+        $away = $match['teams'][1] ?? [];
+
+        $homeTeam = $home['team'] ?? [];
+        $awayTeam = $away['team'] ?? [];
+
+        $homeId = (int) ($homeTeam['club']['id'] ?? ($homeTeam['id'] ?? 0));
+        $awayId = (int) ($awayTeam['club']['id'] ?? ($awayTeam['id'] ?? 0));
+
+        $homeScore = (int) ($home['score'] ?? 0);
+        $awayScore = (int) ($away['score'] ?? 0);
+
+        $minuteLabel = $match['clock']['label'] ?? null;
+        if (!$minuteLabel) {
+            $secs = (int) ($match['clock']['secs'] ?? 0);
+            $minuteLabel = $secs > 0 ? (ceil($secs / 60) . "'") : "1'";
+        }
+
+        // Lấy danh sách sự kiện mới nhất (tối đa 5 sự kiện)
+        $allEvents = $this->getMatchEvents($fixtureId);
+        $latestEvents = array_slice(array_reverse($allEvents), 0, 5);
+
+        return [
+            'id' => $fixtureId,
+            'home_team' => [
+                'id' => $homeId,
+                'name' => $homeTeam['name'] ?? 'Đội nhà',
+                'shortName' => $homeTeam['shortName'] ?? ($homeTeam['club']['abbr'] ?? 'HOME'),
+                'badge' => $this->getTeamBadgeUrl($homeId),
+            ],
+            'away_team' => [
+                'id' => $awayId,
+                'name' => $awayTeam['name'] ?? 'Đội khách',
+                'shortName' => $awayTeam['shortName'] ?? ($awayTeam['club']['abbr'] ?? 'AWAY'),
+                'badge' => $this->getTeamBadgeUrl($awayId),
+            ],
+            'home_score' => $homeScore,
+            'away_score' => $awayScore,
+            'minute' => $minuteLabel,
+            'status' => $match['status'] ?? 'L',
+            'latest_events' => $latestEvents,
+            'updated_at' => Carbon::now('Asia/Ho_Chi_Minh')->toIso8601String(),
+        ];
+    }
+
+    /**
      * Lấy Chi Tiết Một Trận Đấu
      */
     public function getMatchDetail(int $fixtureId): ?array

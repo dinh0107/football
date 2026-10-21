@@ -25,7 +25,11 @@
                         $home = $match['teams'][0] ?? [];
                         $away = $match['teams'][1] ?? [];
                     @endphp
-                    <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" data-fixture-id="{{ $match['id'] ?? '' }}"
+                    <a href="{{ route('match.detail', ['slug' => $slug]) }}" class="match-card" 
+                       data-fixture-id="{{ $match['id'] ?? '' }}"
+                       data-home-score="{{ $home['score'] ?? 0 }}"
+                       data-away-score="{{ $away['score'] ?? 0 }}"
+                       data-status="L"
                        style="border-color: rgba(233, 0, 82, 0.4); background: linear-gradient(135deg, rgba(233, 0, 82, 0.08) 0%, var(--bg-card) 100%);">
                         <div class="match-card-header">
                             <span class="match-card-venue">
@@ -34,7 +38,7 @@
                             </span>
                             <span class="match-status-tag status-live">
                                 <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
-                                <span class="match-clock">{{ $match['clock']['label'] ?? 'LIVE' }}</span>
+                                <span class="match-clock" data-fixture-clock>{{ $match['clock']['label'] ?? 'LIVE' }}</span>
                             </span>
                         </div>
 
@@ -47,8 +51,8 @@
                             </div>
 
                             <div class="match-score-box">
-                                <div class="score-display" style="border-color: rgba(233, 0, 82, 0.5); color: #fff;">
-                                    <span class="home-score">{{ $home['score'] ?? 0 }}</span> - <span class="away-score">{{ $away['score'] ?? 0 }}</span>
+                                <div class="score-display" data-score-display style="border-color: rgba(233, 0, 82, 0.5); color: #fff;">
+                                    <span class="home-score" data-score-home>{{ $home['score'] ?? 0 }}</span> - <span class="away-score" data-score-away>{{ $away['score'] ?? 0 }}</span>
                                 </div>
                                 <span style="font-size: 0.7rem; color: var(--pl-pink); margin-top: 6px; font-weight: 700;">TRỰC TIẾP</span>
                             </div>

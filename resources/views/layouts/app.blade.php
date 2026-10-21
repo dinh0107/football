@@ -129,6 +129,7 @@
 
     {{-- Pure Vanilla JS Engine --}}
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/livescore-engine.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

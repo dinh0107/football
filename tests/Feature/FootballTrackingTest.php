@@ -181,4 +181,91 @@ class FootballTrackingTest extends TestCase
         $this->assertArrayHasKey('possession', $stats);
         $this->assertArrayHasKey('shots', $stats);
     }
+
+    /**
+     * Test Phase 5: API Endpoint GET /api/matches/live trả về JSON hợp lệ
+     */
+    public function test_phase_5_api_live_matches_endpoint(): void
+    {
+        $response = $this->getJson('/api/matches/live');
+        $response->assertStatus(200);
+        $this->assertIsArray($response->json());
+    }
+
+    /**
+     * Test Phase 5: API Endpoint hỗ trợ test_goal và fixture_id với đầy đủ cấu trúc
+     */
+    public function test_phase_5_api_live_matches_structure_and_fixture_query(): void
+    {
+        // 1. Test cấu trúc với test_goal=1
+        $demoResponse = $this->getJson('/api/matches/live?test_goal=1');
+        $demoResponse->assertStatus(200);
+        $demoResponse->assertJsonStructure([
+            '*' => [
+                'id',
+                'home_team' => ['id', 'name', 'shortName', 'badge'],
+                'away_team' => ['id', 'name', 'shortName', 'badge'],
+                'home_score',
+                'away_score',
+                'minute',
+                'status',
+                'latest_events',
+                'updated_at',
+            ]
+        ]);
+
+        $firstMatch = $demoResponse->json()[0];
+        $this->assertEquals(2, $firstMatch['home_score']);
+        $this->assertEquals(1, $firstMatch['away_score']);
+        $this->assertEquals('L', $firstMatch['status']);
+        $this->assertNotEmpty($firstMatch['latest_events']);
+
+        // 2. Test với fixture_id cụ thể
+        $fixtureResponse = $this->getJson('/api/matches/live?fixture_id=128923');
+        $fixtureResponse->assertStatus(200);
+        $fixtureData = $fixtureResponse->json();
+        $this->assertIsArray($fixtureData);
+        if (!empty($fixtureData)) {
+            $this->assertEquals(128923, $fixtureData[0]['id']);
+            $this->assertArrayHasKey('home_score', $fixtureData[0]);
+            $this->assertArrayHasKey('away_score', $fixtureData[0]);
+            $this->assertArrayHasKey('minute', $fixtureData[0]);
+            $this->assertArrayHasKey('status', $fixtureData[0]);
+            $this->assertArrayHasKey('latest_events', $fixtureData[0]);
+        }
+    }
+
+    /**
+     * Test Phase 5: File JS thuần, âm thanh goal.mp3 và tích hợp vào Blade
+     */
+    public function test_phase_5_assets_and_blade_integration(): void
+    {
+        // Kiểm tra file livescore-engine.js tồn tại và chứa các hàm cốt lõi
+        $jsPath = public_path('js/livescore-engine.js');
+        $this->assertFileExists($jsPath);
+        $jsContent = file_get_contents($jsPath);
+        $this->assertStringContainsString('diffAndUpdateMatch', $jsContent);
+        $this->assertStringContainsString('flash-highlight-goal', $jsContent);
+        $this->assertStringContainsString('playGoalSound', $jsContent);
+        $this->assertStringContainsString('triggerGoalTabTitle', $jsContent);
+        $this->assertStringContainsString('eplGoalSoundToggle', $jsContent);
+        $this->assertStringContainsString('⚽ VÀO!', $jsContent);
+
+        // Kiểm tra file âm thanh goal.mp3 tồn tại và có dung lượng hợp lệ
+        $soundPath = public_path('sounds/goal.mp3');
+        $this->assertFileExists($soundPath);
+        $this->assertGreaterThan(1000, filesize($soundPath));
+
+        // Kiểm tra trang chủ và trang match center nhúng livescore-engine.js
+        $homeRes = $this->get('/');
+        $homeRes->assertStatus(200);
+        $homeRes->assertSee('livescore-engine.js');
+
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+        $matchRes->assertSee('livescore-engine.js');
+        $matchRes->assertSee('data-fixture-id="128923"', false);
+        $matchRes->assertSee('data-score-home', false);
+        $matchRes->assertSee('data-score-away', false);
+    }
 }

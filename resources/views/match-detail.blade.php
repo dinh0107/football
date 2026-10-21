@@ -786,6 +786,191 @@
                 justify-content: flex-start;
             }
         }
+
+        /* Phase 5: Realtime Goal Flash, Sound Toggle & Toast Notification */
+        @keyframes goalFlashAnimation {
+            0% {
+                background-color: #fef08a !important;
+                color: #854d0e !important;
+                box-shadow: 0 0 25px rgba(250, 204, 21, 0.95);
+                transform: scale(1.1);
+            }
+            20% {
+                background-color: #fde047 !important;
+                color: #713f12 !important;
+                box-shadow: 0 0 35px rgba(250, 204, 21, 1);
+                transform: scale(1.15);
+            }
+            50% {
+                background-color: #fef9c3 !important;
+                color: #854d0e !important;
+                box-shadow: 0 0 20px rgba(250, 204, 21, 0.6);
+            }
+            100% {
+                background-color: transparent !important;
+                color: inherit !important;
+                box-shadow: none;
+                transform: scale(1);
+            }
+        }
+
+        .flash-highlight-goal {
+            animation: goalFlashAnimation 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards !important;
+            border-radius: 8px !important;
+            display: inline-block !important;
+            padding: 2px 8px !important;
+            transition: all 0.3s ease;
+        }
+
+        .goal-sound-toggle-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-purple-light) 100%);
+            color: #ffffff;
+            border: 2px solid rgba(0, 255, 135, 0.6);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 255, 135, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 99999;
+            font-size: 1.4rem;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            user-select: none;
+            outline: none;
+        }
+
+        .goal-sound-toggle-btn:hover {
+            transform: scale(1.12);
+            border-color: var(--pl-mint);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(0, 255, 135, 0.5);
+        }
+
+        .goal-sound-toggle-btn.muted {
+            background: #475569;
+            color: #cbd5e1;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+        }
+
+        .goal-sound-toggle-btn .sound-tooltip {
+            position: absolute;
+            bottom: 58px;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            color: #ffffff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(6px);
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .goal-sound-toggle-btn:hover .sound-tooltip {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .goal-toast-notification {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-40px);
+            background: linear-gradient(135deg, #1f0426 0%, #38003c 100%);
+            border: 2px solid var(--pl-mint);
+            box-shadow: 0 16px 40px rgba(56, 0, 60, 0.4), 0 0 30px rgba(0, 255, 135, 0.4);
+            padding: 14px 22px;
+            border-radius: var(--radius-md);
+            color: #ffffff;
+            z-index: 100000;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 90vw;
+        }
+
+        .goal-toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        .goal-toast-notification .toast-icon {
+            font-size: 2rem;
+            line-height: 1;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0) scale(1); }
+            to { transform: translateY(-4px) scale(1.1); }
+        }
+
+        .goal-toast-notification .toast-body {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .goal-toast-notification .toast-heading {
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            color: var(--pl-mint);
+            text-transform: uppercase;
+        }
+
+        .goal-toast-notification .toast-match {
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .goal-toast-notification .toast-score {
+            background: var(--pl-pink);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 900;
+        }
+
+        .goal-toast-notification .toast-scorer {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 2px;
+        }
+
+        .goal-toast-notification .toast-close {
+            background: transparent;
+            border: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px;
+            margin-left: 8px;
+            transition: color 0.2s;
+        }
+
+        .goal-toast-notification .toast-close:hover {
+            color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -828,7 +1013,13 @@
             </div>
 
             {{-- Match Header Hero --}}
-            <div class="match-hero-card">
+            <div class="match-hero-card"
+                 data-fixture-id="{{ (int)$match['id'] }}"
+                 data-home-score="{{ $homeScore ?? 0 }}"
+                 data-away-score="{{ $awayScore ?? 0 }}"
+                 data-home-name="{{ $homeTeam['name'] ?? 'Đội nhà' }}"
+                 data-away-name="{{ $awayTeam['name'] ?? 'Đội khách' }}"
+                 data-status="{{ $status }}">
                 <span class="hero-competition-tag">
                     Premier League &bull; Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}
                 </span>
@@ -845,16 +1036,16 @@
                     {{-- Tỷ số ở giữa --}}
                     <div class="hero-score-center">
                         @if($status === 'L' || $status === 'C')
-                            <div class="hero-score-display">
-                                {{ $homeScore ?? 0 }} - {{ $awayScore ?? 0 }}
+                            <div class="hero-score-display" data-score-display>
+                                <span data-score-home>{{ $homeScore ?? 0 }}</span> - <span data-score-away>{{ $awayScore ?? 0 }}</span>
                             </div>
                             @if($status === 'L')
-                                <span class="hero-status-pill pill-live">{{ $clock }} &bull; TRỰC TIẾP</span>
+                                <span class="hero-status-pill pill-live"><span data-fixture-clock>{{ $clock }}</span> &bull; TRỰC TIẾP</span>
                             @else
                                 <span class="hero-status-pill pill-ft">HẾT GIỜ (FT)</span>
                             @endif
                         @else
-                            <div class="hero-score-display" style="font-size: 2.2rem; color: var(--pl-mint);">
+                            <div class="hero-score-display" data-score-display style="font-size: 2.2rem; color: var(--pl-mint);">
                                 {{ $kickoff ? \App\Services\PremierLeagueService::formatKickoffVietnam($kickoff, 'H:i') : 'VS' }}
                             </div>
                             <span class="hero-status-pill pill-upcoming">SẮP DIỄN RA</span>
@@ -1148,5 +1339,6 @@
             });
         });
     </script>
+    <script src="{{ asset('js/livescore-engine.js') }}"></script>
 </body>
 </html>

@@ -29,7 +29,11 @@
 </div>
 
 {{-- Hero Scoreboard Header --}}
-<div class="match-detail-hero hero-match-detail" data-fixture-id="{{ $match['id'] ?? '' }}">
+<div class="match-detail-hero hero-match-detail" 
+     data-fixture-id="{{ $match['id'] ?? '' }}"
+     data-home-score="{{ $homeScore ?? 0 }}"
+     data-away-score="{{ $awayScore ?? 0 }}"
+     data-status="{{ $status }}">
     <div class="hero-header-info">
         <span class="hero-league-badge">
             Ngoại Hạng Anh &bull; Vòng {{ $match['gameweek']['gameweek'] ?? '' }}
@@ -51,15 +55,15 @@
         {{-- Bảng Tỷ Số & Đồng Hồ Trận Đấu --}}
         <div class="hero-score-area">
             @if($status === 'L')
-                <span class="hero-clock">{{ $clock ?: 'LIVE' }}</span>
-                <div class="hero-score hero-score-value">
-                    {{ $homeScore ?? 0 }} - {{ $awayScore ?? 0 }}
+                <span class="hero-clock" data-fixture-clock>{{ $clock ?: 'LIVE' }}</span>
+                <div class="hero-score hero-score-value" data-score-display>
+                    <span data-score-home>{{ $homeScore ?? 0 }}</span> - <span data-score-away>{{ $awayScore ?? 0 }}</span>
                 </div>
                 <span style="color: var(--pl-pink); font-weight: 800; font-size: 0.75rem; text-transform: uppercase;">Trực Tiếp</span>
             @elseif($status === 'C')
                 <span style="background: rgba(255, 255, 255, 0.1); color: #fff; padding: 3px 10px; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 700;">Hết Giờ (FT)</span>
-                <div class="hero-score hero-score-value">
-                    {{ $homeScore ?? 0 }} - {{ $awayScore ?? 0 }}
+                <div class="hero-score hero-score-value" data-score-display>
+                    <span data-score-home>{{ $homeScore ?? 0 }}</span> - <span data-score-away>{{ $awayScore ?? 0 }}</span>
                 </div>
                 @if(isset($match['halfTimeScore']))
                     <span style="font-size: 0.75rem; color: var(--text-muted);">Hiệp 1: {{ $match['halfTimeScore']['homeScore'] ?? 0 }} - {{ $match['halfTimeScore']['awayScore'] ?? 0 }}</span>
