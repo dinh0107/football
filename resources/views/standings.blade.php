@@ -5,9 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $season['label'] ?? '2026/27' }} & BXH Trực Tiếp As-It-Stands | Premier League</title>
-    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $season['label'] ?? '2026/27' }} mới nhất. Cập nhật BXH trực tiếp theo thời gian thực (As-It-Stands), phong độ 5 trận và Top vua phá lưới.">
+    @php
+        $rawSeason = $season['label'] ?? '2026/27';
+        $seasonShort = preg_match('/\d{4}\/\d{2,4}/', $rawSeason, $m) ? $m[0] : '2026/27';
+    @endphp
+
+    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất | BXH Trực Tiếp</title>
+    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất. Cập nhật BXH trực tiếp theo thời gian thực (As-It-Stands) và Top ghi bàn.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
+    <meta property="og:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất, cập nhật trực tiếp theo thời gian thực.">
+    <meta property="og:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+    <meta property="og:site_name" content="Premier League Live Tracker">
+
+    {{-- Twitter Cards --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
+    <meta name="twitter:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất.">
+    <meta name="twitter:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+
+    {{-- Schema.org Structured Data --}}
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'SportsOrganization',
+        'name' => 'Bảng Xếp Hạng Premier League',
+        'sport' => 'Football',
+        'url' => url()->current(),
+        'description' => 'Bảng xếp hạng Ngoại Hạng Anh và bảng thành tích ghi bàn của các cầu thủ hàng đầu.'
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
 
     {{-- Google Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -586,7 +618,7 @@
         <div class="container">
             {{-- Hero Banner --}}
             <div class="hero-banner">
-                <h1 class="hero-title">Bảng Xếp Hạng Ngoại Hạng Anh {{ $season['label'] ?? '2026/27' }}</h1>
+                <h1 class="hero-title">Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }}</h1>
                 <p class="hero-subtitle">Bảng xếp hạng đầy đủ, bảng trực tiếp thời gian thực (Live Table As-It-Stands) & Top Vua phá lưới.</p>
             </div>
 

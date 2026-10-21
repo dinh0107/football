@@ -31,7 +31,7 @@ class FootballController extends Controller
 
         $seo = [
             'title' => "Bảng Xếp Hạng Ngoại Hạng Anh {$season['label']} Mới Nhất | BXH Premier League",
-            'description' => "Cập nhật bảng xếp hạng Ngoại Hạng Anh mùa giải {$season['label']} chuẩn xác 24/7. Thứ hạng, điểm số, hiệu số và phong độ các đội Arsenal, Man City, Liverpool, MU.",
+            'description' => "Cập nhật bảng xếp hạng Ngoại Hạng Anh mùa giải {$season['label']} chuẩn xác nhất. Thứ hạng, điểm số, hiệu số và phong độ các đội Arsenal, Man City, Liverpool, MU.",
             'canonical' => route('standings'),
             'type' => 'website'
         ];

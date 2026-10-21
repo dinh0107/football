@@ -14,14 +14,14 @@
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
     <meta property="og:title" content="{{ $seo['title'] ?? 'Bóng Đá Ngoại Hạng Anh' }}">
-    <meta property="og:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh 24/7' }}">
+    <meta property="og:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh mới nhất' }}">
     <meta property="og:url" content="{{ $seo['canonical'] ?? url()->current() }}">
     <meta property="og:image" content="{{ asset('favicon.ico') }}">
 
     {{-- Twitter --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $seo['title'] ?? 'Bóng Đá Ngoại Hạng Anh' }}">
-    <meta name="twitter:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh 24/7' }}">
+    <meta name="twitter:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh mới nhất' }}">
 
     {{-- Schema.org / SportsEvent hoặc WebSite JSON-LD Động --}}
     <script type="application/ld+json">

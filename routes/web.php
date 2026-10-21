@@ -29,7 +29,11 @@ Route::get('/truc-tiep/{slug}', [MatchController::class, 'show'])
     ->where('slug', '[a-zA-Z0-9\-]+')
     ->name('match.detail');
 
-// Tương thích ngược: /match/{id} và /tran-dau/{slug} tự động chuyển hướng 301
+// Tương thích ngược & SEO Redirects 301: Chuyển hướng các URL cũ về chuẩn SEO
+Route::permanentRedirect('/standings', '/bang-xep-hang');
+Route::permanentRedirect('/fixtures', '/lich-thi-dau');
+Route::permanentRedirect('/live-matches', '/truc-tiep');
+
 Route::get('/match/{id}', function ($id) {
     return redirect('/truc-tiep/' . $id, 301);
 });

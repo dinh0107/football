@@ -5,9 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }} | Premier League Live</title>
+    <title>Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }}</title>
     <meta name="description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}. Cập nhật tỷ số từng phút, đội hình và diễn biến trận đấu.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }}">
+    <meta property="og:description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}.">
+    <meta property="og:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+    <meta property="og:site_name" content="Premier League Live Tracker">
+
+    {{-- Twitter Cards --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }}">
+    <meta name="twitter:description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}.">
+    <meta name="twitter:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+
+    {{-- Schema.org Structured Data --}}
+    <script type="application/ld+json">
+    {!! json_encode([
+        '@context' => 'https://schema.org',
+        '@type' => 'SportsOrganization',
+        'name' => 'Premier League Live Tracker',
+        'sport' => 'Football',
+        'url' => url('/'),
+        'description' => 'Nền tảng theo dõi kết quả, lịch thi đấu và bảng xếp hạng Ngoại Hạng Anh trực tiếp.'
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
 
     {{-- Google Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

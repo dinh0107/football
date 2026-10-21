@@ -263,6 +263,21 @@
             backdrop-filter: blur(8px);
         }
 
+        .match-hero-h1-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 12px 0 16px;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        @media (max-width: 640px) {
+            .match-hero-h1-title {
+                font-size: 1.05rem;
+            }
+        }
+
         .hero-tv-guide-bar strong {
             color: var(--pl-mint);
             font-weight: 900;
@@ -2078,6 +2093,11 @@
                         Trực tiếp trên: <strong>{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong>
                     </span>
                 </div>
+
+                {{-- Tiêu đề H1 Duy Nhất Chuẩn SEO On-Page --}}
+                <h1 class="match-hero-h1-title">
+                    Trực tiếp {{ $homeTeam['name'] ?? 'Đội nhà' }} vs {{ $awayTeam['name'] ?? 'Đội khách' }}
+                </h1>
 
                 {{-- Bảng Tỷ Số Chính --}}
                 <div class="hero-scoreboard">
