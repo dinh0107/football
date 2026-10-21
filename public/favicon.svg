@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#020617"/>
+    </linearGradient>
+    <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+    <linearGradient id="ballGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Badge -->
+  <rect width="64" height="64" rx="16" fill="url(#bgGrad)"/>
+  <rect x="1" y="1" width="62" height="62" rx="15" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-opacity="0.3"/>
+  
+  <!-- Crown -->
+  <path d="M22 18 L26 12 L32 16 L38 12 L42 18 L32 21 Z" fill="url(#crownGrad)"/>
+  <circle cx="32" cy="11" r="2" fill="#38bdf8"/>
+  <circle cx="26" cy="11" r="1.5" fill="#38bdf8"/>
+  <circle cx="38" cy="11" r="1.5" fill="#38bdf8"/>
+
+  <!-- Stylized Lion Mane & Profile -->
+  <path d="M22 24 C20 30, 24 38, 32 38 C40 38, 44 30, 42 24 C40 28, 37 30, 32 30 C27 30, 24 28, 22 24 Z" fill="#2563eb" opacity="0.9"/>
+  <path d="M26 23 C28 20, 36 20, 38 23 C36 25, 34 26, 32 26 C30 26, 28 25, 26 23 Z" fill="#ffffff"/>
+
+  <!-- Modern Geometric Soccer Ball at Base -->
+  <g transform="translate(32, 44)">
+    <circle cx="0" cy="0" r="12" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+    <!-- Pentagon center -->
+    <polygon points="0,-4 3.8,-1.2 2.3,3.2 -2.3,3.2 -3.8,-1.2" fill="url(#ballGrad)"/>
+    <!-- Seam lines -->
+    <line x1="0" y1="-4" x2="0" y2="-12" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="3.8" y1="-1.2" x2="11.4" y2="-3.7" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="2.3" y1="3.2" x2="7.1" y2="9.7" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="-2.3" y1="3.2" x2="-7.1" y2="9.7" stroke="#38bdf8" stroke-width="1.5"/>
+    <line x1="-3.8" y1="-1.2" x2="-11.4" y2="-3.7" stroke="#38bdf8" stroke-width="1.5"/>
+  </g>
+</svg>

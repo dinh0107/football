@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập Quản Trị Viên | Premier League Admin</title>
 
+    {{-- Favicon & App Icons --}}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -156,7 +163,7 @@
 <body>
     <div class="login-card">
         <div class="brand-header">
-            <div class="brand-icon">PL</div>
+            <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" width="56" height="56" style="border-radius: 14px; margin-bottom: 12px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);">
             <h1 class="brand-title">Admin Dashboard</h1>
             <p class="brand-subtitle">Hệ thống Quản trị Website Ngoại Hạng Anh</p>
         </div>

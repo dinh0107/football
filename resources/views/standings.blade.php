@@ -15,19 +15,26 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 
+    {{-- Favicon & Mobile App Icons --}}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
     <meta property="og:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất, cập nhật trực tiếp theo thời gian thực.">
-    <meta property="og:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+    <meta property="og:image" content="{{ asset('images/logo.png') }}">
     <meta property="og:site_name" content="Premier League Live Tracker">
 
     {{-- Twitter Cards --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
     <meta name="twitter:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất.">
-    <meta name="twitter:image" content="https://resources.premierleague.com/premierleague/badges/100/t3.png">
+    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
 
     {{-- Schema.org Structured Data --}}
     <script type="application/ld+json">
@@ -126,18 +133,18 @@
             color: var(--pl-purple);
         }
 
-        .brand-badge {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-pink) 100%);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff;
-            font-weight: 900;
-            font-size: 0.95rem;
-            box-shadow: 0 3px 8px rgba(233, 0, 82, 0.25);
+        .brand-logo-img {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            transition: transform 0.2s ease;
+        }
+
+        .brand-logo:hover .brand-logo-img {
+            transform: scale(1.05);
         }
 
         .brand-text span {
@@ -602,7 +609,7 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="{{ route('home') }}" class="brand-logo">
-                <div class="brand-badge">PL</div>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" class="brand-logo-img" width="38" height="38">
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">

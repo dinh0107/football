@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Quản Trị Hệ Thống Ngoại Hạng Anh</title>
 
+    {{-- Favicon & App Icons --}}
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -64,17 +71,12 @@
             color: var(--pl-purple);
             text-decoration: none;
         }
-        .brand-badge {
-            background: linear-gradient(135deg, var(--pl-purple), var(--pl-pink));
-            color: #ffffff;
+        .brand-logo-img {
             width: 32px;
             height: 32px;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-            font-weight: 900;
+            object-fit: cover;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
         }
         .user-menu {
             display: flex;
@@ -334,7 +336,7 @@
     <nav class="admin-nav">
         <div class="container admin-nav-inner">
             <a href="{{ route('admin.dashboard') }}" class="brand-logo">
-                <div class="brand-badge">PL</div>
+                <img src="{{ asset('images/logo.png') }}" alt="Logo TySoNgoaiHang" class="brand-logo-img" width="32" height="32">
                 <span>EPL Admin Center</span>
             </a>
 
