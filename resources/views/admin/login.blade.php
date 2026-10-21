@@ -11,9 +11,9 @@
 
     <style>
         :root {
-            --pl-purple: #38003c;
-            --pl-pink: #e90052;
-            --pl-mint: #00ff85;
+            --pl-purple: #0f172a;
+            --pl-pink: #2563eb;
+            --pl-mint: #06b6d4;
             --pl-bg: #f8fafc;
             --pl-card: #ffffff;
             --pl-border: #e2e8f0;
@@ -126,18 +126,18 @@
             padding: 13px;
             border-radius: 10px;
             border: none;
-            background: linear-gradient(135deg, var(--pl-purple) 0%, #52055a 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: #ffffff;
             font-size: 0.95rem;
             font-weight: 800;
             cursor: pointer;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 14px rgba(56, 0, 60, 0.2);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
             margin-top: 8px;
         }
         .btn-submit:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(56, 0, 60, 0.28);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.28);
         }
         .back-link {
             display: block;

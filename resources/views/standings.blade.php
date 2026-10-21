@@ -17,14 +17,15 @@
     {{-- CSS Nội Bộ Theo Tông Màu Ngoại Hạng Anh & Mobile-First --}}
     <style>
         :root {
-            --pl-purple: #38003c;
-            --pl-purple-light: #52055a;
-            --pl-pink: #e90052;
-            --pl-mint: #00ff85;
-            --pl-mint-dark: #00b860;
-            --pl-bg: #f4f5f8;
+            --pl-purple: #0f172a;
+            --pl-purple-light: #1e293b;
+            --pl-pink: #2563eb;
+            --pl-mint: #06b6d4;
+            --pl-mint-dark: #0284c7;
+            --pl-green: #10b981;
+            --pl-bg: #f8fafc;
             --pl-card-bg: #ffffff;
-            --pl-text-dark: #1f0426;
+            --pl-text-dark: #0f172a;
             --pl-text-muted: #64748b;
             --pl-border: #e2e8f0;
             --ucl-blue: #1d4ed8;
@@ -145,12 +146,12 @@
 
         /* Page Hero */
         .hero-banner {
-            background: linear-gradient(135deg, #38003c 0%, #6b21a8 50%, #db2777 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%);
             border-radius: var(--radius-lg);
             padding: 28px 24px;
             color: #ffffff;
             margin-bottom: 24px;
-            box-shadow: 0 10px 28px rgba(107, 33, 168, 0.18);
+            box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
             position: relative;
             overflow: hidden;
         }

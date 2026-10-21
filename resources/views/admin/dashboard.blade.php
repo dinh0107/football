@@ -11,10 +11,10 @@
 
     <style>
         :root {
-            --pl-purple: #38003c;
-            --pl-purple-light: #52055a;
-            --pl-pink: #e90052;
-            --pl-mint: #00ff85;
+            --pl-purple: #0f172a;
+            --pl-purple-light: #1e293b;
+            --pl-pink: #2563eb;
+            --pl-mint: #06b6d4;
             --pl-bg: #f8fafc;
             --pl-card: #ffffff;
             --pl-border: #e2e8f0;

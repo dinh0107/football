@@ -17,21 +17,22 @@
     {{-- CSS Nội Bộ Theo Tông Màu Chủ Đạo Ngoại Hạng Anh (Mobile-First) --}}
     <style>
         :root {
-            --pl-purple: #38003c;
-            --pl-purple-light: #52055a;
-            --pl-pink: #e90052;
-            --pl-mint: #00ff85;
-            --pl-mint-dark: #00b860;
-            --pl-bg: #f4f5f8;
+            --pl-purple: #0f172a;
+            --pl-purple-light: #1e293b;
+            --pl-pink: #2563eb;
+            --pl-mint: #06b6d4;
+            --pl-mint-dark: #0284c7;
+            --pl-green: #10b981;
+            --pl-bg: #f8fafc;
             --pl-card-bg: #ffffff;
-            --pl-text-dark: #1f0426;
+            --pl-text-dark: #0f172a;
             --pl-text-muted: #64748b;
             --pl-border: #e2e8f0;
             --radius-md: 14px;
             --radius-lg: 20px;
             --radius-full: 9999px;
-            --shadow-card: 0 4px 16px rgba(56, 0, 60, 0.06);
-            --shadow-hover: 0 8px 24px rgba(56, 0, 60, 0.12);
+            --shadow-card: 0 4px 16px rgba(15, 23, 42, 0.06);
+            --shadow-hover: 0 8px 24px rgba(15, 23, 42, 0.12);
         }
 
         * {
@@ -142,14 +143,41 @@
 
         /* Page Hero */
         .hero-banner {
-            background: linear-gradient(135deg, #38003c 0%, #6b21a8 50%, #db2777 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%);
             border-radius: var(--radius-lg);
             padding: 28px 24px;
             color: #ffffff;
             margin-bottom: 24px;
-            box-shadow: 0 10px 28px rgba(107, 33, 168, 0.18);
+            box-shadow: 0 10px 28px rgba(37, 99, 235, 0.18);
             position: relative;
             overflow: hidden;
+        }
+
+        /* Banner Quảng Cáo Tài Trợ */
+        .ad-banner-slot {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+
+        .ad-banner-slot:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+        }
+
+        .ad-banner-slot img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .hero-banner::after {
@@ -689,9 +717,9 @@
             top: 24px;
             left: 50%;
             transform: translateX(-50%) translateY(-40px);
-            background: linear-gradient(135deg, #1f0426 0%, #38003c 100%);
-            border: 2px solid var(--pl-mint);
-            box-shadow: 0 16px 40px rgba(56, 0, 60, 0.4), 0 0 30px rgba(0, 255, 135, 0.4);
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            border: 2px solid #10b981;
+            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.6), 0 0 30px rgba(16, 185, 129, 0.35);
             padding: 14px 22px;
             border-radius: var(--radius-md);
             color: #ffffff;

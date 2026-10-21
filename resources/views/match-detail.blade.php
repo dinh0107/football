@@ -39,12 +39,13 @@
     {{-- CSS Giao Diện Match Center Đỉnh Cao --}}
     <style>
         :root {
-            --pl-purple: #38003c;
-            --pl-purple-light: #52055a;
-            --pl-purple-dark: #19001b;
-            --pl-pink: #e90052;
-            --pl-mint: #00ff85;
-            --pl-mint-dark: #00b860;
+            --pl-purple: #0f172a;
+            --pl-purple-light: #1e293b;
+            --pl-purple-dark: #020617;
+            --pl-pink: #2563eb;
+            --pl-mint: #06b6d4;
+            --pl-mint-dark: #0284c7;
+            --pl-green: #10b981;
             --pl-bg: #f8fafc;
             --pl-card-bg: #ffffff;
             --pl-text-dark: #0f172a;
@@ -57,7 +58,7 @@
             --radius-full: 9999px;
             --shadow-subtle: 0 2px 10px rgba(15, 23, 42, 0.04);
             --shadow-card: 0 8px 30px rgba(15, 23, 42, 0.06);
-            --shadow-hover: 0 14px 36px rgba(56, 0, 60, 0.12);
+            --shadow-hover: 0 14px 36px rgba(15, 23, 42, 0.12);
         }
 
         * {
@@ -120,7 +121,7 @@
         .brand-badge {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-pink) 100%);
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
             border-radius: 9px;
             display: flex;
             align-items: center;
@@ -128,7 +129,7 @@
             color: #ffffff;
             font-weight: 900;
             font-size: 0.95rem;
-            box-shadow: 0 3px 8px rgba(233, 0, 82, 0.25);
+            box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
         }
 
         .brand-text span {
@@ -195,13 +196,13 @@
            MATCH HERO SCOREBOARD (STADIUM NIGHT GLASSMORPHISM)
            ===================================================================== */
         .match-hero-card {
-            background: radial-gradient(circle at 50% -20%, #4a0050 0%, #240026 55%, #120014 100%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: radial-gradient(circle at 50% -20%, #1e293b 0%, #0f172a 60%, #020617 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-lg);
             padding: 32px 24px 20px;
             color: #ffffff;
             margin-bottom: 22px;
-            box-shadow: 0 20px 50px -10px rgba(31, 4, 38, 0.55), 0 0 30px rgba(233, 0, 82, 0.15);
+            box-shadow: 0 20px 50px -10px rgba(2, 6, 23, 0.6), 0 0 30px rgba(37, 99, 235, 0.12);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -213,10 +214,10 @@
             content: '';
             position: absolute;
             top: 0;
-            left: 20%;
-            right: 20%;
-            height: 120px;
-            background: radial-gradient(ellipse at center, rgba(0, 255, 133, 0.18) 0%, transparent 70%);
+            left: 15%;
+            right: 15%;
+            height: 140px;
+            background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.16) 0%, transparent 70%);
             pointer-events: none;
             z-index: 0;
         }
@@ -517,9 +518,37 @@
         }
 
         .match-tab-btn.active {
-            background: linear-gradient(135deg, #38003c 0%, #52055a 100%);
-            color: var(--pl-mint);
-            box-shadow: 0 4px 14px rgba(56, 0, 60, 0.2);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.25);
+        }
+
+        /* Banner Quảng Cáo Tài Trợ - Polished Modern Card */
+        .ad-banner-slot {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            text-align: center;
+            box-shadow: var(--shadow-subtle);
+            position: relative;
+            transition: all 0.25s ease;
+            overflow: hidden;
+        }
+
+        .ad-banner-slot:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        .ad-banner-slot img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            vertical-align: middle;
         }
 
         .tab-pane {
@@ -1185,12 +1214,12 @@
         }
 
         .shirt-home-border {
-            border-color: #38003c;
-            box-shadow: 0 0 0 2px rgba(0, 255, 133, 0.75), 0 6px 14px rgba(0, 0, 0, 0.4);
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.8), 0 6px 14px rgba(0, 0, 0, 0.4);
         }
 
         .shirt-away-border {
-            border-color: #e90052;
+            border-color: #e11d48;
             box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 6px 14px rgba(0, 0, 0, 0.4);
         }
 
@@ -1220,12 +1249,12 @@
         }
 
         .shirt-home-border .player-num-badge {
-            background: #38003c;
-            color: #00ff85;
+            background: #2563eb;
+            color: #ffffff;
         }
 
         .shirt-away-border .player-num-badge {
-            background: #e90052;
+            background: #e11d48;
             color: #ffffff;
         }
 
@@ -1266,64 +1295,83 @@
             letter-spacing: -0.01em;
         }
 
-        /* Danh Sách Dự Bị (Substitutes) */
+        /* Danh Sách Dự Bị (Substitutes) - Thiết kế dạng Thẻ Cầu Thủ Tinh Gọn */
         .bench-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
-            margin-top: 24px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 640px) {
+            .bench-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .bench-col {
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid var(--pl-border);
             border-radius: var(--radius-md);
             padding: 18px;
+            box-shadow: var(--shadow-subtle);
         }
 
         .bench-header {
-            font-size: 0.9rem;
+            font-size: 0.925rem;
             font-weight: 800;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             color: var(--pl-purple);
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--pl-border);
+            gap: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1.5px solid #f1f5f9;
         }
 
         .bench-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 7px 0;
-            border-bottom: 1px solid #f1f5f9;
-            font-size: 0.825rem;
+            gap: 12px;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: var(--radius-sm);
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            transition: all 0.2s ease;
+            font-size: 0.85rem;
+        }
+
+        .bench-item:hover {
+            background: #ffffff;
+            border-color: #cbd5e1;
+            transform: translateX(3px);
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
         }
 
         .bench-shirt {
             width: 24px;
             height: 24px;
             border-radius: 6px;
-            background: #e2e8f0;
+            background: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 0.725rem;
-            color: var(--pl-purple);
+            color: #38bdf8;
             flex-shrink: 0;
         }
 
         .bench-face-img {
-            width: 32px;
-            height: 32px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
             object-fit: cover;
             object-position: top center;
             background: #e2e8f0;
-            border: 1.5px solid var(--pl-border);
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
             flex-shrink: 0;
         }
 
@@ -1380,14 +1428,14 @@
         }
 
         .bar-fill-home {
-            background: linear-gradient(90deg, #38003c, #6b21a8);
+            background: linear-gradient(90deg, #1d4ed8, #3b82f6);
             height: 100%;
             border-radius: var(--radius-full) 0 0 var(--radius-full);
             transition: width 0.6s ease;
         }
 
         .bar-fill-away {
-            background: linear-gradient(90deg, #e90052, #ff176b);
+            background: linear-gradient(90deg, #e11d48, #f43f5e);
             height: 100%;
             border-radius: 0 var(--radius-full) var(--radius-full) 0;
             transition: width 0.6s ease;
@@ -1397,12 +1445,12 @@
            AI ASSISTANT CARD (FUTURISTIC INTELLIGENCE)
            ===================================================================== */
         .ai-assistant-card {
-            background: linear-gradient(145deg, #1f0426 0%, #300034 50%, #150017 100%);
-            border: 1px solid rgba(233, 0, 82, 0.3);
+            background: linear-gradient(145deg, #090d16 0%, #0f172a 50%, #1e293b 100%);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             border-radius: var(--radius-md);
             padding: 24px;
             color: #ffffff;
-            box-shadow: 0 12px 30px rgba(56, 0, 60, 0.3), inset 0 0 20px rgba(233, 0, 82, 0.1);
+            box-shadow: 0 12px 30px rgba(2, 6, 23, 0.5), inset 0 0 20px rgba(56, 189, 248, 0.08);
             margin-bottom: 24px;
             position: relative;
             overflow: hidden;
@@ -1868,9 +1916,9 @@
             top: 24px;
             left: 50%;
             transform: translateX(-50%) translateY(-40px);
-            background: linear-gradient(135deg, #1f0426 0%, #38003c 100%);
-            border: 2px solid var(--pl-mint);
-            box-shadow: 0 16px 40px rgba(56, 0, 60, 0.4), 0 0 30px rgba(0, 255, 133, 0.4);
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            border: 2px solid #10b981;
+            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.6), 0 0 30px rgba(16, 185, 129, 0.35);
             padding: 14px 22px;
             border-radius: var(--radius-md);
             color: #ffffff;
