@@ -44,6 +44,7 @@ Route::permanentRedirect('/contact', '/lien-he');
 Route::permanentRedirect('/privacy', '/chinh-sach-bao-mat');
 Route::permanentRedirect('/privacy-policy', '/chinh-sach-bao-mat');
 Route::permanentRedirect('/disclaimer', '/mien-tru-trach-nhiem');
+Route::permanentRedirect('/dieu-khoan-va-mien-tru', '/mien-tru-trach-nhiem');
 
 // Tương thích ngược & SEO Redirects 301: Chuyển hướng các URL cũ về chuẩn SEO
 Route::permanentRedirect('/standings', '/bang-xep-hang');
