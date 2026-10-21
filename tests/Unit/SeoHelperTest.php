@@ -107,4 +107,24 @@ class SeoHelperTest extends TestCase
         $this->assertStringContainsString('Emirates Stadium', $paragraph);
         $this->assertStringContainsString('TySoNgoaiHang.site', $paragraph);
     }
+
+    public function test_generate_breadcrumb_schema(): void
+    {
+        $mockMatch = [
+            'id' => 128923,
+            'gameweek' => ['gameweek' => 1, 'id' => 19761],
+            'teams' => [
+                ['team' => ['name' => 'Arsenal']],
+                ['team' => ['name' => 'Coventry City']],
+            ]
+        ];
+
+        $schema = SeoHelper::generateBreadcrumbSchema($mockMatch);
+        $this->assertEquals('BreadcrumbList', $schema['@type']);
+        $this->assertCount(4, $schema['itemListElement']);
+        $this->assertEquals('Trang Chủ', $schema['itemListElement'][0]['name']);
+        $this->assertEquals('Lịch Thi Đấu Ngoại Hạng Anh', $schema['itemListElement'][1]['name']);
+        $this->assertEquals('Vòng 1', $schema['itemListElement'][2]['name']);
+        $this->assertEquals('Arsenal vs Coventry City', $schema['itemListElement'][3]['name']);
+    }
 }

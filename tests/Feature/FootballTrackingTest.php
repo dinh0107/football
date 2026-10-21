@@ -373,10 +373,12 @@ class FootballTrackingTest extends TestCase
         $matchRes->assertSee('og:url', false);
         $matchRes->assertSee('twitter:card', false);
 
-        // Schema.org SportsEvent Rich Snippets
+        // Schema.org SportsEvent & BreadcrumbList Rich Snippets
         $matchRes->assertSee('application/ld+json', false);
         $matchRes->assertSee('SportsEvent', false);
         $matchRes->assertSee('BroadcastEvent', false);
+        $matchRes->assertSee('BreadcrumbList', false);
+        $matchRes->assertSee('Lịch Thi Đấu Ngoại Hạng Anh', false);
     }
 
     /**

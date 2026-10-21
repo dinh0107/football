@@ -321,6 +321,52 @@ class SeoHelper
                 'image' => PremierLeagueService::getTeamBadgeUrl($homeId, 100),
             ],
             'schema' => static::generateSchemaOrg($match),
+            'breadcrumbs_schema' => static::generateBreadcrumbSchema($match),
+        ];
+    }
+
+    /**
+     * Sinh Schema.org BreadcrumbList chuẩn Google Mobile Search
+     * Phân tầng: Trang Chủ -> Lịch Thi Đấu Ngoại Hạng Anh -> Vòng [Số] -> [Đội Nhà] vs [Đội Khách]
+     */
+    public static function generateBreadcrumbSchema(array $match): array
+    {
+        $home = $match['teams'][0]['team']['name'] ?? 'Đội nhà';
+        $away = $match['teams'][1]['team']['name'] ?? 'Đội khách';
+        $gw = $match['gameweek']['gameweek'] ?? ($match['gameweek']['id'] ?? '1');
+        $gwId = $match['gameweek']['id'] ?? $gw;
+        $canonicalSlug = static::generateMatchSlug($match);
+        $canonicalUrl = route('match.detail', ['slug' => $canonicalSlug]);
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Trang Chủ',
+                    'item' => url('/'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => 'Lịch Thi Đấu Ngoại Hạng Anh',
+                    'item' => url('/lich-thi-dau'),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 3,
+                    'name' => "Vòng {$gw}",
+                    'item' => url('/lich-thi-dau?vong=' . $gwId),
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 4,
+                    'name' => "{$home} vs {$away}",
+                    'item' => $canonicalUrl,
+                ],
+            ],
         ];
     }
 }

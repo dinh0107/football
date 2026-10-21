@@ -38,6 +38,13 @@
     </script>
     @endif
 
+    {{-- Schema.org / BreadcrumbList JSON-LD cho Google Mobile --}}
+    @if(!empty($seo['breadcrumbs_schema']))
+    <script type="application/ld+json">
+    {!! json_encode($seo['breadcrumbs_schema'], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
+    </script>
+    @endif
+
     {{-- Google Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -173,8 +180,9 @@
         .breadcrumb-nav {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 6px;
+            font-size: 0.825rem;
             font-weight: 700;
             color: var(--pl-text-muted);
             margin-bottom: 16px;
@@ -182,10 +190,11 @@
 
         .breadcrumb-nav a {
             color: var(--pl-purple);
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            padding: 5px 12px;
+            gap: 5px;
+            padding: 4px 10px;
             background: #ffffff;
             border: 1px solid var(--pl-border);
             border-radius: var(--radius-full);
@@ -194,9 +203,25 @@
         }
 
         .breadcrumb-nav a:hover {
-            background: #f8fafc;
+            background: #f1f5f9;
+            color: var(--pl-pink);
             border-color: #cbd5e1;
-            transform: translateX(-2px);
+            transform: translateY(-1px);
+        }
+
+        .breadcrumb-sep {
+            color: #94a3b8;
+            font-size: 0.75rem;
+            user-select: none;
+        }
+
+        .breadcrumb-current {
+            color: var(--pl-purple);
+            font-weight: 800;
+            padding: 4px 10px;
+            background: rgba(37, 99, 235, 0.08);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            border-radius: var(--radius-full);
         }
 
         /* =====================================================================
@@ -2119,12 +2144,21 @@
                 </div>
             @endif
 
-            {{-- Breadcrumb --}}
-            <div class="breadcrumb-nav">
-                <a href="{{ route('home') }}">&larr; Lịch thi đấu</a>
-                <span>/</span>
-                <span>Trung tâm trận đấu</span>
-            </div>
+            {{-- Breadcrumb Điều Hướng Chuẩn SEO (Trang chủ -> Lịch thi đấu -> Vòng đấu -> Trận đấu) --}}
+            <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+                <a href="{{ route('home') }}">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    Trang chủ
+                </a>
+                <span class="breadcrumb-sep">/</span>
+                <a href="{{ route('fixtures') }}">Lịch thi đấu</a>
+                <span class="breadcrumb-sep">/</span>
+                <a href="{{ route('fixtures', ['vong' => $match['gameweek']['id'] ?? ($match['gameweek']['gameweek'] ?? 1)]) }}">
+                    Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}
+                </a>
+                <span class="breadcrumb-sep">/</span>
+                <span class="breadcrumb-current">{{ $homeTeam['name'] ?? 'Đội nhà' }} vs {{ $awayTeam['name'] ?? 'Đội khách' }}</span>
+            </nav>
 
             {{-- Match Header Hero (Stadium Night Edition) --}}
             <div class="match-hero-card"

@@ -262,6 +262,7 @@ class FootballSeoHelper
                 'image' => $badgeImage,
             ],
             'schema' => self::generateSportsEventSchema($match, $canonicalUrl),
+            'breadcrumbs_schema' => SeoHelper::generateBreadcrumbSchema($match),
         ];
     }
 
@@ -271,5 +272,13 @@ class FootballSeoHelper
     public static function generateMatchSeoParagraph(array $match): string
     {
         return SeoHelper::generateMatchSeoParagraph($match);
+    }
+
+    /**
+     * Sinh Schema.org BreadcrumbList chuẩn Google Mobile Search
+     */
+    public static function generateBreadcrumbSchema(array $match): array
+    {
+        return SeoHelper::generateBreadcrumbSchema($match);
     }
 }
