@@ -642,8 +642,15 @@ class PremierLeagueService
             // Map tất cả starters theo ID
             $startersMap = [];
             foreach ($tData['lineup'] ?? [] as $st) {
+                $optaId = $st['altIds']['opta'] ?? null;
+                $photo = $optaId
+                    ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
+                    : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png";
+
                 $startersMap[$st['id']] = [
                     'id' => $st['id'],
+                    'optaId' => $optaId,
+                    'photo' => $photo,
                     'name' => $st['name']['display'] ?? '',
                     'lastName' => $st['name']['last'] ?? ($st['name']['display'] ?? ''),
                     'shirtNum' => $st['matchShirtNumber'] ?? ($st['info']['shirtNum'] ?? '-'),
@@ -671,11 +678,20 @@ class PremierLeagueService
             // Danh sách dự bị
             $subs = [];
             foreach ($tData['substitutes'] ?? [] as $sub) {
+                $optaId = $sub['altIds']['opta'] ?? null;
+                $photo = $optaId
+                    ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
+                    : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png";
+
                 $subs[] = [
                     'id' => $sub['id'],
+                    'optaId' => $optaId,
+                    'photo' => $photo,
                     'name' => $sub['name']['display'] ?? '',
+                    'lastName' => $sub['name']['last'] ?? ($sub['name']['display'] ?? ''),
                     'shirtNum' => $sub['matchShirtNumber'] ?? ($sub['info']['shirtNum'] ?? '-'),
                     'position' => $sub['matchPosition'] ?? ($sub['info']['position'] ?? ''),
+                    'isCaptain' => !empty($sub['captain']),
                 ];
             }
 

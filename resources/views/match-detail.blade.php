@@ -846,7 +846,7 @@
             width: 100%;
         }
 
-        /* Cầu thủ trên sân bóng */
+        /* Cầu thủ trên sân bóng: Hiển thị mặt + số áo + tên */
         .pitch-player-pin {
             display: flex;
             flex-direction: column;
@@ -854,52 +854,108 @@
             cursor: pointer;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
             position: relative;
+            user-select: none;
         }
 
         .pitch-player-pin:hover {
-            transform: scale(1.18);
-            z-index: 10;
+            transform: scale(1.22);
+            z-index: 20;
         }
 
-        .shirt-circle {
-            width: 36px;
-            height: 36px;
+        .player-avatar-coin {
+            width: 48px;
+            height: 48px;
             border-radius: 50%;
+            background: #ffffff;
+            border: 2.5px solid #ffffff;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 900;
-            font-size: 0.85rem;
-            border: 2.5px solid #ffffff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+            overflow: visible;
         }
 
-        .shirt-home-color {
-            background: linear-gradient(135deg, var(--pl-purple) 0%, #6b21a8 100%);
-            color: var(--pl-mint);
+        .shirt-home-border {
+            border-color: #38003c;
+            box-shadow: 0 0 0 2px rgba(0, 255, 133, 0.75), 0 6px 14px rgba(0, 0, 0, 0.4);
         }
 
-        .shirt-away-color {
-            background: linear-gradient(135deg, var(--pl-pink) 0%, #ff176b 100%);
+        .shirt-away-border {
+            border-color: #e90052;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 6px 14px rgba(0, 0, 0, 0.4);
+        }
+
+        .player-face-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top center;
+            background: #e2e8f0;
+            display: block;
+        }
+
+        .player-num-badge {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background: #0f172a;
             color: #ffffff;
+            border-radius: var(--radius-full);
+            font-size: 0.65rem;
+            font-weight: 900;
+            padding: 1px 5px;
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+            line-height: 1.2;
+        }
+
+        .shirt-home-border .player-num-badge {
+            background: #38003c;
+            color: #00ff85;
+        }
+
+        .shirt-away-border .player-num-badge {
+            background: #e90052;
+            color: #ffffff;
+        }
+
+        .player-captain-tag {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            background: #f59e0b;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            font-size: 0.625rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1.5px solid #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
         .player-name-tag {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(4px);
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(6px);
             color: #ffffff;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            margin-top: 4px;
-            max-width: 86px;
+            font-size: 0.725rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            margin-top: 5px;
+            max-width: 95px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            letter-spacing: -0.01em;
         }
 
         /* Danh Sách Dự Bị (Substitutes) */
@@ -949,6 +1005,18 @@
             font-weight: 800;
             font-size: 0.725rem;
             color: var(--pl-purple);
+            flex-shrink: 0;
+        }
+
+        .bench-face-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top center;
+            background: #e2e8f0;
+            border: 1.5px solid var(--pl-border);
+            flex-shrink: 0;
         }
 
         /* =====================================================================
@@ -1345,6 +1413,21 @@
             }
             .pitch-2d {
                 height: 620px;
+            }
+            .player-avatar-coin {
+                width: 38px;
+                height: 38px;
+            }
+            .player-name-tag {
+                font-size: 0.625rem;
+                max-width: 70px;
+                padding: 1px 5px;
+            }
+            .player-num-badge {
+                font-size: 0.55rem;
+                padding: 0 3px;
+                bottom: -3px;
+                right: -3px;
             }
             .bench-grid {
                 grid-template-columns: 1fr;
@@ -1842,9 +1925,17 @@
                                 @foreach($lineups['home']['pitchRows'] as $row)
                                     <div class="pitch-row">
                                         @foreach($row as $player)
-                                            <div class="pitch-player-pin" title="{{ $player['name'] }} (#{{ $player['shirtNum'] }})">
-                                                <div class="shirt-circle shirt-home-color">
-                                                    {{ $player['shirtNum'] }}
+                                            <div class="pitch-player-pin" title="{{ $player['name'] }} (#{{ $player['shirtNum'] }}) &bull; {{ $player['position'] }}">
+                                                <div class="player-avatar-coin shirt-home-border">
+                                                    <img src="{{ $player['photo'] ?? '' }}" 
+                                                         alt="{{ $player['name'] }}" 
+                                                         class="player-face-img" 
+                                                         loading="lazy"
+                                                         onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                    <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
+                                                    @if(!empty($player['isCaptain']))
+                                                        <span class="player-captain-tag" title="Đội trưởng">C</span>
+                                                    @endif
                                                 </div>
                                                 <div class="player-name-tag">{{ $player['lastName'] }}</div>
                                             </div>
@@ -1858,10 +1949,18 @@
                                 @foreach(array_reverse($lineups['away']['pitchRows']) as $row)
                                     <div class="pitch-row">
                                         @foreach($row as $player)
-                                            <div class="pitch-player-pin" title="{{ $player['name'] }} (#{{ $player['shirtNum'] }})">
+                                            <div class="pitch-player-pin" title="{{ $player['name'] }} (#{{ $player['shirtNum'] }}) &bull; {{ $player['position'] }}">
                                                 <div class="player-name-tag">{{ $player['lastName'] }}</div>
-                                                <div class="shirt-circle shirt-away-color">
-                                                    {{ $player['shirtNum'] }}
+                                                <div class="player-avatar-coin shirt-away-border">
+                                                    <img src="{{ $player['photo'] ?? '' }}" 
+                                                         alt="{{ $player['name'] }}" 
+                                                         class="player-face-img" 
+                                                         loading="lazy"
+                                                         onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                    <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
+                                                    @if(!empty($player['isCaptain']))
+                                                        <span class="player-captain-tag" title="Đội trưởng">C</span>
+                                                    @endif
                                                 </div>
                                             </div>
                                         @endforeach
@@ -1881,6 +1980,11 @@
                                 </div>
                                 @forelse($lineups['home']['substitutes'] as $sub)
                                     <div class="bench-item">
+                                        <img src="{{ $sub['photo'] ?? '' }}" 
+                                             alt="{{ $sub['name'] }}" 
+                                             class="bench-face-img" 
+                                             loading="lazy"
+                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>
                                         <span style="color: var(--pl-text-muted); margin-left: auto; font-size: 0.75rem; font-weight: 600;">{{ $sub['position'] }}</span>
@@ -1898,6 +2002,11 @@
                                 </div>
                                 @forelse($lineups['away']['substitutes'] as $sub)
                                     <div class="bench-item">
+                                        <img src="{{ $sub['photo'] ?? '' }}" 
+                                             alt="{{ $sub['name'] }}" 
+                                             class="bench-face-img" 
+                                             loading="lazy"
+                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>
                                         <span style="color: var(--pl-text-muted); margin-left: auto; font-size: 0.75rem; font-weight: 600;">{{ $sub['position'] }}</span>
