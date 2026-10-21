@@ -95,7 +95,8 @@
                 <div class="match-team">
                     <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($homeClubId, 70) }}" 
                          alt="{{ $homeTeam['name'] ?? 'Đội nhà' }}" 
-                         class="team-badge-lg" loading="lazy">
+                         class="team-badge-lg" loading="lazy"
+                         onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                     <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
                         <span class="match-team-name">{{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}</span>
                         <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeClubId }}" title="Ghim đội yêu thích">
@@ -122,7 +123,8 @@
                 <div class="match-team">
                     <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($awayClubId, 70) }}" 
                          alt="{{ $awayTeam['name'] ?? 'Đội khách' }}" 
-                         class="team-badge-lg" loading="lazy">
+                         class="team-badge-lg" loading="lazy"
+                         onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                     <div style="display: flex; align-items: center; gap: 4px; justify-content: center;">
                         <span class="match-team-name">{{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}</span>
                         <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayClubId }}" title="Ghim đội yêu thích">

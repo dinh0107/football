@@ -377,7 +377,7 @@ class PremierLeagueService
                             'teamBadge' => self::getTeamBadgeUrl($clubId, 50),
                             'goals' => (int) ($item['value'] ?? 0),
                             'assists' => $assistsMap[$pId] ?? 0,
-                            'photo' => "https://resources.premierleague.com/premierleague/photos/players/250x250/p{$pId}.png",
+                            'photo' => self::getPlayerPhotoUrl($owner['altIds']['opta'] ?? null, $owner['name']['display'] ?? null, 110, 140),
                         ];
                     }
 
@@ -564,9 +564,7 @@ class PremierLeagueService
                     'name' => $p['name']['display'] ?? 'Cầu thủ',
                     'shortName' => $p['name']['last'] ?? ($p['name']['display'] ?? 'Cầu thủ'),
                     'shirtNum' => $p['shirtNum'] ?? '',
-                    'photo' => $optaId
-                        ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
-                        : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png"
+                    'photo' => self::getPlayerPhotoUrl($optaId, $p['name']['display'] ?? null, 110, 140)
                 ];
             }
         }
@@ -787,9 +785,7 @@ class PremierLeagueService
             $startersMap = [];
             foreach ($tData['lineup'] ?? [] as $st) {
                 $optaId = $st['altIds']['opta'] ?? null;
-                $photo = $optaId
-                    ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
-                    : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png";
+                $photo = self::getPlayerPhotoUrl($optaId, $st['name']['display'] ?? null, 110, 140);
 
                 $startersMap[$st['id']] = [
                     'id' => $st['id'],
@@ -823,9 +819,7 @@ class PremierLeagueService
             $subs = [];
             foreach ($tData['substitutes'] ?? [] as $sub) {
                 $optaId = $sub['altIds']['opta'] ?? null;
-                $photo = $optaId
-                    ? "https://resources.premierleague.com/premierleague/photos/players/110x140/{$optaId}.png"
-                    : "https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png";
+                $photo = self::getPlayerPhotoUrl($optaId, $sub['name']['display'] ?? null, 110, 140);
 
                 $subs[] = [
                     'id' => $sub['id'],
@@ -985,12 +979,125 @@ class PremierLeagueService
     }
 
     /**
-     * Helper lấy link logo CLB từ CDN Premier League
+     * Bảng ánh xạ Pulse Team ID sang Mã Logo Chính thức trên CDN Premier League
+     */
+    protected static array $pulseToBadgeCodeMap = [
+        1   => 3,   // Arsenal
+        2   => 7,   // Aston Villa
+        3   => 91,  // Bournemouth
+        127 => 91,  // Bournemouth (Pulse)
+        4   => 8,   // Chelsea
+        5   => 9,   // Coventry City
+        6   => 31,  // Crystal Palace
+        7   => 11,  // Everton
+        8   => 40,  // Ipswich Town
+        9   => 2,   // Leeds United
+        10  => 14,  // Liverpool
+        11  => 43,  // Manchester City
+        12  => 1,   // Manchester United
+        13  => 26,  // Leicester City (pulse 26)
+        14  => 45,  // Norwich City
+        15  => 17,  // Nottingham Forest
+        18  => 49,  // Sheffield United
+        20  => 20,  // Southampton
+        21  => 6,   // Tottenham Hotspur
+        23  => 4,   // Newcastle United
+        25  => 21,  // West Ham United
+        26  => 13,  // Leicester City
+        29  => 56,  // Sunderland
+        34  => 54,  // Fulham
+        38  => 39,  // Wolverhampton Wanderers
+        41  => 88,  // Hull City
+        43  => 90,  // Burnley
+        130 => 94,  // Brentford
+        131 => 36,  // Brighton & Hove Albion
+        163 => 102, // Luton Town
+    ];
+
+    /**
+     * Bảng ánh xạ Tên cầu thủ nổi bật sang Photo Code chuẩn trên CDN Premier League
+     */
+    protected static array $playerNamePhotoCodeMap = [
+        'haaland' => '223094',
+        'erling haaland' => '223094',
+        'salah' => '118748',
+        'mohamed salah' => '118748',
+        'isak' => '219168',
+        'alexander isak' => '219168',
+        'palmer' => '244851',
+        'cole palmer' => '244851',
+        'saka' => '223340',
+        'bukayo saka' => '223340',
+        'calvert-lewin' => '177815',
+        'dominic calvert-lewin' => '177815',
+        'watkins' => '178301',
+        'ollie watkins' => '178301',
+        'son' => '85971',
+        'heung-min son' => '85971',
+        'joao pedro' => '475168',
+        'joão pedro' => '475168',
+        'foden' => '209244',
+        'phil foden' => '209244',
+        'maddison' => '172780',
+        'james maddison' => '172780',
+        'bowen' => '178186',
+        'jarrod bowen' => '178186',
+        'wood' => '60689',
+        'chris wood' => '60689',
+        'jackson' => '517052',
+        'nicolas jackson' => '517052',
+        'diaz' => '244731',
+        'luis diaz' => '244731',
+        'bellingham' => '444145',
+        'rice' => '204480',
+        'declan rice' => '204480',
+        'odegaard' => '184029',
+        'martin odegaard' => '184029',
+        'fernandes' => '141746',
+        'bruno fernandes' => '141746',
+        'rashford' => '176297',
+        'marcus rashford' => '176297',
+    ];
+
+    /**
+     * Helper lấy link logo CLB từ CDN Premier League (đã chuẩn hóa mã logo tránh 403)
      */
     public static function getTeamBadgeUrl(int|float $teamId, int $size = 70): string
     {
         $id = (int) $teamId;
-        return "https://resources.premierleague.com/premierleague/badges/{$size}/t{$id}.png";
+        if ($id <= 0) {
+            return "https://resources.premierleague.com/premierleague/badges/{$size}/t1.png";
+        }
+
+        // Lấy mã logo chuẩn xác từ bảng mapping
+        $badgeCode = self::$pulseToBadgeCodeMap[$id] ?? $id;
+
+        return "https://resources.premierleague.com/premierleague/badges/{$size}/t{$badgeCode}.png";
+    }
+
+    /**
+     * Helper lấy link ảnh chân dung cầu thủ từ CDN Premier League
+     */
+    public static function getPlayerPhotoUrl(?string $optaId = null, ?string $playerName = null, int $width = 110, int $height = 140): string
+    {
+        $missingPhoto = "https://resources.premierleague.com/premierleague/photos/players/{$width}x{$height}/Photo-Missing.png";
+
+        // 1. Nếu có Opta ID dạng "p12345" hoặc "12345"
+        if (!empty($optaId)) {
+            $code = str_starts_with($optaId, 'p') ? $optaId : "p{$optaId}";
+            return "https://resources.premierleague.com/premierleague/photos/players/{$width}x{$height}/{$code}.png";
+        }
+
+        // 2. Tra cứu theo tên cầu thủ nếu có
+        if (!empty($playerName)) {
+            $norm = mb_strtolower(trim($playerName));
+            if (isset(self::$playerNamePhotoCodeMap[$norm])) {
+                $code = "p" . self::$playerNamePhotoCodeMap[$norm];
+                return "https://resources.premierleague.com/premierleague/photos/players/{$width}x{$height}/{$code}.png";
+            }
+        }
+
+        return $missingPhoto;
     }
 
     /**

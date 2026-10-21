@@ -53,7 +53,8 @@
                             <div class="match-team">
                                 <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($home['team']['club']['id'] ?? ($home['team']['id'] ?? 0), 70) }}" 
                                      alt="{{ $home['team']['name'] ?? '' }}" 
-                                     class="team-badge-lg" loading="lazy">
+                                     class="team-badge-lg" loading="lazy"
+                                     onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                 <span class="match-team-name">{{ $home['team']['shortName'] ?? ($home['team']['name'] ?? '') }}</span>
                             </div>
 
@@ -67,7 +68,8 @@
                             <div class="match-team">
                                 <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($away['team']['club']['id'] ?? ($away['team']['id'] ?? 0), 70) }}" 
                                      alt="{{ $away['team']['name'] ?? '' }}" 
-                                     class="team-badge-lg" loading="lazy">
+                                     class="team-badge-lg" loading="lazy"
+                                     onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                 <span class="match-team-name">{{ $away['team']['shortName'] ?? ($away['team']['name'] ?? '') }}</span>
                             </div>
                         </div>
@@ -151,7 +153,8 @@
                         <div class="match-team">
                             <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($homeTeam['club']['id'] ?? ($homeTeam['id'] ?? 0), 70) }}" 
                                  alt="{{ $homeTeam['name'] ?? '' }}" 
-                                 class="team-badge-lg" loading="lazy">
+                                 class="team-badge-lg" loading="lazy"
+                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                             <span class="match-team-name">{{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? '') }}</span>
                         </div>
 
@@ -170,7 +173,8 @@
                         <div class="match-team">
                             <img src="{{ \App\Services\PulseLiveService::getTeamBadgeUrl($awayTeam['club']['id'] ?? ($awayTeam['id'] ?? 0), 70) }}" 
                                  alt="{{ $awayTeam['name'] ?? '' }}" 
-                                 class="team-badge-lg" loading="lazy">
+                                 class="team-badge-lg" loading="lazy"
+                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                             <span class="match-team-name">{{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? '') }}</span>
                         </div>
                     </div>

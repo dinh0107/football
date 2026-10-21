@@ -688,7 +688,8 @@
                                                 </button>
                                                 <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($clubId, 50) }}" 
                                                      alt="{{ $team['name'] ?? 'CLB' }}" 
-                                                     class="club-badge" loading="lazy">
+                                                     class="club-badge" loading="lazy"
+                                                     onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/50/t1.png';">
                                                 <div>
                                                     <div>{{ $team['name'] ?? 'Chưa rõ' }}</div>
                                                     @if($isLiveNow)
@@ -799,7 +800,8 @@
                                                 <img src="{{ $scorer['photo'] }}" 
                                                      alt="{{ $scorer['name'] }}" 
                                                      class="player-avatar" 
-                                                     onerror="this.src='{{ $scorer['teamBadge'] }}'">
+                                                     loading="lazy"
+                                                     onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                 <div>
                                                     <div class="player-name-text">{{ $scorer['name'] }}</div>
                                                     <div class="player-pos-text">{{ $scorer['position'] }}</div>
@@ -808,7 +810,11 @@
                                         </td>
                                         <td>
                                             <div style="display: flex; align-items: center; gap: 8px;">
-                                                <img src="{{ $scorer['teamBadge'] }}" alt="{{ $scorer['teamName'] }}" style="width: 24px; height: 24px; object-fit: contain;">
+                                                <img src="{{ $scorer['teamBadge'] }}" 
+                                                     alt="{{ $scorer['teamName'] }}" 
+                                                     style="width: 24px; height: 24px; object-fit: contain;"
+                                                     loading="lazy"
+                                                     onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/50/t1.png';">
                                                 <span style="font-weight: 700;">{{ $scorer['teamName'] }}</span>
                                             </div>
                                         </td>

@@ -2086,7 +2086,9 @@
                         <div class="hero-crest-wrap">
                             <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($homeId, 100) }}" 
                                  alt="{{ $homeTeam['name'] ?? '' }}" 
-                                 class="hero-team-logo">
+                                 class="hero-team-logo"
+                                 loading="lazy"
+                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
                         <h2 class="hero-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</h2>
 
@@ -2140,7 +2142,9 @@
                         <div class="hero-crest-wrap">
                             <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($awayId, 100) }}" 
                                  alt="{{ $awayTeam['name'] ?? '' }}" 
-                                 class="hero-team-logo">
+                                 class="hero-team-logo"
+                                 loading="lazy"
+                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
                         <h2 class="hero-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</h2>
 
@@ -2345,7 +2349,7 @@
                                                                  alt="{{ $event['subIn']['name'] }}" 
                                                                  class="tl-sub-face" 
                                                                  loading="lazy"
-                                                                 onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                             <span>{{ $event['subIn']['name'] }}</span>
                                                             @if(!empty($event['subIn']['shirtNum']))
                                                                 <span style="font-size: 0.75rem; color: var(--pl-text-muted);">#{{ $event['subIn']['shirtNum'] }}</span>
@@ -2362,7 +2366,7 @@
                                                                  alt="{{ $event['subOut']['name'] }}" 
                                                                  class="tl-sub-face" 
                                                                  loading="lazy"
-                                                                 onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                                 onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                             <span style="color: var(--pl-text-muted);">{{ $event['subOut']['name'] }}</span>
                                                             @if(!empty($event['subOut']['shirtNum']))
                                                                 <span style="font-size: 0.75rem; color: var(--pl-text-muted);">#{{ $event['subOut']['shirtNum'] }}</span>
@@ -2378,7 +2382,7 @@
                                                         <img src="{{ $event['playerPhoto'] ?? 'https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png' }}" 
                                                              alt="{{ $event['playerName'] }}" 
                                                              loading="lazy"
-                                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                             onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                         @if(!empty($event['playerNum']))
                                                             <span class="tl-player-num">{{ $event['playerNum'] }}</span>
                                                         @endif
@@ -2431,14 +2435,14 @@
                     @if(!empty($lineups['hasLineups']) && !empty($lineups['home']) && !empty($lineups['away']))
                         <div class="pitch-legend-bar">
                             <div class="pitch-legend-item">
-                                <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;">
+                                <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                 <span style="color: var(--pl-purple);">{{ $lineups['home']['name'] }}</span>
                                 <span class="formation-pill">{{ $lineups['home']['formation'] }}</span>
                             </div>
                             <div class="pitch-legend-item">
                                 <span class="formation-pill">{{ $lineups['away']['formation'] }}</span>
                                 <span style="color: var(--pl-pink);">{{ $lineups['away']['name'] }}</span>
-                                <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;">
+                                <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                             </div>
                         </div>
 
@@ -2466,7 +2470,7 @@
                                                          alt="{{ $player['name'] }}" 
                                                          class="player-face-img" 
                                                          loading="lazy"
-                                                         onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                         onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                     <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
                                                     @if(!empty($player['isCaptain']))
                                                         <span class="player-captain-tag" title="Đội trưởng">C</span>
@@ -2491,7 +2495,7 @@
                                                          alt="{{ $player['name'] }}" 
                                                          class="player-face-img" 
                                                          loading="lazy"
-                                                         onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                                         onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                     <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
                                                     @if(!empty($player['isCaptain']))
                                                         <span class="player-captain-tag" title="Đội trưởng">C</span>
@@ -2510,7 +2514,7 @@
                             {{-- Dự bị Đội nhà --}}
                             <div class="bench-col">
                                 <div class="bench-header">
-                                    <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;">
+                                    <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                     <span>{{ $lineups['home']['name'] }}</span>
                                 </div>
                                 @forelse($lineups['home']['substitutes'] as $sub)
@@ -2519,7 +2523,7 @@
                                              alt="{{ $sub['name'] }}" 
                                              class="bench-face-img" 
                                              loading="lazy"
-                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                             onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>
                                         <span style="color: var(--pl-text-muted); margin-left: auto; font-size: 0.75rem; font-weight: 600;">{{ $sub['position'] }}</span>
@@ -2532,7 +2536,7 @@
                             {{-- Dự bị Đội khách --}}
                             <div class="bench-col">
                                 <div class="bench-header">
-                                    <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;">
+                                    <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                     <span>{{ $lineups['away']['name'] }}</span>
                                 </div>
                                 @forelse($lineups['away']['substitutes'] as $sub)
@@ -2541,7 +2545,7 @@
                                              alt="{{ $sub['name'] }}" 
                                              class="bench-face-img" 
                                              loading="lazy"
-                                             onerror="this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
+                                             onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>
                                         <span style="color: var(--pl-text-muted); margin-left: auto; font-size: 0.75rem; font-weight: 600;">{{ $sub['position'] }}</span>
