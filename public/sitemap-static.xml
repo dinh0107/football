@@ -3,49 +3,49 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>http://localhost:8000</loc>
+    <loc>https://tysongoaihang.site</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/bang-xep-hang</loc>
+    <loc>https://tysongoaihang.site/bang-xep-hang</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/lich-thi-dau</loc>
+    <loc>https://tysongoaihang.site/lich-thi-dau</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/truc-tiep</loc>
+    <loc>https://tysongoaihang.site/truc-tiep</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/gioi-thieu</loc>
+    <loc>https://tysongoaihang.site/gioi-thieu</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/lien-he</loc>
+    <loc>https://tysongoaihang.site/lien-he</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/chinh-sach-bao-mat</loc>
+    <loc>https://tysongoaihang.site/chinh-sach-bao-mat</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:8000/mien-tru-trach-nhiem</loc>
+    <loc>https://tysongoaihang.site/mien-tru-trach-nhiem</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>

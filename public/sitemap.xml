@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
-    <loc>http://localhost:8000/sitemap-upcoming.xml</loc>
+    <loc>https://tysongoaihang.site/sitemap-upcoming.xml</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
   </sitemap>
   <sitemap>
-    <loc>http://localhost:8000/sitemap-results.xml</loc>
+    <loc>https://tysongoaihang.site/sitemap-results.xml</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
   </sitemap>
   <sitemap>
-    <loc>http://localhost:8000/sitemap-static.xml</loc>
+    <loc>https://tysongoaihang.site/sitemap-static.xml</loc>
     <lastmod>2026-10-21T14:51:43+07:00</lastmod>
   </sitemap>
 </sitemapindex>
