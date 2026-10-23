@@ -1682,3 +1682,51 @@ a {
   font-size: 1rem;
 }
 
+/* SEO Editorial Content Block */
+.seo-content-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-top: 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  color: var(--text-muted);
+  line-height: 1.75;
+  font-size: 0.925rem;
+}
+
+.seo-content-box h2,
+.seo-content-box h3 {
+  color: var(--pl-purple);
+  font-weight: 800;
+  font-size: 1.15rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.seo-content-box p {
+  margin-bottom: 12px;
+}
+
+.seo-content-box p:last-child {
+  margin-bottom: 0;
+}
+
+.seo-content-box ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.seo-content-box li {
+  margin-bottom: 6px;
+}
+
+.seo-content-box strong {
+  color: var(--pl-purple);
+  font-weight: 700;
+}
+
+

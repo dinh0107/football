@@ -190,4 +190,27 @@
         </div>
     </div>
 </div>
+
+{{-- Khối thông tin biên tập SEO về Trung Tâm Trực Tiếp Bóng Đá --}}
+<div class="seo-content-box">
+    <h2>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+        Trung Tâm Trực Tiếp & Cập Nhật Tỷ Số Ngoại Hạng Anh Trực Tuyến
+    </h2>
+    <p>
+        Trung tâm trực tiếp bóng đá tại <strong>tysongoaihang.site</strong> cung cấp giải pháp theo dõi tỷ số trực tuyến (livescore) Ngoại Hạng Anh siêu tốc, chuẩn xác và tức thì theo thời gian thực. Hệ thống được kết nối trực tiếp với nền tảng dữ liệu chính thức Premier League PulseLive, đảm bảo mọi biến động trên sân cỏ đều được phản hồi tức thì tới người xem.
+    </p>
+    <p>
+        <strong>Các tính năng nổi bật khi theo dõi trực tiếp:</strong>
+    </p>
+    <ul>
+        <li><strong>Tự động làm mới dữ liệu (Live Engine):</strong> Tỷ số, đồng hồ thời gian thi đấu và tình huống bù giờ được đồng bộ ngầm sau mỗi 30 giây mà không cần người dùng thao tác tải lại trang.</li>
+        <li><strong>Chi tiết diễn biến bàn thắng & thẻ phạt:</strong> Ghi nhận chính xác cầu thủ lập công, thời gian ghi bàn, thẻ vàng, thẻ đỏ và các tình huống thay người chiến thuật.</li>
+        <li><strong>Sa bàn đội hình chiến thuật 2D:</strong> Trực quan hóa vị trí di chuyển và vai trò chiến thuật của 22 cầu thủ trên sân cỏ ngay khi ban huấn luyện công bố đội hình ra sân.</li>
+        <li><strong>Thông số kỹ thuật toàn diện:</strong> Tỷ lệ kiểm soát bóng, số cú sút trúng đích, phạt góc và các pha cản phá xuất sắc của thủ môn hai đội.</li>
+    </ul>
+    <p>
+        Đồng thời, chuyên trang cung cấp hướng dẫn lịch phát sóng truyền hình tại Việt Nam (K+ Sport, TV360, FPT Play), giúp người hâm mộ không bỏ lỡ bất kỳ khoảnh khắc rực lửa nào của giải đấu số một nước Anh.
+    </p>
+</div>
 @endsection

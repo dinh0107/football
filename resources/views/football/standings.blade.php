@@ -183,4 +183,29 @@
         </div>
     </div>
 </div>
+
+{{-- Khối thông tin biên tập SEO về Bảng Xếp Hạng Ngoại Hạng Anh --}}
+<div class="seo-content-box">
+    <h2>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+        Quy Tắc Xếp Hạng & Cơ Cấu Suất Dự Cúp Châu Âu Ngoại Hạng Anh
+    </h2>
+    <p>
+        Bảng xếp hạng giải bóng đá Ngoại Hạng Anh (English Premier League) mùa giải {{ $season['label'] ?? '2026/2027' }} được cập nhật tự động và đồng bộ trực tiếp từ ban tổ chức Premier League. Dữ liệu bao gồm đầy đủ số trận đã đấu (P), số trận thắng (W), hòa (D), thua (L), số bàn thắng ghi được (GF), số bàn thua (GA), hiệu số bàn thắng bại (GD), tổng điểm (Pts) và chuỗi phong độ 5 trận gần nhất (Form) của toàn bộ 20 câu lạc bộ.
+    </p>
+    <p>
+        <strong>Tiêu chí phân định thứ hạng khi bằng điểm:</strong> Trong trường hợp có hai hay nhiều câu lạc bộ bằng điểm nhau trên bảng xếp hạng, thứ tự ưu tiên được xác định theo: (1) Hiệu số bàn thắng bại trong cả mùa giải, (2) Tổng số bàn thắng ghi được trong cả mùa giải, (3) Thành tích đối đầu trực tiếp giữa các đội liên quan.
+    </p>
+    <p>
+        <strong>Phân bổ các suất tham dự cúp Châu Âu và xuống hạng:</strong>
+    </p>
+    <ul>
+        <li><strong>Top 4 (Hạng 1 đến 4):</strong> Giành quyền tham dự thẳng vòng bảng giải đấu danh giá nhất lục địa già - UEFA Champions League mùa giải tiếp theo.</li>
+        <li><strong>Hạng 5 & Nhà vô địch cúp quốc nội:</strong> Đại diện cho bóng đá Anh tham dự đấu trường UEFA Europa League và UEFA Conference League.</li>
+        <li><strong>Nhóm xuống hạng (Hạng 18, 19, 20):</strong> Ba câu lạc bộ có thành tích thấp nhất khi mùa giải khép lại sẽ chính thức phải xuống chơi tại giải Hạng Nhất Anh (EFL Championship).</li>
+    </ul>
+    <p>
+        Hệ thống <strong>Live Table (Bảng xếp hạng thời gian thực)</strong> tại chuyên trang <strong>tysongoaihang.site</strong> tự động tính toán điểm số và cập nhật biến động thứ hạng ngay trong thời gian các trận đấu đang diễn ra.
+    </p>
+</div>
 @endsection

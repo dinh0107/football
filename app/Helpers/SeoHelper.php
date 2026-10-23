@@ -199,27 +199,30 @@ class SeoHelper
         if ($status === 'C') {
             $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
             $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
-            $p2 = "Trận cầu đã chính thức khép lại với tỷ số chung cuộc {$home} {$homeScore} - {$awayScore} {$away}.";
-            $p3 = "Người hâm mộ có thể xem lại tóm tắt các pha ghi bàn, danh sách thẻ phạt, đội hình ra sân chính thức và toàn bộ thống kê kỹ thuật chi tiết tại " . static::DOMAIN . ".";
-            $p4 = "Kết quả này tác động trực tiếp đến vị trí của cả hai câu lạc bộ trên bảng xếp hạng Ngoại Hạng Anh mùa giải hiện tại.";
-            return "{$p1} {$p2} {$p3} {$p4}";
+            $p2 = "Màn so tài giữa hai câu lạc bộ đã chính thức khép lại với tỷ số chung cuộc {$home} {$homeScore} - {$awayScore} {$away}.";
+            $p3 = "Người hâm mộ có thể xem lại toàn bộ tóm tắt các pha ghi bàn quyết định, danh sách thẻ phạt, diễn biến thay người, sơ đồ chiến thuật 2D, đội hình ra sân chính thức và toàn bộ thống kê kỹ thuật chi tiết tại " . static::DOMAIN . ".";
+            $p4 = "Kết quả này tác động trực tiếp đến điểm số và thứ hạng của cả {$home} cùng {$away} trên bảng xếp hạng Ngoại Hạng Anh mùa giải hiện tại.";
+            $p5 = "Hệ thống liên tục cập nhật bảng xếp hạng trực tiếp (live standings), phong độ đối đầu và lịch thi đấu các vòng tiếp theo để quý khán giả tiện theo dõi.";
+            return "{$p1} {$p2} {$p3} {$p4} {$p5}";
         }
 
         if ($status === 'L') {
             $clock = $match['clock']['label'] ?? 'Đang diễn ra';
             $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
             $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
-            $p2 = "Hiện tại màn so tài đang diễn ra với nhịp độ nghẹt thở ({$clock}), tỷ số tạm thời là {$home} {$homeScore} - {$awayScore} {$away}.";
-            $p3 = "Quý khán giả có thể theo dõi trực tiếp trận đấu qua sóng truyền hình {$tv} hoặc cập nhật diễn biến, đội hình và tỷ số trực tuyến từng phút tại " . static::DOMAIN . ".";
-            $p4 = "Cả hai đội bóng đang thi đấu đầy quyết tâm nhằm giành trọn 3 điểm số quan trọng cho cuộc đua thứ hạng.";
-            return "{$p1} {$p2} {$p3} {$p4}";
+            $p2 = "Hiện tại màn so tài đỉnh cao đang diễn ra với nhịp độ nghẹt thở trên sân cỏ ({$clock}), tỷ số tạm thời là {$home} {$homeScore} - {$awayScore} {$away}.";
+            $p3 = "Quý khán giả có thể theo dõi trực tiếp trận đấu qua sóng truyền hình {$tv} hoặc cập nhật diễn biến, đội hình và tỷ số trực tuyến (livescore) từng phút tại " . static::DOMAIN . ".";
+            $p4 = "Cả hai đội bóng đang thi đấu đầy quyết tâm nhằm giành trọn 3 điểm số quan trọng cho cuộc đua thứ hạng, với các pha đôi công kịch tính duy trì đến từng phút bù giờ cuối cùng.";
+            $p5 = "Mọi diễn biến bàn thắng, thẻ phạt và chỉ số kiểm soát bóng đang được đồng bộ tự động theo thời gian thực.";
+            return "{$p1} {$p2} {$p3} {$p4} {$p5}";
         }
 
         $p2 = "Khán giả yêu bóng đá có thể đón xem trực tiếp màn so tài kịch tính này qua kênh truyền hình {$tv} hoặc theo dõi cập nhật tỷ số trực tuyến, sơ đồ chiến thuật 2D và đội hình ra sân tại " . static::DOMAIN . ".";
-        $p3 = "Cả {$home} và {$away} đều đang có sự chuẩn bị kỹ lưỡng về mặt nhân sự với quyết tâm cao nhất để giành trọn vẹn 3 điểm.";
-        $p4 = "Mọi diễn biến mới nhất, phong độ đối đầu và nhận định chuyên sâu sẽ được cập nhật liên tục trước giờ bóng lăn.";
+        $p3 = "Trước thềm cuộc đối đầu này, cả {$home} và {$away} đều đang có sự chuẩn bị kỹ lưỡng về mặt nhân sự với quyết tâm cao nhất để giành trọn vẹn 3 điểm nhằm củng cố vị trí trên bảng xếp hạng.";
+        $p4 = "Thông tin về lịch sử đối đầu (head-to-head), phong độ gần đây, danh sách chấn thương và nhận định chuyên sâu sẽ được cập nhật liên tục trước giờ bóng lăn.";
+        $p5 = "Đội hình ra sân chính thức của hai đội sẽ được ban tổ chức công bố 60 phút trước giờ khai cuộc và cập nhật ngay trên sa bàn 2D.";
 
-        return "{$p1} {$p2} {$p3} {$p4}";
+        return "{$p1} {$p2} {$p3} {$p4} {$p5}";
     }
 
     /**

@@ -2561,7 +2561,7 @@
                                             <div class="event-card-header">
                                                 <div class="event-team-meta">
                                                     @if(!empty($event['teamBadge']))
-                                                        <img src="{{ $event['teamBadge'] }}" alt="" loading="lazy">
+                                                        <img src="{{ $event['teamBadge'] }}" alt="{{ $event['teamName'] ?? 'Logo CLB' }}" loading="lazy">
                                                     @endif
                                                     <span>{{ $event['teamName'] ?? ($isHome ? ($homeTeam['name'] ?? 'Đội nhà') : ($awayTeam['name'] ?? 'Đội khách')) }}</span>
                                                 </div>
@@ -2703,14 +2703,14 @@
                     @if(!empty($lineups['hasLineups']) && !empty($lineups['home']) && !empty($lineups['away']))
                         <div class="pitch-legend-bar">
                             <div class="pitch-legend-item">
-                                <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
+                                <img src="{{ $lineups['home']['badge'] }}" alt="Logo {{ $lineups['home']['name'] }}" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                 <span style="color: var(--pl-purple);">{{ $lineups['home']['name'] }}</span>
                                 <span class="formation-pill">{{ $lineups['home']['formation'] }}</span>
                             </div>
                             <div class="pitch-legend-item">
                                 <span class="formation-pill">{{ $lineups['away']['formation'] }}</span>
                                 <span style="color: var(--pl-pink);">{{ $lineups['away']['name'] }}</span>
-                                <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
+                                <img src="{{ $lineups['away']['badge'] }}" alt="Logo {{ $lineups['away']['name'] }}" style="width: 26px; height: 26px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                             </div>
                         </div>
 
@@ -2784,7 +2784,7 @@
                             {{-- Dự bị Đội nhà --}}
                             <div class="bench-col">
                                 <div class="bench-header">
-                                    <img src="{{ $lineups['home']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
+                                    <img src="{{ $lineups['home']['badge'] }}" alt="Logo {{ $lineups['home']['name'] }}" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                     <span>{{ $lineups['home']['name'] }}</span>
                                 </div>
                                 @forelse($lineups['home']['substitutes'] as $sub)
@@ -2807,7 +2807,7 @@
                             {{-- Dự bị Đội khách --}}
                             <div class="bench-col">
                                 <div class="bench-header">
-                                    <img src="{{ $lineups['away']['badge'] }}" alt="" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
+                                    <img src="{{ $lineups['away']['badge'] }}" alt="Logo {{ $lineups['away']['name'] }}" style="width: 22px; height: 22px; object-fit: contain;" onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
                                     <span>{{ $lineups['away']['name'] }}</span>
                                 </div>
                                 @forelse($lineups['away']['substitutes'] as $sub)
@@ -3025,6 +3025,37 @@
                         {{ ($voteStats['has_voted'] ?? false) ? '✓ Bạn đã ghi nhận dự đoán cho trận đấu này.' : '' }}
                     </div>
                 </div>
+            </div>
+
+            {{-- Thông tin trận đấu & Hướng dẫn xem trực tiếp (SEO Match Guide) --}}
+            <div class="seo-content-box">
+                <h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    Thông Tin Trận Đấu & Hướng Dẫn Theo Dõi Trực Tiếp
+                </h2>
+                <p>
+                    Cuộc đọ sức đỉnh cao giữa <strong>{{ $homeTeam['name'] ?? 'Đội nhà' }}</strong> và <strong>{{ $awayTeam['name'] ?? 'Đội khách' }}</strong> thuộc khuôn khổ <strong>Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}</strong> giải bóng đá Ngoại Hạng Anh (English Premier League) mùa giải 2026/2027. Cả hai câu lạc bộ đều mang trong mình quyết tâm chiến đấu cao nhất nhằm giành trọn 3 điểm số quý giá, qua đó củng cố vững chắc mục tiêu và thứ hạng trên bảng xếp hạng tổng.
+                </p>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 16px 0;">
+                    <div style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                        <strong style="display: block; margin-bottom: 6px; color: var(--pl-purple);">Kênh phát sóng trực tiếp:</strong>
+                        <p style="margin: 0; font-size: 0.875rem;">
+                            Trận đấu được truyền hình trực tiếp tại Việt Nam trên các kênh sóng bản quyền <strong>{{ $tvChannel }}</strong>. Người hâm mộ có thể đón xem các pha bóng tốc độ và bàn thắng mãn nhãn với chất lượng hình ảnh sắc nét.
+                        </p>
+                    </div>
+                    <div style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                        <strong style="display: block; margin-bottom: 6px; color: var(--pl-purple);">Tỷ số trực tuyến theo thời gian thực:</strong>
+                        <p style="margin: 0; font-size: 0.875rem;">
+                            Hệ thống tự động cập nhật tỷ số livescore, cầu thủ lập công, thẻ phạt, diễn biến thay người và nhịp độ bù giờ của trận đấu liên tục mà không cần người dùng phải tải lại trang.
+                        </p>
+                    </div>
+                </div>
+                <p>
+                    <strong>Đội hình ra sân chính thức:</strong> Danh sách 11 cầu thủ đá chính và các nhân tố dự bị chiến lược được ban tổ chức Premier League công bố 60 phút trước giờ bóng lăn. Bạn có thể theo dõi cách bố trí chiến thuật trực quan trên sơ đồ sân cỏ 2D tại tab "Đội hình".
+                </p>
+                <p>
+                    <strong>Thống kê chuyên sâu:</strong> Toàn bộ các thông số kỹ thuật như tỷ lệ kiểm soát bóng, tổng số cú sút, số pha dứt điểm trúng đích, phạt góc và phạm lỗi của {{ $homeTeam['name'] ?? 'Đội nhà' }} và {{ $awayTeam['name'] ?? 'Đội khách' }} được cập nhật chi tiết tại tab "Thống kê" giúp bạn có cái nhìn đa chiều về cục diện trận đấu.
+                </p>
             </div>
 
             {{-- PHASE 8: Banner Quảng Cáo Chân Trang (banner_footer) --}}

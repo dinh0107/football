@@ -1283,6 +1283,29 @@
                 </div>
             </div>
 
+            {{-- Khối thông tin biên tập SEO về Chuyên Trang Tỷ Số Ngoại Hạng Anh --}}
+            <div class="seo-content-box" style="margin-top: 28px;">
+                <h2>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                    Chuyên Trang Cập Nhật Tỷ Số & Lịch Thi Đấu Ngoại Hạng Anh Hôm Nay
+                </h2>
+                <p>
+                    Chào mừng bạn đến với chuyên trang <strong>tysongoaihang.site</strong> - nền tảng dữ liệu thể thao trực tuyến chuyên sâu, cập nhật nhanh và chính xác nhất tỷ số bóng đá Ngoại Hạng Anh (English Premier League) mùa giải 2026/2027. Toàn bộ thông tin lịch thi đấu, kết quả trận đấu, bảng xếp hạng 20 câu lạc bộ và các thông số chuyên môn được đồng bộ trực tiếp từ ban tổ chức Premier League.
+                </p>
+                <p>
+                    <strong>Những tiện ích vượt trội dành cho người hâm mộ:</strong>
+                </p>
+                <ul>
+                    <li><strong>Theo dõi tỷ số trực tuyến (Livescore 24/7):</strong> Cập nhật biến động tỷ số, cầu thủ ghi bàn, thẻ vàng, thẻ đỏ và diễn biến từng phút của các cặp đấu tâm điểm có sự góp mặt của Manchester City, Arsenal, Liverpool, Manchester United, Chelsea, Tottenham Hotspur cùng các đội bóng tại giải đấu.</li>
+                    <li><strong>Lịch thi đấu & Kênh phát sóng bản quyền:</strong> Tra cứu giờ thi đấu chính xác theo giờ Việt Nam, kèm thông tin kênh tiếp sóng trực tiếp (K+ Sport, TV360, FPT Play).</li>
+                    <li><strong>Sa bàn chiến thuật 2D & Đội hình ra sân:</strong> Nắm bắt đội hình chính thức 60 phút trước giờ bóng lăn, quan sát cách sắp xếp chiến thuật của các huấn luyện viên hàng đầu thế giới.</li>
+                    <li><strong>Bảng xếp hạng trực tiếp (Live Table):</strong> Tự động tính toán điểm số và phản ánh ngay lập tức sự thay đổi vị trí của các đội trong suốt 90 phút thi đấu.</li>
+                </ul>
+                <p>
+                    Trang web được tối ưu hóa cho mọi thiết bị di động và máy tính, tốc độ tải trang tức thì, giao diện trực quan chuẩn quốc tế mang lại trải nghiệm bóng đá trọn vẹn và hoàn hảo nhất.
+                </p>
+            </div>
+
             {{-- PHASE 8: Banner Quảng Cáo Chân Trang (banner_footer) --}}
             @if(isset($bannerFooter) && $bannerFooter && $bannerFooter->rendered_html)
                 <div class="ad-banner-slot banner-footer" style="margin-top: 24px; margin-bottom: 10px;">
