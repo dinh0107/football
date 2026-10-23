@@ -23,4 +23,20 @@ class WwwRedirectTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_index_php_redirects_to_root_with_301(): void
+    {
+        $response = $this->get('/index.php');
+
+        $response->assertStatus(301);
+        $this->assertEquals(url('/'), $response->headers->get('Location'));
+    }
+
+    public function test_index_html_redirects_to_root_with_301(): void
+    {
+        $response = $this->get('/index.html');
+
+        $response->assertStatus(301);
+        $this->assertEquals(url('/'), $response->headers->get('Location'));
+    }
 }

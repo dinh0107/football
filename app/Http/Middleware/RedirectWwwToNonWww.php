@@ -25,6 +25,14 @@ class RedirectWwwToNonWww
             return redirect()->away($targetUrl, 301);
         }
 
+        // Tự động chuyển hướng /index.php, /index.html, /index.htm về root / (301 Permanent Redirect)
+        $path = strtolower($request->path());
+        if (in_array($path, ['index.php', 'index.html', 'index.htm'])) {
+            $queryString = $request->getQueryString();
+            $targetUrl = '/' . ($queryString ? "?{$queryString}" : '');
+            return redirect()->to($targetUrl, 301);
+        }
+
         return $next($request);
     }
 }

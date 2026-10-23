@@ -47,6 +47,10 @@ Route::permanentRedirect('/disclaimer', '/mien-tru-trach-nhiem');
 Route::permanentRedirect('/dieu-khoan-va-mien-tru', '/mien-tru-trach-nhiem');
 
 // Tương thích ngược & SEO Redirects 301: Chuyển hướng các URL cũ về chuẩn SEO
+Route::permanentRedirect('/index.php', '/');
+Route::permanentRedirect('/index.html', '/');
+Route::permanentRedirect('/index.htm', '/');
+Route::permanentRedirect('/home', '/');
 Route::permanentRedirect('/standings', '/bang-xep-hang');
 Route::permanentRedirect('/fixtures', '/lich-thi-dau');
 Route::permanentRedirect('/live-matches', '/truc-tiep');
