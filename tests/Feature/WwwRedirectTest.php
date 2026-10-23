@@ -39,4 +39,42 @@ class WwwRedirectTest extends TestCase
         $response->assertStatus(301);
         $this->assertEquals(url('/'), $response->headers->get('Location'));
     }
+
+    public function test_server_request_uri_index_php_redirects_to_root(): void
+    {
+        $response = $this->withServerVariables([
+            'REQUEST_URI' => '/index.php',
+            'SCRIPT_NAME' => '/index.php',
+            'PHP_SELF' => '/index.php',
+            'HTTP_HOST' => 'tysongoaihang.site',
+        ])->get('/index.php');
+
+        $response->assertStatus(301);
+        $this->assertEquals(url('/'), $response->headers->get('Location'));
+    }
+
+    public function test_server_request_uri_index_php_with_query_string(): void
+    {
+        $response = $this->withServerVariables([
+            'REQUEST_URI' => '/index.php?date=2026-10-23',
+            'SCRIPT_NAME' => '/index.php',
+            'QUERY_STRING' => 'date=2026-10-23',
+            'HTTP_HOST' => 'tysongoaihang.site',
+        ])->get('/index.php?date=2026-10-23');
+
+        $response->assertStatus(301);
+        $this->assertEquals(url('/?date=2026-10-23'), $response->headers->get('Location'));
+    }
+
+    public function test_server_request_uri_index_php_with_subpath(): void
+    {
+        $response = $this->withServerVariables([
+            'REQUEST_URI' => '/index.php/bang-xep-hang',
+            'SCRIPT_NAME' => '/index.php',
+            'HTTP_HOST' => 'tysongoaihang.site',
+        ])->get('/index.php/bang-xep-hang');
+
+        $response->assertStatus(301);
+        $this->assertEquals(url('/bang-xep-hang'), $response->headers->get('Location'));
+    }
 }

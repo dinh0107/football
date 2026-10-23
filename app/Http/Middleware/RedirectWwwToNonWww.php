@@ -26,6 +26,24 @@ class RedirectWwwToNonWww
         }
 
         // Tự động chuyển hướng /index.php, /index.html, /index.htm về root / (301 Permanent Redirect)
+        // Kiểm tra cả raw REQUEST_URI (trên web server IIS/Apache thực tế) và $request->path() (môi trường testing)
+        $rawUri = $request->server('REQUEST_URI') ?? $request->getRequestUri();
+        $uriPath = parse_url($rawUri, PHP_URL_PATH) ?? '/';
+        $pathLower = strtolower($uriPath);
+
+        if (in_array($pathLower, ['/index.php', '/index.html', '/index.htm', '/index.php/'])) {
+            $queryString = $request->getQueryString();
+            $targetUrl = '/' . ($queryString ? "?{$queryString}" : '');
+            return redirect()->to($targetUrl, 301);
+        }
+
+        if (preg_match('#^/index\.php(/.*)$#i', $uriPath, $matches)) {
+            $queryString = $request->getQueryString();
+            $subPath = $matches[1] ?: '/';
+            $targetUrl = $subPath . ($queryString ? "?{$queryString}" : '');
+            return redirect()->to($targetUrl, 301);
+        }
+
         $path = strtolower($request->path());
         if (in_array($path, ['index.php', 'index.html', 'index.htm'])) {
             $queryString = $request->getQueryString();
