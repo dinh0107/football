@@ -2,8 +2,16 @@
 
 @section('content')
 <div class="page-hero">
-    <h1 class="page-title">Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh {{ $season['label'] ?? '' }}</h1>
-    <p class="page-subtitle">Theo dõi lịch thi đấu, tỷ số trực tiếp và kết quả tất cả các vòng đấu theo giờ Việt Nam (Cache 1 ngày).</p>
+    @php
+        $gwNum = $selectedGw['gameweek'] ?? null;
+    @endphp
+    @if(!empty($gwNum))
+        <h1 class="page-title">Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {{ $gwNum }}</h1>
+        <p class="page-subtitle">Theo dõi lịch thi đấu, tỷ số trực tiếp và kết quả Vòng {{ $gwNum }} Ngoại Hạng Anh mùa giải {{ $season['label'] ?? '' }} theo giờ Việt Nam.</p>
+    @else
+        <h1 class="page-title">Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh {{ $season['label'] ?? '' }}</h1>
+        <p class="page-subtitle">Theo dõi lịch thi đấu, tỷ số trực tiếp và kết quả tất cả các vòng đấu theo giờ Việt Nam.</p>
+    @endif
 </div>
 
 {{-- Chọn Vòng Đấu (Gameweek Horizontal Scroll Pills) --}}
