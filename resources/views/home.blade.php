@@ -17,13 +17,19 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
-    {{-- Open Graph / Facebook --}}
+    {{-- Open Graph / Facebook / Zalo --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }}">
     <meta property="og:description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}.">
+    <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
+    <meta property="og:locale" content="vi_VN">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:site_name" content="Premier League Live Tracker">
+    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh">
 
     {{-- Twitter Cards --}}
     <meta name="twitter:card" content="summary_large_image">

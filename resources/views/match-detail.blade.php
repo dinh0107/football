@@ -22,8 +22,14 @@
     <meta property="og:title" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
     <meta property="og:description" content="{{ $seo['og']['description'] ?? ($seo['description'] ?? '') }}">
     <meta property="og:url" content="{{ $seo['og']['url'] ?? url()->current() }}">
+    <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
+    <meta property="og:locale" content="vi_VN">
     <meta property="og:image" content="{{ $seo['og']['image'] ?? asset('images/logo.png') }}">
-    <meta property="og:site_name" content="{{ $seo['og']['site_name'] ?? 'Premier League Live Tracker' }}">
+    <meta property="og:image:secure_url" content="{{ $seo['og']['image'] ?? asset('images/logo.png') }}">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
 
     {{-- Twitter Card Meta Tags --}}
     <meta name="twitter:card" content="{{ $seo['twitter']['card'] ?? 'summary_large_image' }}">

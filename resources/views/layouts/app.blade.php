@@ -18,12 +18,19 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
-    {{-- Open Graph / Facebook --}}
+    {{-- Open Graph / Facebook / Zalo --}}
     <meta property="og:type" content="{{ $seo['type'] ?? 'website' }}">
     <meta property="og:title" content="{{ $seo['title'] ?? 'Bóng Đá Ngoại Hạng Anh' }}">
     <meta property="og:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh mới nhất' }}">
     <meta property="og:url" content="{{ $seo['canonical'] ?? url()->current() }}">
+    <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
+    <meta property="og:locale" content="vi_VN">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{ $seo['title'] ?? 'Tỷ Số Ngoại Hạng Anh' }}">
 
     {{-- Twitter --}}
     <meta name="twitter:card" content="summary_large_image">
