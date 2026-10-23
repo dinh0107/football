@@ -1,445 +1,331 @@
-{{-- Component Gợi Ý Ghim Ra Màn Hình Chính (PWA / Add to Home Screen Banner & Guide) --}}
-<div id="pwa-pin-banner" class="pwa-pin-banner hidden" role="dialog" aria-labelledby="pwa-pin-title">
+{{-- Smart App Banner: Gợi ý thêm vào màn hình chính (Chuẩn phong cách thể thao cao cấp) --}}
+<aside id="pwa-pin-banner" class="pwa-pin-banner hidden" aria-label="Cài đặt ứng dụng">
     <div class="pwa-banner-card">
-        <div class="pwa-banner-left">
-            <div class="pwa-app-icon">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Tỷ Số Ngoại Hạng Anh" width="44" height="44" onerror="this.onerror=null; this.src='/favicon-32x32.png';">
-            </div>
-            <div class="pwa-banner-info">
-                <div class="pwa-badge">
-                    <svg class="pwa-badge-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <span>Trải Nghiệm Tốc Độ Cao</span>
-                </div>
-                <h4 id="pwa-pin-title" class="pwa-app-title">Ghim Tỷ Số Ngoại Hạng Ra Màn Hình</h4>
-                <p class="pwa-app-desc">Mở nhanh như App, xem tỷ số & bảng xếp hạng trực tiếp không quảng cáo rác</p>
-            </div>
-        </div>
-        <div class="pwa-banner-actions">
-            <button type="button" id="pwa-pin-btn" class="pwa-btn-primary">
-                <svg class="pwa-btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
-                </svg>
-                <span>Ghim Ngay</span>
-            </button>
-            <button type="button" id="pwa-dismiss-btn" class="pwa-btn-close" aria-label="Để sau">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-    </div>
-</div>
+        <button type="button" id="pwa-dismiss-btn" class="pwa-btn-close" aria-label="Đóng thông báo">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
 
-{{-- Modal Hướng Dẫn Chi Tiết Cho iOS Safari & Desktop --}}
-<div id="pwa-ios-modal" class="pwa-modal-backdrop hidden" role="dialog" aria-modal="true">
+        <div class="pwa-app-icon">
+            <img src="{{ asset('images/logo.png') }}" alt="Tỷ Số Ngoại Hạng Anh" width="38" height="38" onerror="this.onerror=null; this.src='/favicon-32x32.png';">
+        </div>
+
+        <div class="pwa-banner-info">
+            <div class="pwa-app-title">Tỷ Số Ngoại Hạng Anh</div>
+            <div class="pwa-app-desc">Thêm vào màn hình để mở xem nhanh</div>
+        </div>
+
+        <button type="button" id="pwa-pin-btn" class="pwa-btn-primary">
+            <span>Thêm</span>
+        </button>
+    </div>
+</aside>
+
+{{-- Modal Hướng Dẫn Thêm Màn Hình Chính (iOS Safari) --}}
+<div id="pwa-ios-modal" class="pwa-modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="pwa-modal-title">
     <div class="pwa-modal-box">
         <div class="pwa-modal-header">
-            <div class="pwa-modal-title-group">
-                <div class="pwa-modal-icon-badge">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
-                    </svg>
-                </div>
-                <div>
-                    <h3 class="pwa-modal-title">Ghim Ứng Dụng Ra Màn Hình Chính</h3>
-                    <p class="pwa-modal-subtitle">Thao tác đơn giản trong 2 bước để xem bóng đá nhanh nhất</p>
-                </div>
-            </div>
+            <h3 id="pwa-modal-title" class="pwa-modal-title">Thêm vào màn hình chính</h3>
             <button type="button" id="pwa-modal-close" class="pwa-modal-close-btn" aria-label="Đóng">
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
             </button>
         </div>
+
         <div class="pwa-modal-body">
             <div class="pwa-step-item">
-                <div class="pwa-step-num">1</div>
-                <div class="pwa-step-content">
-                    <div class="pwa-step-title">
-                        <span>Bấm vào nút <strong>Chia sẻ</strong></span>
-                        <span class="pwa-step-chip">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                                <polyline points="16 6 12 2 8 6"></polyline>
-                                <line x1="12" y1="2" x2="12" y2="15"></line>
-                            </svg>
-                            <span>Chia sẻ</span>
-                        </span>
-                    </div>
-                    <p class="pwa-step-desc">Nút biểu tượng hình vuông có mũi tên hướng lên ở thanh công cụ dưới đáy Safari (iPhone / iPad).</p>
+                <span class="pwa-step-badge">1</span>
+                <div class="pwa-step-text">
+                    <span>Nhấn vào biểu tượng <strong>Chia sẻ</strong></span>
+                    <span class="pwa-icon-inline">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                            <polyline points="16 6 12 2 8 6"></polyline>
+                            <line x1="12" y1="2" x2="12" y2="15"></line>
+                        </svg>
+                    </span>
+                    <span>ở thanh dưới Safari.</span>
                 </div>
             </div>
+
             <div class="pwa-step-item">
-                <div class="pwa-step-num">2</div>
-                <div class="pwa-step-content">
-                    <div class="pwa-step-title">
-                        <span>Chọn <strong>Thêm vào MH chính</strong></span>
-                        <span class="pwa-step-chip">
-                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="3" ry="3"></rect>
-                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                            </svg>
-                            <span>Thêm vào MH chính</span>
-                        </span>
-                    </div>
-                    <p class="pwa-step-desc">Cuộn danh sách chọn <strong>Add to Home Screen</strong>, sau đó nhấn <strong>Thêm</strong> ở góc trên bên phải.</p>
+                <span class="pwa-step-badge">2</span>
+                <div class="pwa-step-text">
+                    <span>Chọn <strong>Thêm vào MH chính</strong> (Add to Home Screen).</span>
                 </div>
-            </div>
-            <div class="pwa-modal-desktop-tip">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
-                <span>Nếu trên máy tính: Nhấn tổ hợp phím <strong>Ctrl + D</strong> (hoặc <strong>Cmd + D</strong> trên Mac) để lưu dấu trang truy cập nhanh.</span>
             </div>
         </div>
+
         <div class="pwa-modal-footer">
-            <button type="button" id="pwa-modal-confirm" class="pwa-modal-confirm-btn">
-                <span>Đã Hiểu, Tôi Sẽ Thao Tác</span>
-            </button>
+            <button type="button" id="pwa-modal-confirm" class="pwa-btn-done">Đã hiểu</button>
         </div>
     </div>
 </div>
 
 <style>
-/* CSS Giao Diện Ghim Ra Màn Hình Chính */
+/* Smart App Banner - Phong Cách Tối Giản Thanh Lịch */
 .pwa-pin-banner {
     position: fixed;
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    max-width: 520px;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+    max-width: 420px;
     margin: 0 auto;
-    z-index: 99999;
-    animation: pwaSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    z-index: 9999;
+    animation: pwaSlideIn 0.25s ease-out forwards;
 }
+
 @media (min-width: 768px) {
     .pwa-pin-banner {
         left: auto;
-        right: 24px;
-        bottom: 24px;
+        right: 20px;
+        bottom: 20px;
         margin: 0;
     }
 }
+
 .pwa-pin-banner.hidden,
 .pwa-modal-backdrop.hidden {
     display: none !important;
 }
-@keyframes pwaSlideUp {
+
+@keyframes pwaSlideIn {
     from {
         opacity: 0;
-        transform: translateY(24px) scale(0.97);
+        transform: translateY(12px);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
+
 .pwa-banner-card {
-    background: linear-gradient(135deg, rgba(26, 11, 46, 0.94) 0%, rgba(15, 23, 42, 0.96) 100%);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(0, 255, 135, 0.28);
-    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 255, 135, 0.12);
-    border-radius: 16px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-}
-.pwa-banner-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    flex: 1;
-}
-.pwa-app-icon {
-    width: 44px;
-    height: 44px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
     border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pwa-btn-close {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
+}
+
+.pwa-btn-close:hover {
+    color: #0f172a;
+}
+
+.pwa-app-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 9px;
     overflow: hidden;
     background: #0f172a;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.06);
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
+
 .pwa-app-icon img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
 .pwa-banner-info {
-    min-width: 0;
     flex: 1;
+    min-width: 0;
 }
-.pwa-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    background: rgba(0, 255, 135, 0.12);
-    border: 1px solid rgba(0, 255, 135, 0.3);
-    color: #00ff87;
-    font-size: 11px;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 999px;
-    margin-bottom: 3px;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-}
+
 .pwa-app-title {
-    margin: 0;
-    color: #ffffff;
-    font-size: 14px;
+    color: #0f172a;
+    font-size: 13.5px;
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.25;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .pwa-app-desc {
-    margin: 2px 0 0;
-    color: #94a3b8;
+    color: #64748b;
     font-size: 11.5px;
-    line-height: 1.35;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-.pwa-banner-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-}
-.pwa-btn-primary {
-    background: linear-gradient(135deg, #00ff87 0%, #02b875 100%);
-    color: #0d1117;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 14px;
-    font-size: 13px;
-    font-weight: 800;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 4px 14px rgba(0, 255, 135, 0.35);
+    line-height: 1.3;
+    margin-top: 1px;
     white-space: nowrap;
-}
-.pwa-btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0, 255, 135, 0.5);
-}
-.pwa-btn-close {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #94a3b8;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.15s ease;
-}
-.pwa-btn-close:hover {
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Modal Backdrop */
+.pwa-btn-primary {
+    background: #38003c;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease;
+    letter-spacing: 0.2px;
+}
+
+.pwa-btn-primary:hover {
+    background: #250029;
+}
+
+/* Modal iOS Safari */
 .pwa-modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(5, 7, 12, 0.78);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 100000;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    animation: pwaFadeIn 0.2s ease forwards;
+    padding: 16px;
 }
-@keyframes pwaFadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
+
 .pwa-modal-box {
-    background: #111827;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.75);
-    border-radius: 20px;
-    max-width: 480px;
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 360px;
     width: 100%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    color: #f1f5f9;
+    color: #0f172a;
 }
+
 .pwa-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
 }
-.pwa-modal-title-group {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.pwa-modal-icon-badge {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: rgba(0, 255, 135, 0.12);
-    color: #00ff87;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
+
 .pwa-modal-title {
     margin: 0;
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 700;
-    color: #ffffff;
+    color: #0f172a;
 }
-.pwa-modal-subtitle {
-    margin: 2px 0 0;
-    font-size: 12px;
-    color: #94a3b8;
-}
+
 .pwa-modal-close-btn {
     background: transparent;
     border: none;
     color: #94a3b8;
     cursor: pointer;
-    padding: 6px;
-    border-radius: 8px;
+    padding: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .pwa-modal-close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    color: #0f172a;
 }
+
 .pwa-modal-body {
-    padding: 20px;
+    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
+
 .pwa-step-item {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: center;
+    gap: 10px;
 }
-.pwa-step-num {
-    width: 28px;
-    height: 28px;
+
+.pwa-step-badge {
+    width: 22px;
+    height: 22px;
     border-radius: 50%;
-    background: #38003c;
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    color: #00ff87;
-    font-weight: 800;
-    font-size: 13px;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 11.5px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    margin-top: 2px;
 }
-.pwa-step-content {
-    flex: 1;
-}
-.pwa-step-title {
-    font-size: 14px;
-    color: #e2e8f0;
+
+.pwa-step-text {
+    font-size: 13px;
+    color: #334155;
+    line-height: 1.4;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 4px;
 }
-.pwa-step-chip {
+
+.pwa-icon-inline {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 3px 8px;
-    border-radius: 6px;
-    color: #38bdf8;
-    font-size: 12px;
-    font-weight: 600;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    background: #f1f5f9;
+    color: #0284c7;
+    margin: 0 2px;
 }
-.pwa-step-desc {
-    margin: 4px 0 0;
-    font-size: 12.5px;
-    color: #94a3b8;
-    line-height: 1.4;
-}
-.pwa-modal-desktop-tip {
-    background: rgba(56, 189, 248, 0.08);
-    border: 1px solid rgba(56, 189, 248, 0.2);
-    border-radius: 10px;
-    padding: 10px 12px;
-    font-size: 12px;
-    color: #bae6fd;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    line-height: 1.4;
-}
+
 .pwa-modal-footer {
-    padding: 14px 20px 20px;
+    padding: 10px 16px 14px;
 }
-.pwa-modal-confirm-btn {
+
+.pwa-btn-done {
     width: 100%;
-    background: linear-gradient(135deg, #38003c 0%, #1e1b4b 100%);
-    border: 1px solid rgba(0, 255, 135, 0.4);
-    color: #00ff87;
-    border-radius: 10px;
-    padding: 11px 16px;
-    font-size: 14px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+    border-radius: 8px;
+    padding: 9px;
+    font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.15s ease;
+    transition: background 0.15s ease;
 }
-.pwa-modal-confirm-btn:hover {
-    background: linear-gradient(135deg, #4a0050 0%, #2e266d 100%);
-    border-color: #00ff87;
+
+.pwa-btn-done:hover {
+    background: #f1f5f9;
 }
 </style>
 
 <script>
 (function() {
     'use strict';
-    
-    // Kiểm tra xem ứng dụng đã chạy ở chế độ Standalone (đã cài đặt) chưa
     try {
         var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-        if (isStandalone) {
-            return;
-        }
+        if (isStandalone) return;
 
         var storageKey = 'pwa_pin_dismissed_until';
         var dismissedUntil = localStorage.getItem(storageKey);
@@ -459,71 +345,55 @@
     var userAgent = (window.navigator.userAgent || '').toLowerCase();
     var isMobile = /iphone|ipad|ipod|android|mobile/i.test(userAgent);
 
-    function showBannerAfterDelay() {
-        setTimeout(function() {
-            if (banner) {
-                banner.classList.remove('hidden');
-            }
-        }, 2500);
+    function showBanner() {
+        if (banner) banner.classList.remove('hidden');
     }
 
-    // Bắt sự kiện beforeinstallprompt (Android Chrome / Edge / Desktop Chrome)
     window.addEventListener('beforeinstallprompt', function(e) {
         e.preventDefault();
         deferredPrompt = e;
-        showBannerAfterDelay();
+        setTimeout(showBanner, 2000);
     });
 
-    // Chỉ tự động hiện banner sau delay trên thiết bị di động (nơi người dùng có nhu cầu ghim ra MH chính)
     if (isMobile) {
-        showBannerAfterDelay();
+        setTimeout(showBanner, 3000);
     }
 
-    // Xử lý khi nhấn nút "Ghim Ngay"
     if (pinBtn) {
         pinBtn.addEventListener('click', function() {
             if (deferredPrompt) {
-                // Trình duyệt hỗ trợ cài đặt trực tiếp (Chrome / Android / Edge)
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then(function(choiceResult) {
-                    if (choiceResult.outcome === 'accepted') {
-                        if (banner) banner.classList.add('hidden');
+                    if (choiceResult.outcome === 'accepted' && banner) {
+                        banner.classList.add('hidden');
                     }
                     deferredPrompt = null;
                 });
-            } else {
-                // Trình duyệt iOS Safari hoặc Desktop: mở modal hướng dẫn trực quan
-                if (modal) {
-                    modal.classList.remove('hidden');
-                }
+            } else if (modal) {
+                modal.classList.remove('hidden');
             }
         });
     }
 
-    // Xử lý đóng banner (Nhớ 7 ngày)
     function dismissBanner() {
         if (banner) banner.classList.add('hidden');
-        var nextWeek = Date.now() + 7 * 24 * 60 * 60 * 1000;
-        localStorage.setItem(storageKey, nextWeek.toString());
+        try {
+            var nextWeek = Date.now() + 7 * 24 * 60 * 60 * 1000;
+            localStorage.setItem(storageKey, nextWeek.toString());
+        } catch(e) {}
     }
 
-    if (dismissBtn) {
-        dismissBtn.addEventListener('click', dismissBanner);
-    }
+    if (dismissBtn) dismissBtn.addEventListener('click', dismissBanner);
 
-    // Đóng Modal
     function closeModal() {
         if (modal) modal.classList.add('hidden');
     }
 
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalConfirm) modalConfirm.addEventListener('click', closeModal);
-
     if (modal) {
         modal.addEventListener('click', function(e) {
-            if (e.target === modal) {
-                closeModal();
-            }
+            if (e.target === modal) closeModal();
         });
     }
 })();
