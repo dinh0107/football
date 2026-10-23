@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh hôm nay</title>
-    <meta name="description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh. Cập nhật tỷ số từng phút, đội hình và diễn biến trận đấu.">
+    <title>Tỷ Số Ngoại Hạng Anh - Lịch Thi Đấu & Kết Quả Hôm Nay</title>
+    <meta name="description" content="Xem tỷ số Ngoại Hạng Anh trực tiếp hôm nay, lịch thi đấu và kết quả bóng đá Premier League mới nhất. Cập nhật tỷ số từng phút, bảng xếp hạng và kênh xem trực tiếp.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -1105,7 +1105,7 @@
 
             {{-- Hero Section --}}
             <div class="hero-banner">
-                <h1 class="hero-title">Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh</h1>
+                <h1 class="hero-title">Tỷ Số & Lịch Thi Đấu Ngoại Hạng Anh</h1>
                 <p class="hero-subtitle">Mùa giải {{ $season['label'] ?? '2026/27' }} &bull; Dữ liệu thời gian thực từ PulseLive API chính thức.</p>
             </div>
 

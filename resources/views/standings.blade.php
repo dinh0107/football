@@ -10,7 +10,7 @@
         $seasonShort = preg_match('/\d{4}\/\d{2,4}/', $rawSeason, $m) ? $m[0] : '2026/27';
     @endphp
 
-    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất | BXH Trực Tiếp</title>
+    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất</title>
     <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất. Cập nhật BXH trực tiếp theo thời gian thực (As-It-Stands) và Top ghi bàn.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">

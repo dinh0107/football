@@ -146,16 +146,16 @@ class SeoHelper
         if ($status === 'L') {
             // Đang diễn ra (Live)
             $clock = $match['clock']['label'] ?? 'Đang đá';
-            return "[LIVE {$clock}] {$home} {$homeScore} - {$awayScore} {$away} - Tỷ số, Đội hình | Ngoại Hạng Anh";
+            return "[LIVE {$clock}] {$home} {$homeScore} - {$awayScore} {$away} - Tỷ số, Đội hình";
         }
 
         if ($status === 'C') {
             // Đã kết thúc (Full Time)
-            return "Trực tiếp {$home} vs {$away} (FT {$homeScore}-{$awayScore}) - Tỷ số, Đội hình | Kết quả mới nhất";
+            return "Trực tiếp {$home} vs {$away} (FT {$homeScore}-{$awayScore}) - Tỷ số, Đội hình";
         }
 
         // Chưa diễn ra (Upcoming)
-        return "Trực tiếp {$home} vs {$away} ({$timeLabel}) - Kênh chiếu, Tỷ số, Đội hình | " . static::SITE_NAME;
+        return "Trực tiếp {$home} vs {$away} ({$timeLabel}) - Kênh chiếu, Tỷ số, Đội hình";
     }
 
     /**

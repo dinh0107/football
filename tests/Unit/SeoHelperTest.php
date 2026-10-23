@@ -43,7 +43,7 @@ class SeoHelperTest extends TestCase
         ];
         $upcomingTitle = SeoHelper::generateMatchTitle($upcomingMatch);
         $this->assertStringContainsString('Trực tiếp Arsenal vs Chelsea', $upcomingTitle);
-        $this->assertStringContainsString('tysongoaihang', $upcomingTitle);
+        $this->assertStringContainsString('Kênh chiếu, Tỷ số, Đội hình', $upcomingTitle);
 
         $liveMatch = [
             'status' => 'L',
