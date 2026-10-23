@@ -16,13 +16,13 @@ class RedirectWwwToNonWww
     public function handle(Request $request, Closure $next): Response
     {
         $host = $request->header('host');
+        $isWww = $host && str_starts_with(strtolower($host), 'www.');
+        // Production luôn HTTPS: gộp http -> https và www -> non-www thành 1 lần 301
+        $scheme = ($request->isSecure() || app()->environment('production')) ? 'https' : 'http';
 
-        if ($host && str_starts_with(strtolower($host), 'www.')) {
-            $nonWwwHost = substr($host, 4);
-            $scheme = $request->isSecure() ? 'https' : $request->getScheme();
-            $targetUrl = "{$scheme}://{$nonWwwHost}" . $request->getRequestUri();
-
-            return redirect()->away($targetUrl, 301);
+        if ($host && ($isWww || $scheme !== $request->getScheme())) {
+            $targetHost = $isWww ? substr($host, 4) : $host;
+            return redirect()->away("{$scheme}://{$targetHost}" . $request->getRequestUri(), 301);
         }
 
         // Tự động chuyển hướng /index.php, /index.html, /index.htm về root / (301 Permanent Redirect)

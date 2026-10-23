@@ -2978,10 +2978,10 @@
             <div class="seo-content-box">
                 <h2>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                    Thông Tin Trận Đấu & Hướng Dẫn Theo Dõi Trực Tiếp
+                    Thông Tin Trận Đấu
                 </h2>
                 <p>
-                    Cuộc đọ sức đỉnh cao giữa <strong>{{ $homeTeam['name'] ?? 'Đội nhà' }}</strong> và <strong>{{ $awayTeam['name'] ?? 'Đội khách' }}</strong> thuộc khuôn khổ <strong>Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}</strong> giải bóng đá Ngoại Hạng Anh (English Premier League) mùa giải 2026/2027. Cả hai câu lạc bộ đều mang trong mình quyết tâm chiến đấu cao nhất nhằm giành trọn 3 điểm số quý giá, qua đó củng cố vững chắc mục tiêu và thứ hạng trên bảng xếp hạng tổng.
+                    Trận đấu giữa <strong>{{ $homeTeam['name'] ?? 'Đội nhà' }}</strong> và <strong>{{ $awayTeam['name'] ?? 'Đội khách' }}</strong> thuộc <strong>Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}</strong> Ngoại Hạng Anh mùa giải {{ preg_match('/\d{4}\/\d{2,4}/', $match['gameweek']['compSeason']['label'] ?? '', $sm) ? $sm[0] : 'hiện tại' }}, diễn ra tại {{ $match['ground']['name'] ?? 'sân vận động Premier League' }}.
                 </p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 16px 0;">
                     @if(!empty($tvChannel))
@@ -2995,15 +2995,15 @@
                     <div style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
                         <strong style="display: block; margin-bottom: 6px; color: var(--pl-purple);">Tỷ số trực tuyến theo thời gian thực:</strong>
                         <p style="margin: 0; font-size: 0.875rem;">
-                            Hệ thống tự động cập nhật tỷ số livescore, cầu thủ lập công, thẻ phạt, diễn biến thay người và nhịp độ bù giờ của trận đấu liên tục mà không cần người dùng phải tải lại trang.
+                            Tỷ số, cầu thủ ghi bàn, thẻ phạt và thay người được cập nhật tự động mỗi 30 giây, không cần tải lại trang.
                         </p>
                     </div>
                 </div>
                 <p>
-                    <strong>Đội hình ra sân chính thức:</strong> Danh sách 11 cầu thủ đá chính và các nhân tố dự bị chiến lược được ban tổ chức Premier League công bố 60 phút trước giờ bóng lăn. Bạn có thể theo dõi cách bố trí chiến thuật trực quan trên sơ đồ sân cỏ 2D tại tab "Đội hình".
+                    <strong>Đội hình ra sân chính thức:</strong> 11 cầu thủ đá chính và danh sách dự bị thường được Premier League công bố khoảng 60 phút trước giờ bóng lăn, hiển thị trên sơ đồ sân 2D tại tab "Đội hình".
                 </p>
                 <p>
-                    <strong>Thống kê chuyên sâu:</strong> Toàn bộ các thông số kỹ thuật như tỷ lệ kiểm soát bóng, tổng số cú sút, số pha dứt điểm trúng đích, phạt góc và phạm lỗi của {{ $homeTeam['name'] ?? 'Đội nhà' }} và {{ $awayTeam['name'] ?? 'Đội khách' }} được cập nhật chi tiết tại tab "Thống kê" giúp bạn có cái nhìn đa chiều về cục diện trận đấu.
+                    <strong>Thống kê trận đấu:</strong> Kiểm soát bóng, số cú sút, sút trúng đích, phạt góc và phạm lỗi của {{ $homeTeam['name'] ?? 'Đội nhà' }} và {{ $awayTeam['name'] ?? 'Đội khách' }} nằm ở tab "Thống kê".
                 </p>
             </div>
 

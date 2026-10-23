@@ -166,7 +166,7 @@
         Giải bóng đá Ngoại Hạng Anh (English Premier League) mùa giải {{ $season['label'] ?? '2026/2027' }} là giải đấu bóng đá cấp câu lạc bộ hấp dẫn nhất hành tinh, quy tụ 20 câu lạc bộ hàng đầu xứ sở sương mù. Mùa giải trải dài qua 38 vòng đấu với tổng cộng 380 trận tranh tài nảy lửa từ tháng 8 đến tháng 5 năm sau. Mỗi vòng đấu gồm 10 cặp đấu diễn ra chủ yếu vào các ngày cuối tuần thứ Bảy và Chủ Nhật, với các khung giờ phát sóng quen thuộc theo giờ Việt Nam như 18:30, 21:00, 23:30 và 20:00, 22:30.
     </p>
     <p>
-        Tại chuyên trang <strong>tysongoaihang.site</strong>, người hâm mộ có thể dễ dàng tra cứu lịch thi đấu Ngoại Hạng Anh theo từng vòng đấu cụ thể, cập nhật tỷ số trực tiếp (livescore), kết quả bóng đá, bảng xếp hạng, đội hình ra sân 2D và kênh truyền hình phát sóng trực tiếp bản quyền (K+ Sport, TV360, FPT Play).
+        Tại chuyên trang <strong>tysongoaihang.site</strong>, người hâm mộ có thể dễ dàng tra cứu lịch thi đấu Ngoại Hạng Anh theo từng vòng đấu cụ thể, cập nhật tỷ số trực tiếp (livescore), kết quả bóng đá, bảng xếp hạng, đội hình ra sân 2D và kênh phát sóng trực tiếp khi có thông tin chính thức.
     </p>
     <p>
         <strong>Thể thức tính điểm và xếp hạng:</strong> Mỗi trận thắng mang lại 3 điểm, trận hòa đem lại 1 điểm và thất bại nhận 0 điểm. Cuộc đua thứ hạng tại Premier League luôn diễn ra nghẹt thở ở cả hai đầu bảng xếp hạng: nhóm đại gia cạnh tranh cúp vô địch và vé tham dự cúp C1 châu Âu (Top 4), cùng cuộc chiến sinh tử chống xuống hạng của các đội bóng nhóm cuối nhằm trụ lại sân chơi danh giá này.

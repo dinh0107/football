@@ -173,9 +173,9 @@ class SitemapController extends Controller
 
                 $status = $match['status'] ?? 'U';
                 $kickoffMillis = $match['kickoff']['millis'] ?? null;
-                $lastmod = $kickoffMillis
-                    ? Carbon::createFromTimestampMs($kickoffMillis, 'Asia/Ho_Chi_Minh')->toIso8601String()
-                    : $nowIso;
+                $kickoffAt = $kickoffMillis ? Carbon::createFromTimestampMs($kickoffMillis, 'Asia/Ho_Chi_Minh') : null;
+                // Google bỏ qua lastmod ở tương lai, nên trận chưa đá không khai lastmod
+                $lastmod = $kickoffAt && $kickoffAt->lte($now) ? $kickoffAt->toIso8601String() : null;
 
                 // LOGIC LUÂN CHUYỂN TỰ ĐỘNG THEO TRẠNG THÁI TRẬN:
                 // Nếu status = 'C' (Completed/Đã xong) -> chuyển sang sitemap-results.xml (priority 0.6, weekly)
@@ -253,7 +253,9 @@ class SitemapController extends Controller
             $loc = htmlspecialchars($u['loc'], ENT_XML1, 'UTF-8');
             $xml .= "  <url>\n";
             $xml .= "    <loc>{$loc}</loc>\n";
-            $xml .= "    <lastmod>{$u['lastmod']}</lastmod>\n";
+            if (!empty($u['lastmod'])) {
+                $xml .= "    <lastmod>{$u['lastmod']}</lastmod>\n";
+            }
             $xml .= "    <changefreq>{$u['changefreq']}</changefreq>\n";
             $xml .= "    <priority>{$u['priority']}</priority>\n";
             $xml .= "  </url>\n";

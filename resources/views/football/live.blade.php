@@ -214,7 +214,7 @@
         <li><strong>Thông số kỹ thuật toàn diện:</strong> Tỷ lệ kiểm soát bóng, số cú sút trúng đích, phạt góc và các pha cản phá xuất sắc của thủ môn hai đội.</li>
     </ul>
     <p>
-        Đồng thời, chuyên trang cung cấp hướng dẫn lịch phát sóng truyền hình tại Việt Nam (K+ Sport, TV360, FPT Play), giúp người hâm mộ không bỏ lỡ bất kỳ khoảnh khắc rực lửa nào của giải đấu số một nước Anh.
+        Với các trận đã có thông tin chính thức, chuyên trang hiển thị kênh phát sóng truyền hình tại Việt Nam ngay trên thẻ trận đấu.
     </p>
 </div>
 @endsection

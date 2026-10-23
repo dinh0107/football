@@ -1255,7 +1255,7 @@
                 </p>
                 <ul>
                     <li><strong>Theo dõi tỷ số trực tuyến (Livescore 24/7):</strong> Cập nhật biến động tỷ số, cầu thủ ghi bàn, thẻ vàng, thẻ đỏ và diễn biến từng phút của các cặp đấu tâm điểm có sự góp mặt của Manchester City, Arsenal, Liverpool, Manchester United, Chelsea, Tottenham Hotspur cùng các đội bóng tại giải đấu.</li>
-                    <li><strong>Lịch thi đấu & Kênh phát sóng bản quyền:</strong> Tra cứu giờ thi đấu chính xác theo giờ Việt Nam, kèm thông tin kênh tiếp sóng trực tiếp (K+ Sport, TV360, FPT Play).</li>
+                    <li><strong>Lịch thi đấu & Kênh phát sóng bản quyền:</strong> Tra cứu giờ thi đấu chính xác theo giờ Việt Nam, kèm kênh phát sóng trực tiếp khi có thông tin chính thức.</li>
                     <li><strong>Sa bàn chiến thuật 2D & Đội hình ra sân:</strong> Nắm bắt đội hình chính thức 60 phút trước giờ bóng lăn, quan sát cách sắp xếp chiến thuật của các huấn luyện viên hàng đầu thế giới.</li>
                     <li><strong>Bảng xếp hạng trực tiếp (Live Table):</strong> Tự động tính toán điểm số và phản ánh ngay lập tức sự thay đổi vị trí của các đội trong suốt 90 phút thi đấu.</li>
                 </ul>

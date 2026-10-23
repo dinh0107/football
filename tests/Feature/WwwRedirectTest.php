@@ -14,6 +14,22 @@ class WwwRedirectTest extends TestCase
         $this->assertEquals('https://tysongoaihang.site/bang-xep-hang', $response->headers->get('Location'));
     }
 
+    public function test_production_http_www_redirects_to_https_non_www_in_one_hop(): void
+    {
+        $this->app['env'] = 'production';
+
+        $www = $this->get('http://www.tysongoaihang.site/lich-thi-dau?vong=19767');
+        $www->assertStatus(301);
+        $this->assertEquals('https://tysongoaihang.site/lich-thi-dau?vong=19767', $www->headers->get('Location'));
+
+        $plain = $this->get('http://tysongoaihang.site/bang-xep-hang');
+        $plain->assertStatus(301);
+        $this->assertEquals('https://tysongoaihang.site/bang-xep-hang', $plain->headers->get('Location'));
+
+        $secure = $this->withServerVariables(['HTTPS' => 'on'])->get('https://tysongoaihang.site/gioi-thieu');
+        $secure->assertStatus(200);
+    }
+
     public function test_non_www_loads_normally(): void
     {
         $response = $this->withServerVariables([

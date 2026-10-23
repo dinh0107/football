@@ -10,7 +10,7 @@
     <title>{{ $seo['title'] ?? 'Bóng Đá Ngoại Hạng Anh - Trực Tiếp & Lịch Thi Đấu' }}</title>
     <meta name="description" content="{{ $seo['description'] ?? 'Cập nhật tin tức, kết quả, lịch thi đấu và bảng xếp hạng Ngoại Hạng Anh mới nhất.' }}">
     <link rel="canonical" href="{{ $seo['canonical'] ?? url()->current() }}">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{{ $seo['robots'] ?? 'index, follow' }}">
 
     {{-- Favicon & Mobile App Icons --}}
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
