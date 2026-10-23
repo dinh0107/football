@@ -17,6 +17,10 @@ php artisan view:clear
 php artisan route:clear
 php artisan cache:clear
 
+# 2.1 Làm nóng cache trận đấu (Pre-warm cache cho 100+ URLs trận đấu)
+echo ">> Đang làm nóng bộ nhớ đệm trận đấu..."
+php artisan epl:warm-cache --limit=150 2>/dev/null || true
+
 # 3. Đồng bộ file tĩnh ra thư mục gốc (nếu dùng Document Root httpdocs)
 if [ -d "public/css" ]; then
     echo ">> Đồng bộ tệp tĩnh CSS/JS..."

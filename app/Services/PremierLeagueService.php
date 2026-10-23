@@ -512,11 +512,15 @@ class PremierLeagueService
         $metaKey = "epl_fixture_meta_{$fixtureId}";
         $cachedMeta = Cache::get($metaKey);
 
-        $ttl = 3600;
+        // Mặc định:
+        // - Trận Live ('L'): 20 giây
+        // - Trận Đã xong ('C'): 7 ngày (604800s) - kết quả vĩnh viễn không thay đổi
+        // - Trận Chưa đá ('U'): 3 ngày (259200s) - lịch thi đấu cố định
+        $ttl = 259200;
         if ($cachedMeta === 'L') {
-            $ttl = 30;
+            $ttl = 20;
         } elseif ($cachedMeta === 'C') {
-            $ttl = 86400;
+            $ttl = 604800;
         }
 
         $cacheKey = "epl_match_detail_{$fixtureId}";
@@ -527,7 +531,8 @@ class PremierLeagueService
                 if ($response->successful()) {
                     $data = $response->json();
                     $status = $data['status'] ?? 'U';
-                    Cache::put($metaKey, $status, 86400);
+                    $storeTtl = ($status === 'L') ? 20 : (($status === 'C') ? 604800 : 259200);
+                    Cache::put($metaKey, $status, $storeTtl);
                     return $data;
                 }
             } catch (\Throwable $e) {
