@@ -2249,7 +2249,7 @@
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">
-                <a href="{{ route('home') }}" class="header-link">Lịch Đấu</a>
+                <a href="{{ route('home') }}" class="header-link">Lịch Thi Đấu</a>
                 <a href="{{ route('standings') }}" class="header-link">Bảng Xếp Hạng</a>
                 <a href="{{ route('live') }}" class="header-link">Trực Tiếp</a>
             </nav>
@@ -3078,7 +3078,7 @@
                 <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh &bull; Không tổ chức cá độ &bull; Không phát sóng lậu</p>
             </div>
             <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
-                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch thi đấu</a>
                 <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
                 <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
                 <span style="color: var(--pl-border);">|</span>

@@ -10,8 +10,8 @@
         $seasonShort = preg_match('/\d{4}\/\d{2,4}/', $rawSeason, $m) ? $m[0] : '2026/27';
     @endphp
 
-    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất</title>
-    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất. Cập nhật BXH trực tiếp theo thời gian thực (As-It-Stands) và Top ghi bàn.">
+    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} - BXH Bóng Đá Premier League Mới Nhất</title>
+    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất. Cập nhật BXH Premier League trực tiếp theo thời gian thực, điểm số, hiệu số và Top ghi bàn.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -755,7 +755,7 @@
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">
-                <a href="{{ route('home') }}" class="header-link">Lịch Đấu</a>
+                <a href="{{ route('home') }}" class="header-link">Lịch Thi Đấu</a>
                 <a href="{{ route('standings') }}" class="header-link active">Bảng Xếp Hạng</a>
                 <a href="{{ route('live') }}" class="header-link">Trực Tiếp</a>
             </nav>
@@ -1031,7 +1031,7 @@
                 <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh &bull; Không tổ chức cá độ &bull; Không phát sóng lậu</p>
             </div>
             <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
-                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch thi đấu</a>
                 <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
                 <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
                 <span style="color: var(--pl-border);">|</span>

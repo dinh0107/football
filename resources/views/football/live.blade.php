@@ -104,7 +104,7 @@
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple);">
-                Lịch Đấu & Kết Quả Vòng {{ $currentGw['gameweek'] ?? 'Hiện Tại' }}
+                Lịch Thi Đấu & Kết Quả Vòng {{ $currentGw['gameweek'] ?? 'Hiện Tại' }} Ngoại Hạng Anh
             </h2>
             <span style="font-size: 0.8rem; color: var(--text-muted);">Giờ Việt Nam (GMT+7)</span>
         </div>

@@ -121,8 +121,8 @@
                 </p>
             </div>
             <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
-                <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">BXH</a>
-                <a href="{{ route('fixtures') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
+                <a href="{{ route('fixtures') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch thi đấu</a>
                 <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
                 <span style="color: var(--border-light);">|</span>
                 <a href="{{ route('about') }}">Giới thiệu</a>

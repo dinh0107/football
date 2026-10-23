@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Tỷ Số Ngoại Hạng Anh - Lịch Thi Đấu & Kết Quả Hôm Nay</title>
-    <meta name="description" content="Xem tỷ số Ngoại Hạng Anh trực tiếp hôm nay, lịch thi đấu và kết quả bóng đá Premier League mới nhất. Cập nhật tỷ số từng phút, bảng xếp hạng và kênh xem trực tiếp.">
+    <title>Lịch Thi Đấu & Tỷ Số Ngoại Hạng Anh Trực Tiếp - Bảng Xếp Hạng Premier League</title>
+    <meta name="description" content="Xem lịch thi đấu và tỷ số các trận đấu Ngoại Hạng Anh trực tiếp hôm nay, kết quả bóng đá Premier League mới nhất theo ngày. Cập nhật bảng xếp hạng và diễn biến từng phút.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -1082,7 +1082,7 @@
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">
-                <a href="{{ route('home') }}" class="header-link active">Lịch Đấu</a>
+                <a href="{{ route('home') }}" class="header-link active">Lịch Thi Đấu</a>
                 <a href="{{ route('standings') }}" class="header-link">Bảng Xếp Hạng</a>
                 <a href="{{ route('live') }}" class="header-link">Trực Tiếp</a>
             </nav>
@@ -1105,7 +1105,7 @@
 
             {{-- Hero Section --}}
             <div class="hero-banner">
-                <h1 class="hero-title">Tỷ Số & Lịch Thi Đấu Ngoại Hạng Anh</h1>
+                <h1 class="hero-title">Lịch Thi Đấu, Tỷ Số Trực Tiếp & Bảng Xếp Hạng Ngoại Hạng Anh Premier League</h1>
                 <p class="hero-subtitle">Mùa giải {{ $season['label'] ?? '2026/27' }} &bull; Dữ liệu thời gian thực từ PulseLive API chính thức.</p>
             </div>
 
@@ -1137,7 +1137,7 @@
             {{-- Tiêu đề ngày thi đấu --}}
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
                 <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple);">
-                    {{ $dateNav['dayOfWeek'] }}, ngày {{ $dateNav['formattedSelected'] }}
+                    Lịch Thi Đấu & Kết Quả Các Trận Đấu Ngoại Hạng Anh: {{ $dateNav['dayOfWeek'] }}, ngày {{ $dateNav['formattedSelected'] }}
                 </h2>
                 <span style="font-size: 0.8rem; font-weight: 700; color: var(--pl-text-muted);">
                     {{ count($allMatches) }} trận đấu
@@ -1287,7 +1287,7 @@
             <div class="seo-content-box" style="margin-top: 28px;">
                 <h2>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
-                    Chuyên Trang Cập Nhật Tỷ Số & Lịch Thi Đấu Ngoại Hạng Anh Hôm Nay
+                    Tỷ Số Trực Tiếp, Lịch Thi Đấu & Bảng Xếp Hạng Ngoại Hạng Anh Premier League
                 </h2>
                 <p>
                     Chào mừng bạn đến với chuyên trang <strong>tysongoaihang.site</strong> - nền tảng dữ liệu thể thao trực tuyến chuyên sâu, cập nhật nhanh và chính xác nhất tỷ số bóng đá Ngoại Hạng Anh (English Premier League) mùa giải 2026/2027. Toàn bộ thông tin lịch thi đấu, kết quả trận đấu, bảng xếp hạng 20 câu lạc bộ và các thông số chuyên môn được đồng bộ trực tiếp từ ban tổ chức Premier League.
@@ -1326,7 +1326,7 @@
                 <p style="opacity: 0.8; font-size: 0.775rem; margin-top: 2px;">Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh &bull; Không tổ chức cá độ &bull; Không phát sóng lậu</p>
             </div>
             <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">
-                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch đấu</a>
+                <a href="{{ route('home') }}" style="color: var(--pl-purple); font-weight: 700;">Lịch thi đấu</a>
                 <a href="{{ route('standings') }}" style="color: var(--pl-purple); font-weight: 700;">Bảng xếp hạng</a>
                 <a href="{{ route('live') }}" style="color: var(--pl-purple); font-weight: 700;">Trực tiếp</a>
                 <span style="color: var(--pl-border);">|</span>
