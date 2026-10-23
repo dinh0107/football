@@ -3,7 +3,7 @@
     <div class="pwa-banner-card">
         <div class="pwa-banner-left">
             <div class="pwa-app-icon">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Tỷ Số Ngoại Hạng Anh" width="44" height="44" onerror="this.src='/favicon-32x32.png'">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo Tỷ Số Ngoại Hạng Anh" width="44" height="44" onerror="this.onerror=null; this.src='/favicon-32x32.png';">
             </div>
             <div class="pwa-banner-info">
                 <div class="pwa-badge">
@@ -435,17 +435,18 @@
     'use strict';
     
     // Kiểm tra xem ứng dụng đã chạy ở chế độ Standalone (đã cài đặt) chưa
-    var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-    if (isStandalone) {
-        return; // Đã cài đặt ra màn hình chính, không hiển thị banner
-    }
+    try {
+        var isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        if (isStandalone) {
+            return;
+        }
 
-    // Kiểm tra lưu trạng thái người dùng đã từ chối gần đây chưa (7 ngày)
-    var storageKey = 'pwa_pin_dismissed_until';
-    var dismissedUntil = localStorage.getItem(storageKey);
-    if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) {
-        return;
-    }
+        var storageKey = 'pwa_pin_dismissed_until';
+        var dismissedUntil = localStorage.getItem(storageKey);
+        if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) {
+            return;
+        }
+    } catch(e) {}
 
     var banner = document.getElementById('pwa-pin-banner');
     var pinBtn = document.getElementById('pwa-pin-btn');
@@ -455,7 +456,16 @@
     var modalConfirm = document.getElementById('pwa-modal-confirm');
 
     var deferredPrompt = null;
-    var isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent.toLowerCase());
+    var userAgent = (window.navigator.userAgent || '').toLowerCase();
+    var isMobile = /iphone|ipad|ipod|android|mobile/i.test(userAgent);
+
+    function showBannerAfterDelay() {
+        setTimeout(function() {
+            if (banner) {
+                banner.classList.remove('hidden');
+            }
+        }, 2500);
+    }
 
     // Bắt sự kiện beforeinstallprompt (Android Chrome / Edge / Desktop Chrome)
     window.addEventListener('beforeinstallprompt', function(e) {
@@ -464,17 +474,10 @@
         showBannerAfterDelay();
     });
 
-    // Nếu là iOS Safari hoặc các trình duyệt khác không có beforeinstallprompt
-    function showBannerAfterDelay() {
-        setTimeout(function() {
-            if (banner) {
-                banner.classList.remove('hidden');
-            }
-        }, 2500); // Xuất hiện nhẹ nhàng sau 2.5s khi vào trang
+    // Chỉ tự động hiện banner sau delay trên thiết bị di động (nơi người dùng có nhu cầu ghim ra MH chính)
+    if (isMobile) {
+        showBannerAfterDelay();
     }
-
-    // Tự động kích hoạt hiển thị cho iOS hoặc các thiết bị di động
-    showBannerAfterDelay();
 
     // Xử lý khi nhấn nút "Ghim Ngay"
     if (pinBtn) {

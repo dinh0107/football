@@ -62,8 +62,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    {{-- CSS Bảng Xếp Hạng Ngoại Hạng Anh --}}
-    <link rel="stylesheet" href="{{ asset('css/standings.css') }}">
+    {{-- Toàn Bộ Giao Diện Ngoại Hạng Anh --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
