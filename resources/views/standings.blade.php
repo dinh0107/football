@@ -1093,7 +1093,7 @@
             }
         });
     </script>
-    <script src="{{ asset('js/favorites.js') }}"></script>
+    <script src="{{ asset('js/favorites.js') }}?v={{ filemtime(public_path('js/favorites.js')) }}"></script>
 
     @include('partials.pin-to-homescreen')
 </body>

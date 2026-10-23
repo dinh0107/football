@@ -58,7 +58,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     {{-- Pure Vanilla CSS --}}
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
     @stack('styles')
 </head>
 <body>
@@ -138,9 +138,9 @@
     </footer>
 
     {{-- Pure Vanilla JS Engine --}}
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{ asset('js/favorites.js') }}"></script>
-    <script src="{{ asset('js/livescore-engine.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}?v={{ filemtime(public_path('js/app.js')) }}"></script>
+    <script src="{{ asset('js/favorites.js') }}?v={{ filemtime(public_path('js/favorites.js')) }}"></script>
+    <script src="{{ asset('js/livescore-engine.js') }}?v={{ filemtime(public_path('js/livescore-engine.js')) }}"></script>
     @stack('scripts')
 
     @include('partials.pin-to-homescreen')

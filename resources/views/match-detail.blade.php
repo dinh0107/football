@@ -2300,7 +2300,7 @@
                             <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($homeId, 100) }}" 
                                  alt="{{ $homeTeam['name'] ?? '' }}" 
                                  class="hero-team-logo"
-                                 loading="lazy"
+                                 fetchpriority="high"
                                  onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
                         <div class="hero-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</div>
@@ -2356,7 +2356,7 @@
                             <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($awayId, 100) }}" 
                                  alt="{{ $awayTeam['name'] ?? '' }}" 
                                  class="hero-team-logo"
-                                 loading="lazy"
+                                 fetchpriority="high"
                                  onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/100/t1.png';">
                         </div>
                         <div class="hero-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</div>
@@ -3185,8 +3185,8 @@
             });
         });
     </script>
-    <script src="{{ asset('js/favorites.js') }}"></script>
-    <script src="{{ asset('js/livescore-engine.js') }}"></script>
+    <script src="{{ asset('js/favorites.js') }}?v={{ filemtime(public_path('js/favorites.js')) }}"></script>
+    <script src="{{ asset('js/livescore-engine.js') }}?v={{ filemtime(public_path('js/livescore-engine.js')) }}"></script>
 
     @include('partials.pin-to-homescreen')
 </body>
