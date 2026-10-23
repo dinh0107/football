@@ -22,6 +22,8 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#38003c">
 
     {{-- Open Graph / Facebook / Zalo --}}
     <meta property="og:type" content="website">
@@ -403,5 +405,7 @@
         });
     </script>
     <script src="{{ asset('js/favorites.js') }}"></script>
+
+    @include('partials.pin-to-homescreen')
 </body>
 </html>
