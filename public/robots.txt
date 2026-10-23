@@ -5,3 +5,6 @@ Disallow: /api/
 
 # Sitemaps
 Sitemap: https://tysongoaihang.site/sitemap.xml
+Sitemap: https://tysongoaihang.site/sitemap-upcoming.xml
+Sitemap: https://tysongoaihang.site/sitemap-results.xml
+Sitemap: https://tysongoaihang.site/sitemap-static.xml

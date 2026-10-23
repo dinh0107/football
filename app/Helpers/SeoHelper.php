@@ -247,12 +247,16 @@ class SeoHelper
         };
 
         $kickoff = $match['kickoff']['millis'] ?? null;
-        $startDate = $kickoff
-            ? Carbon::createFromTimestampMs($kickoff, 'Asia/Ho_Chi_Minh')->toIso8601String()
-            : Carbon::now('Asia/Ho_Chi_Minh')->toIso8601String();
+        $startCarbon = $kickoff
+            ? Carbon::createFromTimestampMs($kickoff, 'Asia/Ho_Chi_Minh')
+            : Carbon::now('Asia/Ho_Chi_Minh');
+        $startDate = $startCarbon->toIso8601String();
+        $endDate = $startCarbon->copy()->addMinutes(115)->toIso8601String();
 
         $canonicalSlug = static::generateMatchSlug($match);
         $canonicalUrl = route('match.detail', ['slug' => $canonicalSlug]);
+        $homeLogo = PremierLeagueService::getTeamBadgeUrl($homeId, 100);
+        $awayLogo = PremierLeagueService::getTeamBadgeUrl($awayId, 100);
 
         return [
             '@context' => 'https://schema.org',
@@ -260,9 +264,14 @@ class SeoHelper
             'name' => "Trực tiếp {$home} vs {$away}",
             'description' => static::generateMetaDescription($match),
             'startDate' => $startDate,
+            'endDate' => $endDate,
             'eventStatus' => $eventStatus,
             'url' => $canonicalUrl,
             'sport' => 'Football',
+            'image' => [
+                $homeLogo,
+                $awayLogo,
+            ],
             'location' => [
                 '@type' => 'Place',
                 'name' => $stadium,
@@ -275,12 +284,32 @@ class SeoHelper
             'homeTeam' => [
                 '@type' => 'SportsTeam',
                 'name' => $home,
-                'logo' => PremierLeagueService::getTeamBadgeUrl($homeId, 100),
+                'logo' => $homeLogo,
             ],
             'awayTeam' => [
                 '@type' => 'SportsTeam',
                 'name' => $away,
-                'logo' => PremierLeagueService::getTeamBadgeUrl($awayId, 100),
+                'logo' => $awayLogo,
+            ],
+            'performer' => [
+                [
+                    '@type' => 'SportsTeam',
+                    'name' => $home,
+                    'logo' => $homeLogo,
+                ],
+                [
+                    '@type' => 'SportsTeam',
+                    'name' => $away,
+                    'logo' => $awayLogo,
+                ],
+            ],
+            'offers' => [
+                '@type' => 'Offer',
+                'url' => $canonicalUrl,
+                'price' => '0',
+                'priceCurrency' => 'VND',
+                'availability' => 'https://schema.org/InStock',
+                'validFrom' => $startDate,
             ],
             'broadcast' => [
                 '@type' => 'BroadcastEvent',

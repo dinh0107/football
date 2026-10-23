@@ -127,4 +127,33 @@ class SeoHelperTest extends TestCase
         $this->assertEquals('Vòng 1', $schema['itemListElement'][2]['name']);
         $this->assertEquals('Arsenal vs Coventry City', $schema['itemListElement'][3]['name']);
     }
+
+    public function test_generate_sports_event_schema_completeness(): void
+    {
+        $mockMatch = [
+            'id' => 128923,
+            'gameweek' => ['gameweek' => 1, 'id' => 19761],
+            'status' => 'U',
+            'kickoff' => ['millis' => 1787274000000],
+            'teams' => [
+                ['team' => ['name' => 'Arsenal', 'id' => 1, 'club' => ['id' => 1]]],
+                ['team' => ['name' => 'Everton', 'id' => 7, 'club' => ['id' => 7]]],
+            ],
+            'ground' => ['name' => 'Emirates Stadium', 'city' => 'London'],
+        ];
+
+        $schema = SeoHelper::generateSchemaOrg($mockMatch);
+
+        $this->assertEquals('SportsEvent', $schema['@type']);
+        $this->assertArrayHasKey('startDate', $schema);
+        $this->assertArrayHasKey('endDate', $schema);
+        $this->assertArrayHasKey('image', $schema);
+        $this->assertCount(2, $schema['image']);
+        $this->assertArrayHasKey('performer', $schema);
+        $this->assertCount(2, $schema['performer']);
+        $this->assertEquals('Arsenal', $schema['performer'][0]['name']);
+        $this->assertEquals('Everton', $schema['performer'][1]['name']);
+        $this->assertArrayHasKey('offers', $schema);
+        $this->assertEquals('Offer', $schema['offers']['@type']);
+    }
 }
