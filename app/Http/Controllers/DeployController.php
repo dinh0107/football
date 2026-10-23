@@ -80,6 +80,13 @@ class DeployController extends Controller
             ];
         }
 
+        // Kích hoạt làm nóng cache trận đấu chạy ngầm trong background (tránh timeout webhook GitHub 10s)
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            @pclose(@popen('start /B php artisan epl:warm-cache --limit=150 > NUL 2>&1', 'r'));
+        } else {
+            @exec('nohup php artisan epl:warm-cache --limit=150 > /dev/null 2>&1 &');
+        }
+
         // Tự động đồng bộ các file tĩnh ra thư mục gốc nếu chạy chế độ root hosting
         if (is_dir($basePath . '/public/css')) {
             @copy($basePath . '/public/css/app.css', $basePath . '/css/app.css');
