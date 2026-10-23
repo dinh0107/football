@@ -4,4 +4,4 @@ Disallow: /admin/
 Disallow: /api/
 
 # Sitemaps
-Sitemap: http://tysongoaihang.site/sitemap.xml
+Sitemap: https://tysongoaihang.site/sitemap.xml
