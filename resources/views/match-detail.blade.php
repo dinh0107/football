@@ -51,9 +51,11 @@
     </script>
     @endif
 
-    {{-- Google Font --}}
+    {{-- Google Font & CDN Preconnect --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://resources.premierleague.com" crossorigin>
+    <link rel="dns-prefetch" href="https://resources.premierleague.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     {{-- CSS Giao Diện Match Center Đỉnh Cao --}}
@@ -2736,6 +2738,7 @@
                                                          alt="{{ $player['name'] }}" 
                                                          class="player-face-img" 
                                                          loading="lazy"
+                                                         decoding="async"
                                                          onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                     <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
                                                     @if(!empty($player['isCaptain']))
@@ -2761,6 +2764,7 @@
                                                          alt="{{ $player['name'] }}" 
                                                          class="player-face-img" 
                                                          loading="lazy"
+                                                         decoding="async"
                                                          onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                     <span class="player-num-badge">{{ $player['shirtNum'] }}</span>
                                                     @if(!empty($player['isCaptain']))
@@ -2789,6 +2793,7 @@
                                              alt="{{ $sub['name'] }}" 
                                              class="bench-face-img" 
                                              loading="lazy"
+                                             decoding="async"
                                              onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>
@@ -2811,6 +2816,7 @@
                                              alt="{{ $sub['name'] }}" 
                                              class="bench-face-img" 
                                              loading="lazy"
+                                             decoding="async"
                                              onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                         <span class="bench-shirt">{{ $sub['shirtNum'] }}</span>
                                         <span style="font-weight: 700;">{{ $sub['name'] }}</span>

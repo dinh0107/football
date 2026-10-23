@@ -862,21 +862,32 @@ class PremierLeagueService
      */
     public function getMatchStats(int $matchId): array
     {
+        $match = $this->getMatchDetail($matchId);
+        $defaultStats = [
+            'possession' => ['home' => 50, 'away' => 50],
+            'shots' => ['home' => 0, 'away' => 0],
+            'shotsOnTarget' => ['home' => 0, 'away' => 0],
+            'corners' => ['home' => 0, 'away' => 0],
+            'fouls' => ['home' => 0, 'away' => 0],
+        ];
+
+        if (!$match) {
+            return $defaultStats;
+        }
+
+        $status = $match['status'] ?? 'U';
+
+        // Trận chưa diễn ra: chưa có dữ liệu thống kê, trả về mặc định ngay lập tức 0ms
+        if ($status === 'U') {
+            return $defaultStats;
+        }
+
+        // Trận kết thúc ('C'): Cache 24 giờ (86400s). Trận đang Live: Cache 30 giây.
+        $ttl = ($status === 'C') ? 86400 : 30;
         $cacheKey = "epl_match_stats_{$matchId}";
 
-        return Cache::remember($cacheKey, 60, function () use ($matchId) {
-            $defaultStats = [
-                'possession' => ['home' => 50, 'away' => 50],
-                'shots' => ['home' => 0, 'away' => 0],
-                'shotsOnTarget' => ['home' => 0, 'away' => 0],
-                'corners' => ['home' => 0, 'away' => 0],
-                'fouls' => ['home' => 0, 'away' => 0],
-            ];
-
+        return Cache::remember($cacheKey, $ttl, function () use ($matchId, $match, $defaultStats) {
             try {
-                $match = $this->getMatchDetail($matchId);
-                if (!$match) return $defaultStats;
-
                 $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
                 $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
 
