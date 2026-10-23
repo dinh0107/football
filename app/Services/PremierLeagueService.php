@@ -54,9 +54,11 @@ class PremierLeagueService
                 if ($response->successful()) {
                     $seasons = $response->json('content', []);
                     if (!empty($seasons)) {
+                        $rawLabel = $seasons[0]['label'] ?? '2026/27';
+                        $cleanLabel = preg_match('/\d{4}\/\d{2,4}/', $rawLabel, $m) ? $m[0] : $rawLabel;
                         return [
                             'id' => (int) $seasons[0]['id'],
-                            'label' => $seasons[0]['label'] ?? '2026/27'
+                            'label' => $cleanLabel
                         ];
                     }
                 }
@@ -64,7 +66,7 @@ class PremierLeagueService
                 Log::warning('Lỗi lấy CompSeason Premier League: ' . $e->getMessage());
             }
 
-            return ['id' => 841, 'label' => 'English Premier League Season 2026/2027'];
+            return ['id' => 841, 'label' => '2026/27'];
         });
     }
 

@@ -30,7 +30,7 @@ class FootballController extends Controller
         $currentGameweek = $this->pulseLiveService->getCurrentGameweek($season['id']);
 
         $seo = [
-            'title' => "Bảng Xếp Hạng Ngoại Hạng Anh {$season['label']} Mới Nhất | BXH Premier League",
+            'title' => "Bảng Xếp Hạng Ngoại Hạng Anh {$season['label']} Mới Nhất",
             'description' => "Cập nhật bảng xếp hạng Ngoại Hạng Anh mùa giải {$season['label']} chuẩn xác nhất. Thứ hạng, điểm số, hiệu số và phong độ các đội Arsenal, Man City, Liverpool, MU.",
             'canonical' => route('standings'),
             'type' => 'website'
@@ -69,7 +69,7 @@ class FootballController extends Controller
         $gwNumber = $selectedGw['gameweek'] ?? 'Hiện tại';
 
         $seo = [
-            'title' => "Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {$gwNumber} | Premier League",
+            'title' => "Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {$gwNumber}",
             'description' => "Lịch thi đấu và kết quả bóng đá Ngoại Hạng Anh vòng {$gwNumber} mùa giải {$season['label']}. Tỉ số, giờ thi đấu theo giờ Việt Nam và kênh phát sóng trực tiếp.",
             'canonical' => route('fixtures', ['vong' => $selectedGwId]),
             'type' => 'website'
