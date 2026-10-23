@@ -72,58 +72,23 @@
     }
 
     /**
-     * Cập nhật giao diện nút Loa 🔊 / 🔇
+     * Cập nhật giao diện nút Loa (loại bỏ nếu còn tồn tại trong DOM)
      */
     function updateSpeakerUI(enabled) {
         const btn = document.getElementById('eplGoalSoundToggle');
-        if (!btn) return;
-
-        const iconEl = btn.querySelector('.sound-icon');
-        const tooltipEl = btn.querySelector('.sound-tooltip');
-
-        if (enabled) {
-            btn.classList.remove('muted');
-            btn.classList.add('active');
-            btn.setAttribute('aria-label', 'Âm thanh bàn thắng: Đang Bật');
-            if (iconEl) iconEl.textContent = '🔊';
-            if (tooltipEl) tooltipEl.textContent = 'Âm thanh bàn thắng: BẬT';
-        } else {
-            btn.classList.remove('active');
-            btn.classList.add('muted');
-            btn.setAttribute('aria-label', 'Âm thanh bàn thắng: Đã Tắt');
-            if (iconEl) iconEl.textContent = '🔇';
-            if (tooltipEl) tooltipEl.textContent = 'Âm thanh bàn thắng: TẮT';
+        if (btn) {
+            btn.remove();
         }
     }
 
     /**
-     * Tạo và chèn nút icon Loa góc màn hình nếu chưa có trong DOM
+     * Nút Loa âm thanh góc màn hình đã được loại bỏ để giao diện tối giản, thanh lịch
      */
     function ensureSpeakerButton() {
-        if (document.getElementById('eplGoalSoundToggle')) {
-            updateSpeakerUI(isSoundEnabled());
-            return;
+        const btn = document.getElementById('eplGoalSoundToggle');
+        if (btn) {
+            btn.remove();
         }
-
-        const btn = document.createElement('button');
-        btn.id = 'eplGoalSoundToggle';
-        btn.type = 'button';
-        btn.className = 'goal-sound-toggle-btn ' + (isSoundEnabled() ? 'active' : 'muted');
-        btn.setAttribute('aria-label', isSoundEnabled() ? 'Âm thanh bàn thắng: Đang Bật' : 'Âm thanh bàn thắng: Đã Tắt');
-        btn.title = 'Bật/tắt chuông báo bàn thắng';
-
-        btn.innerHTML = `
-            <span class="sound-icon">${isSoundEnabled() ? '🔊' : '🔇'}</span>
-            <span class="sound-tooltip">${isSoundEnabled() ? 'Âm thanh bàn thắng: BẬT' : 'Âm thanh bàn thắng: TẮT'}</span>
-        `;
-
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleSound();
-        });
-
-        document.body.appendChild(btn);
     }
 
     /**

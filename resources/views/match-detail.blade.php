@@ -2019,13 +2019,6 @@
                 text-align: center;
                 gap: 10px;
             }
-            .goal-sound-toggle-btn {
-                bottom: 80px !important;
-                right: 16px !important;
-                width: 44px !important;
-                height: 44px !important;
-                font-size: 1.2rem !important;
-            }
         }
 
         @media (max-width: 480px) {
@@ -2092,63 +2085,9 @@
             transition: all 0.3s ease;
         }
 
-        .goal-sound-toggle-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--pl-purple) 0%, var(--pl-purple-light) 100%);
-            color: #ffffff;
-            border: 2px solid rgba(0, 255, 135, 0.6);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 15px rgba(0, 255, 135, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 99999;
-            font-size: 1.4rem;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            user-select: none;
-            outline: none;
-        }
-
-        .goal-sound-toggle-btn:hover {
-            transform: scale(1.12);
-            border-color: var(--pl-mint);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(0, 255, 135, 0.5);
-        }
-
-        .goal-sound-toggle-btn.muted {
-            background: #475569;
-            color: #cbd5e1;
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-        }
-
-        .goal-sound-toggle-btn .sound-tooltip {
-            position: absolute;
-            bottom: 58px;
-            right: 0;
-            background: rgba(15, 23, 42, 0.95);
-            color: #ffffff;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            white-space: nowrap;
-            pointer-events: none;
-            opacity: 0;
-            transform: translateY(6px);
-            transition: all 0.2s ease;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        .goal-sound-toggle-btn:hover .sound-tooltip {
-            opacity: 1;
-            transform: translateY(0);
+        .goal-sound-toggle-btn,
+        #eplGoalSoundToggle {
+            display: none !important;
         }
 
         .goal-toast-notification {
