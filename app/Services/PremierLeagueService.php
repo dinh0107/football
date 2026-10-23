@@ -976,7 +976,8 @@ class PremierLeagueService
                     'comps' => self::COMPETITION_ID,
                     'compSeasons' => $season,
                     'page' => 0,
-                    'pageSize' => 40,
+                    // 1 mùa = 380 trận, lấy trọn trong 1 trang để sitemap không sót trận
+                    'pageSize' => 400,
                     'sort' => 'asc',
                 ];
 

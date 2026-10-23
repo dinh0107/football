@@ -310,7 +310,7 @@ class FootballTrackingTest extends TestCase
         ];
 
         $slug = \App\Helpers\FootballSeoHelper::generateMatchSlug($mockMatch);
-        $this->assertEquals('arsenal-vs-chelsea-vong-10-93452', $slug);
+        $this->assertEquals('truc-tiep-arsenal-vs-chelsea-vong-10-93452', $slug);
 
         $extractedId = \App\Helpers\FootballSeoHelper::extractIdFromSlug($slug);
         $this->assertEquals(93452, $extractedId);
@@ -327,7 +327,7 @@ class FootballTrackingTest extends TestCase
      */
     public function test_phase_6_tv_channel_guide_badges(): void
     {
-        // 1. Kiểm tra FootballSeoHelper gán kênh bản quyền VN
+        // 1. Không có kênh Admin nhập thì không tự đoán kênh
         $mockMatch = [
             'id' => 128923,
             'teams' => [
@@ -335,15 +335,20 @@ class FootballTrackingTest extends TestCase
                 ['team' => ['id' => 99, 'name' => 'Other Team']],
             ]
         ];
-        $channel = \App\Helpers\FootballSeoHelper::getTvChannel($mockMatch);
-        $this->assertContains($channel, ['K+ Sport 1', 'TV360', 'FPT Play', 'VTVcab ON']);
+        $this->assertSame('', \App\Helpers\FootballSeoHelper::getTvChannel($mockMatch));
 
-        // 2. Kiểm tra badge kênh phát sóng trên Trang chủ
+        $matchRes = $this->get('/truc-tiep/128923');
+        $matchRes->assertStatus(200);
+        $matchRes->assertDontSee('Trực tiếp trên:');
+        $matchRes->assertDontSee('Kênh TV:');
+
+        // 2. Admin nhập kênh thì hiển thị trên trang chi tiết trận đấu
+        \App\Models\MatchOverride::create(['match_id' => 128923, 'tv_channel' => 'K+ Sport 1']);
+        $this->assertSame('K+ Sport 1', \App\Helpers\FootballSeoHelper::getTvChannel($mockMatch));
+
         $homeRes = $this->get('/?date=2026-10-24');
         $homeRes->assertStatus(200);
-        $homeRes->assertSee('badge-tv-guide');
 
-        // 3. Kiểm tra thông tin kênh phát sóng trên trang chi tiết trận đấu
         $matchRes = $this->get('/truc-tiep/128923');
         $matchRes->assertStatus(200);
         $matchRes->assertSee('Trực tiếp trên:');
@@ -363,8 +368,9 @@ class FootballTrackingTest extends TestCase
         $matchRes->assertSee('Tỷ số, Đội hình', false);
 
         // Meta Description chuẩn SEO chứa đầy đủ từ khóa
-        $matchRes->assertSee('Xem trực tiếp tỷ số trận Arsenal vs Coventry City', false);
-        $matchRes->assertSee('kênh phát sóng trên', false);
+        $matchRes->assertSee('Coventry City Vòng 1 Ngoại Hạng Anh', false);
+        $matchRes->assertSee('đội hình ra sân và thống kê trận đấu', false);
+        $matchRes->assertSee('og-default.png', false);
 
         // OpenGraph và Twitter Tags
         $matchRes->assertSee('og:title', false);
@@ -376,7 +382,7 @@ class FootballTrackingTest extends TestCase
         // Schema.org SportsEvent & BreadcrumbList Rich Snippets
         $matchRes->assertSee('application/ld+json', false);
         $matchRes->assertSee('SportsEvent', false);
-        $matchRes->assertSee('BroadcastEvent', false);
+        $matchRes->assertDontSee('BroadcastEvent', false);
         $matchRes->assertSee('BreadcrumbList', false);
         $matchRes->assertSee('Lịch Thi Đấu Ngoại Hạng Anh', false);
     }

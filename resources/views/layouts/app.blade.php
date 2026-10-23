@@ -28,10 +28,10 @@
     <meta property="og:url" content="{{ $seo['canonical'] ?? url()->current() }}">
     <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
     <meta property="og:locale" content="vi_VN">
-    <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:image" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:secure_url" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="{{ $seo['title'] ?? 'Tỷ Số Ngoại Hạng Anh' }}">
 
@@ -39,7 +39,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $seo['title'] ?? 'Bóng Đá Ngoại Hạng Anh' }}">
     <meta name="twitter:description" content="{{ $seo['description'] ?? 'Cập nhật trực tiếp kết quả Ngoại Hạng Anh mới nhất' }}">
-    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/og-default.png') }}">
 
     {{-- Schema.org / SportsEvent hoặc WebSite JSON-LD Động --}}
     <script type="application/ld+json">

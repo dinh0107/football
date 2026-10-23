@@ -82,8 +82,17 @@ class SeoHelperTest extends TestCase
 
         $desc = SeoHelper::generateMetaDescription($mockMatch);
         $this->assertStringContainsString('Xem trực tiếp tỷ số trận Arsenal vs Coventry City', $desc);
-        $this->assertStringContainsString('kênh phát sóng trên', $desc);
+        $this->assertStringNotContainsString('Kênh phát sóng', $desc);
         $this->assertGreaterThan(120, mb_strlen($desc));
+
+        $descWithTv = SeoHelper::generateMetaDescription($mockMatch + ['tv_channel' => 'K+ Sport 1']);
+        $this->assertStringContainsString('Kênh phát sóng trên K+ Sport 1', $descWithTv);
+
+        $finished = SeoHelper::generateMetaDescription(['status' => 'C', 'teams' => [
+            ['team' => ['name' => 'Arsenal'], 'score' => 3],
+            ['team' => ['name' => 'Coventry City'], 'score' => 0],
+        ]] + $mockMatch);
+        $this->assertStringContainsString('Kết quả Arsenal 3-0 Coventry City', $finished);
     }
 
     public function test_generate_match_seo_paragraph(): void
@@ -148,12 +157,14 @@ class SeoHelperTest extends TestCase
         $this->assertArrayHasKey('startDate', $schema);
         $this->assertArrayHasKey('endDate', $schema);
         $this->assertArrayHasKey('image', $schema);
-        $this->assertCount(2, $schema['image']);
+        $this->assertStringContainsString('og-default.png', $schema['image'][0]);
+        $this->assertArrayHasKey('organizer', $schema);
         $this->assertArrayHasKey('performer', $schema);
         $this->assertCount(2, $schema['performer']);
         $this->assertEquals('Arsenal', $schema['performer'][0]['name']);
         $this->assertEquals('Everton', $schema['performer'][1]['name']);
-        $this->assertArrayHasKey('offers', $schema);
-        $this->assertEquals('Offer', $schema['offers']['@type']);
+        $this->assertArrayNotHasKey('offers', $schema);
+        $this->assertArrayNotHasKey('broadcast', $schema);
+        $this->assertArrayNotHasKey('publication', $schema);
     }
 }

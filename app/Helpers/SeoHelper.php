@@ -86,8 +86,7 @@ class SeoHelper
     }
 
     /**
-     * Xác định Kênh phát sóng tại Việt Nam (TV Guide)
-     * Ưu tiên cấu hình Admin ghi đè -> Phân bổ bản quyền K+ Sport 1, FPT Play, TV360, VTVcab ON
+     * Kênh phát sóng tại Việt Nam do Admin nhập; chuỗi rỗng nếu chưa có (không đoán kênh)
      */
     public static function getTvChannel(array $match): string
     {
@@ -98,27 +97,13 @@ class SeoHelper
         $id = (int) ($match['id'] ?? 0);
         if ($id > 0) {
             try {
-                $override = MatchOverride::where('match_id', $id)->value('tv_channel');
-                if ($override) {
-                    return $override;
-                }
+                return (string) MatchOverride::where('match_id', $id)->value('tv_channel');
             } catch (\Throwable $e) {
                 // Fallback nếu database chưa kết nối
             }
         }
 
-        $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
-        $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
-
-        // Big 6 Premier League: Arsenal, Chelsea, Liverpool, Man City, Man Utd, Tottenham
-        $bigTeams = [1, 10, 11, 12, 14, 21];
-        if (in_array($homeId, $bigTeams) || in_array($awayId, $bigTeams)) {
-            $channels = ['K+ Sport 1', 'TV360', 'FPT Play'];
-            return $channels[$id % count($channels)];
-        }
-
-        $allChannels = ['K+ Sport 1', 'FPT Play', 'TV360', 'VTVcab ON'];
-        return $allChannels[$id % count($allChannels)];
+        return '';
     }
 
     /**
@@ -159,8 +144,7 @@ class SeoHelper
     }
 
     /**
-     * Sinh thẻ Meta Description (150-160 ký tự) tối ưu từ khóa Google:
-     * Chứa: "trực tiếp tỷ số", "{Home} vs {Away}", "giờ", "ngày", "vòng", "đội hình ra sân", "kênh phát sóng"
+     * Sinh thẻ Meta Description theo trạng thái trận, chỉ nhắc kênh phát sóng khi Admin đã nhập
      */
     public static function generateMetaDescription(array $match): string
     {
@@ -173,12 +157,18 @@ class SeoHelper
         $ngay = $kickoff ? PremierLeagueService::formatKickoffVietnam($kickoff, 'd/m/Y') : Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
         $tv = static::getTvChannel($match);
 
-        return "Xem trực tiếp tỷ số trận {$home} vs {$away} lúc {$gio} ngày {$ngay} Vòng {$gw} Ngoại Hạng Anh. Cập nhật đội hình ra sân, thống kê và kênh phát sóng trên {$tv} chính xác nhất.";
+        if (($match['status'] ?? 'U') === 'C') {
+            $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
+            $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
+            return "Kết quả {$home} {$homeScore}-{$awayScore} {$away} Vòng {$gw} Ngoại Hạng Anh ngày {$ngay}. Xem lại diễn biến, bàn thắng, thẻ phạt, đội hình ra sân và thống kê trận đấu.";
+        }
+
+        $tvText = $tv ? " Kênh phát sóng trên {$tv}." : '';
+        return "Xem trực tiếp tỷ số trận {$home} vs {$away} lúc {$gio} ngày {$ngay} Vòng {$gw} Ngoại Hạng Anh. Cập nhật diễn biến, đội hình ra sân và thống kê trận đấu.{$tvText}";
     }
 
     /**
-     * Tự động sinh đoạn văn bản SEO (3-4 câu hoàn chỉnh) cho bot tìm kiếm:
-     * Cung cấp text content tự nhiên, chuẩn ngữ pháp tiếng Việt, tích hợp đa dạng từ khóa tìm kiếm.
+     * Đoạn văn mô tả trận đấu, chỉ dùng dữ kiện có thật từ API (không hứa hẹn nội dung site không có)
      */
     public static function generateMatchSeoParagraph(array $match): string
     {
@@ -193,36 +183,30 @@ class SeoHelper
         $ngay = $kickoff ? PremierLeagueService::formatKickoffVietnam($kickoff, 'd/m/Y') : Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
         $tv = static::getTvChannel($match);
         $status = $match['status'] ?? 'U';
+        $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
+        $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
 
-        $p1 = "Trận đấu tâm điểm giữa {$home} và {$away} thuộc khuôn khổ Vòng {$gw} giải bóng đá Ngoại Hạng Anh (English Premier League) diễn ra vào lúc {$gio} ngày {$ngay} trên {$stadium} ({$city}).";
+        $sentences = ["{$home} tiếp đón {$away} tại {$stadium} ({$city}) ở Vòng {$gw} Ngoại Hạng Anh, lúc {$gio} ngày {$ngay} (giờ Việt Nam)."];
 
         if ($status === 'C') {
-            $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
-            $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
-            $p2 = "Màn so tài giữa hai câu lạc bộ đã chính thức khép lại với tỷ số chung cuộc {$home} {$homeScore} - {$awayScore} {$away}.";
-            $p3 = "Người hâm mộ có thể xem lại toàn bộ tóm tắt các pha ghi bàn quyết định, danh sách thẻ phạt, diễn biến thay người, sơ đồ chiến thuật 2D, đội hình ra sân chính thức và toàn bộ thống kê kỹ thuật chi tiết tại " . static::DOMAIN . ".";
-            $p4 = "Kết quả này tác động trực tiếp đến điểm số và thứ hạng của cả {$home} cùng {$away} trên bảng xếp hạng Ngoại Hạng Anh mùa giải hiện tại.";
-            $p5 = "Hệ thống liên tục cập nhật bảng xếp hạng trực tiếp (live standings), phong độ đối đầu và lịch thi đấu các vòng tiếp theo để quý khán giả tiện theo dõi.";
-            return "{$p1} {$p2} {$p3} {$p4} {$p5}";
+            $sentences[] = "Trận đấu đã kết thúc với tỷ số {$home} {$homeScore} - {$awayScore} {$away}.";
+            if (!empty($match['attendance'])) {
+                $sentences[] = 'Có ' . number_format((int) $match['attendance'], 0, ',', '.') . ' khán giả theo dõi trên sân.';
+            }
+            $sentences[] = 'Diễn biến bàn thắng, thẻ phạt, thay người, đội hình ra sân và thống kê của trận được lưu đầy đủ tại ' . static::DOMAIN . '.';
+        } elseif ($status === 'L') {
+            $clock = $match['clock']['label'] ?? 'đang diễn ra';
+            $sentences[] = "Trận đấu đang diễn ra ({$clock}), tỷ số hiện tại là {$home} {$homeScore} - {$awayScore} {$away}.";
+            $sentences[] = 'Tỷ số, bàn thắng, thẻ phạt và thay người được cập nhật tự động tại ' . static::DOMAIN . '.';
+        } else {
+            $sentences[] = 'Đội hình ra sân chính thức thường được công bố khoảng 60 phút trước giờ bóng lăn và sẽ hiển thị trên sa bàn 2D cùng tỷ số trực tuyến tại ' . static::DOMAIN . '.';
         }
 
-        if ($status === 'L') {
-            $clock = $match['clock']['label'] ?? 'Đang diễn ra';
-            $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
-            $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
-            $p2 = "Hiện tại màn so tài đỉnh cao đang diễn ra với nhịp độ nghẹt thở trên sân cỏ ({$clock}), tỷ số tạm thời là {$home} {$homeScore} - {$awayScore} {$away}.";
-            $p3 = "Quý khán giả có thể theo dõi trực tiếp trận đấu qua sóng truyền hình {$tv} hoặc cập nhật diễn biến, đội hình và tỷ số trực tuyến (livescore) từng phút tại " . static::DOMAIN . ".";
-            $p4 = "Cả hai đội bóng đang thi đấu đầy quyết tâm nhằm giành trọn 3 điểm số quan trọng cho cuộc đua thứ hạng, với các pha đôi công kịch tính duy trì đến từng phút bù giờ cuối cùng.";
-            $p5 = "Mọi diễn biến bàn thắng, thẻ phạt và chỉ số kiểm soát bóng đang được đồng bộ tự động theo thời gian thực.";
-            return "{$p1} {$p2} {$p3} {$p4} {$p5}";
+        if ($tv && $status !== 'C') {
+            $sentences[] = "Trận đấu được phát sóng trực tiếp tại Việt Nam trên {$tv}.";
         }
 
-        $p2 = "Khán giả yêu bóng đá có thể đón xem trực tiếp màn so tài kịch tính này qua kênh truyền hình {$tv} hoặc theo dõi cập nhật tỷ số trực tuyến, sơ đồ chiến thuật 2D và đội hình ra sân tại " . static::DOMAIN . ".";
-        $p3 = "Trước thềm cuộc đối đầu này, cả {$home} và {$away} đều đang có sự chuẩn bị kỹ lưỡng về mặt nhân sự với quyết tâm cao nhất để giành trọn vẹn 3 điểm nhằm củng cố vị trí trên bảng xếp hạng.";
-        $p4 = "Thông tin về lịch sử đối đầu (head-to-head), phong độ gần đây, danh sách chấn thương và nhận định chuyên sâu sẽ được cập nhật liên tục trước giờ bóng lăn.";
-        $p5 = "Đội hình ra sân chính thức của hai đội sẽ được ban tổ chức công bố 60 phút trước giờ khai cuộc và cập nhật ngay trên sa bàn 2D.";
-
-        return "{$p1} {$p2} {$p3} {$p4} {$p5}";
+        return implode(' ', $sentences);
     }
 
     /**
@@ -236,7 +220,6 @@ class SeoHelper
         $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 2));
         $stadium = $match['ground']['name'] ?? 'Premier League Stadium';
         $city = $match['ground']['city'] ?? 'England';
-        $channel = static::getTvChannel($match);
         $status = $match['status'] ?? 'U';
 
         $eventStatus = match ($status) {
@@ -268,9 +251,11 @@ class SeoHelper
             'eventStatus' => $eventStatus,
             'url' => $canonicalUrl,
             'sport' => 'Football',
-            'image' => [
-                $homeLogo,
-                $awayLogo,
+            'image' => [asset('images/og-default.png')],
+            'organizer' => [
+                '@type' => 'Organization',
+                'name' => 'Premier League',
+                'url' => 'https://www.premierleague.com',
             ],
             'location' => [
                 '@type' => 'Place',
@@ -302,24 +287,6 @@ class SeoHelper
                     'name' => $away,
                     'logo' => $awayLogo,
                 ],
-            ],
-            'offers' => [
-                '@type' => 'Offer',
-                'url' => $canonicalUrl,
-                'price' => '0',
-                'priceCurrency' => 'VND',
-                'availability' => 'https://schema.org/InStock',
-                'validFrom' => $startDate,
-            ],
-            'broadcast' => [
-                '@type' => 'BroadcastEvent',
-                'name' => "Phát sóng trực tiếp {$home} vs {$away}",
-                'broadcaster' => [
-                    '@type' => 'Organization',
-                    'name' => $channel,
-                ],
-                'isLiveBroadcast' => true,
-                'videoFormat' => 'HD',
             ],
         ];
     }

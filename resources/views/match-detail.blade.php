@@ -27,10 +27,10 @@
     <meta property="og:url" content="{{ $seo['og']['url'] ?? url()->current() }}">
     <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
     <meta property="og:locale" content="vi_VN">
-    <meta property="og:image" content="{{ $seo['og']['image'] ?? asset('images/logo.png') }}">
-    <meta property="og:image:secure_url" content="{{ $seo['og']['image'] ?? asset('images/logo.png') }}">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:image" content="{{ $seo['og']['image'] ?? asset('images/og-default.png') }}">
+    <meta property="og:image:secure_url" content="{{ $seo['og']['image'] ?? asset('images/og-default.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="{{ $seo['og']['title'] ?? ($seo['title'] ?? '') }}">
 
@@ -2262,10 +2262,12 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                         Premier League &bull; Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}
                     </span>
+                    @if(!empty($tvChannel))
                     <span class="hero-tv-guide-bar">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-                        Trực tiếp trên: <strong>{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong>
+                        Trực tiếp trên: <strong>{{ $tvChannel }}</strong>
                     </span>
+                    @endif
                 </div>
 
                 {{-- Tiêu đề H1 Duy Nhất Chuẩn SEO On-Page --}}
@@ -2276,7 +2278,7 @@
                 {{-- Tiêu đề H2 Kênh phát sóng & Giờ thi đấu --}}
                 <h2 class="seo-section-h2">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    Kênh phát sóng trực tiếp và Thời gian thi đấu
+                    {{ !empty($tvChannel) ? 'Kênh phát sóng trực tiếp và Thời gian thi đấu' : 'Thời gian và địa điểm thi đấu' }}
                 </h2>
 
                 {{-- Khối Văn Bản SEO Tự Động (Programmatic SEO Content) --}}
@@ -2284,7 +2286,7 @@
                 <div class="seo-intro-card">
                     <div class="seo-intro-header">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        Tổng quan trước trận đấu
+                        {{ match($match['status'] ?? 'U') { 'C' => 'Tóm tắt trận đấu', 'L' => 'Diễn biến trận đấu', default => 'Tổng quan trước trận đấu' } }}
                     </div>
                     <p class="seo-intro-text">{{ $seoParagraph }}</p>
                 </div>
@@ -2395,10 +2397,12 @@
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         Thời gian: <strong>{{ $kickoff ? \App\Services\PremierLeagueService::formatKickoffVietnam($kickoff, 'H:i - d/m/Y') : '' }}</strong> (GMT+7)
                     </span>
+                    @if(!empty($tvChannel))
                     <span class="hero-info-pill">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
-                        Kênh TV: <strong style="color: var(--pl-mint);">{{ $tvChannel ?? ($match['tv_channel'] ?? 'K+ Sport 1') }}</strong>
+                        Kênh TV: <strong style="color: var(--pl-mint);">{{ $tvChannel }}</strong>
                     </span>
+                    @endif
                 </div>
             </div>
 
@@ -2980,12 +2984,14 @@
                     Cuộc đọ sức đỉnh cao giữa <strong>{{ $homeTeam['name'] ?? 'Đội nhà' }}</strong> và <strong>{{ $awayTeam['name'] ?? 'Đội khách' }}</strong> thuộc khuôn khổ <strong>Vòng {{ $match['gameweek']['gameweek'] ?? 1 }}</strong> giải bóng đá Ngoại Hạng Anh (English Premier League) mùa giải 2026/2027. Cả hai câu lạc bộ đều mang trong mình quyết tâm chiến đấu cao nhất nhằm giành trọn 3 điểm số quý giá, qua đó củng cố vững chắc mục tiêu và thứ hạng trên bảng xếp hạng tổng.
                 </p>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 16px 0;">
+                    @if(!empty($tvChannel))
                     <div style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
                         <strong style="display: block; margin-bottom: 6px; color: var(--pl-purple);">Kênh phát sóng trực tiếp:</strong>
                         <p style="margin: 0; font-size: 0.875rem;">
-                            Trận đấu được truyền hình trực tiếp tại Việt Nam trên các kênh sóng bản quyền <strong>{{ $tvChannel }}</strong>. Người hâm mộ có thể đón xem các pha bóng tốc độ và bàn thắng mãn nhãn với chất lượng hình ảnh sắc nét.
+                            Trận đấu được truyền hình trực tiếp tại Việt Nam trên <strong>{{ $tvChannel }}</strong>.
                         </p>
                     </div>
+                    @endif
                     <div style="background: var(--bg-primary); padding: 16px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
                         <strong style="display: block; margin-bottom: 6px; color: var(--pl-purple);">Tỷ số trực tuyến theo thời gian thực:</strong>
                         <p style="margin: 0; font-size: 0.875rem;">

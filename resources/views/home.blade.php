@@ -27,10 +27,10 @@
     <meta property="og:description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}.">
     <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
     <meta property="og:locale" content="vi_VN">
-    <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:image" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:secure_url" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh">
 
@@ -38,17 +38,31 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Ngày {{ $dateNav['formattedSelected'] }}">
     <meta name="twitter:description" content="Xem lịch thi đấu, tỷ số trực tiếp và kết quả bóng đá Ngoại Hạng Anh ngày {{ $dateNav['formattedSelected'] }}.">
-    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/og-default.png') }}">
 
     {{-- Schema.org Structured Data --}}
     <script type="application/ld+json">
     {!! json_encode([
         '@context' => 'https://schema.org',
-        '@type' => 'SportsOrganization',
-        'name' => 'Premier League Live Tracker',
-        'sport' => 'Football',
-        'url' => url('/'),
-        'description' => 'Nền tảng theo dõi kết quả, lịch thi đấu và bảng xếp hạng Ngoại Hạng Anh trực tiếp.'
+        '@graph' => [
+            [
+                '@type' => 'WebSite',
+                '@id' => url('/') . '#website',
+                'name' => 'Tỷ Số Ngoại Hạng Anh',
+                'url' => url('/'),
+                'inLanguage' => 'vi',
+                'description' => 'Nền tảng theo dõi kết quả, lịch thi đấu và bảng xếp hạng Ngoại Hạng Anh trực tiếp.',
+                'publisher' => ['@id' => url('/') . '#organization'],
+            ],
+            [
+                '@type' => 'Organization',
+                '@id' => url('/') . '#organization',
+                'name' => 'Tỷ Số Ngoại Hạng Anh',
+                'url' => url('/'),
+                'logo' => asset('images/logo.png'),
+                'email' => 'lienhe@tysongoaihang.site',
+            ],
+        ],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
@@ -1127,10 +1141,12 @@
                             <span class="match-venue">{{ $ground }}</span>
 
                             <div style="display: flex; align-items: center; gap: 8px;">
+                                @if($tvChannel)
                                 <span class="badge-tv-guide">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
                                     {{ $tvChannel }}
                                 </span>
+                                @endif
 
                                 @if($status === 'L')
                                     <span class="status-badge badge-live">

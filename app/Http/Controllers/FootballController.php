@@ -49,7 +49,7 @@ class FootballController extends Controller
      * Trang Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh (Fixtures)
      * URL: /lich-thi-dau
      */
-    public function fixtures(Request $request): View
+    public function fixtures(Request $request): View|RedirectResponse
     {
         $season = $this->pulseLiveService->getCurrentCompSeason();
         $gameweeks = $this->pulseLiveService->getGameweeks($season['id']);
@@ -57,9 +57,12 @@ class FootballController extends Controller
 
         // Xác định vòng đấu được chọn (theo query param hoặc vòng hiện tại)
         $selectedGwId = $request->query('vong');
-        if ($selectedGwId) {
+        if ($selectedGwId !== null) {
             $selectedGwId = (int) $selectedGwId;
-            $selectedGw = collect($gameweeks)->firstWhere('id', $selectedGwId) ?? $currentGw;
+            $selectedGw = collect($gameweeks)->firstWhere('id', $selectedGwId);
+            if (!$selectedGw) {
+                return redirect()->route('fixtures', [], 301);
+            }
         } else {
             $selectedGw = $currentGw;
             $selectedGwId = $selectedGw['id'] ?? null;
@@ -71,7 +74,9 @@ class FootballController extends Controller
         $seo = [
             'title' => "Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {$gwNumber}",
             'description' => "Lịch thi đấu và kết quả bóng đá Ngoại Hạng Anh vòng {$gwNumber} mùa giải {$season['label']}. Tỉ số, giờ thi đấu theo giờ Việt Nam và kênh phát sóng trực tiếp.",
-            'canonical' => route('fixtures', ['vong' => $selectedGwId]),
+            'canonical' => (int) $selectedGwId === (int) ($currentGw['id'] ?? 0)
+                ? route('fixtures')
+                : route('fixtures', ['vong' => $selectedGwId]),
             'type' => 'website'
         ];
 
@@ -98,10 +103,10 @@ class FootballController extends Controller
         $currentGwFixtures = $currentGw ? $this->pulseLiveService->getFixtures($currentGw['id'], $season['id']) : [];
 
         $liveCount = count($liveMatches);
-        $titlePrefix = $liveCount > 0 ? "[{$liveCount} Trận Đang Đá]" : "[Trực Tiếp]";
+        $titlePrefix = $liveCount > 0 ? "[{$liveCount} Trận Đang Đá] " : '';
 
         $seo = [
-            'title' => "{$titlePrefix} Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay",
+            'title' => "{$titlePrefix}Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay",
             'description' => "Theo dõi trực tiếp tỷ số Ngoại Hạng Anh hôm nay với tốc độ cập nhật siêu nhanh. Tường thuật trực tiếp diễn biến trận đấu, bàn thắng, thẻ phạt và BXH trực tuyến.",
             'canonical' => route('live'),
             'type' => 'website'
@@ -112,48 +117,6 @@ class FootballController extends Controller
             'liveMatches' => $liveMatches,
             'currentGw' => $currentGw,
             'fixtures' => $currentGwFixtures,
-            'seo' => $seo,
-        ]);
-    }
-
-    /**
-     * Trang Chi Tiết Trận Đấu (Match Detail)
-     * URL: /tran-dau/{slug}
-     * Cấu trúc slug: /tran-dau/[doi-nha]-vs-[doi-khach]-[fixture_id]
-     */
-    public function matchDetail(Request $request, string $slug): View|RedirectResponse
-    {
-        $fixtureId = FootballSeoHelper::extractIdFromSlug($slug);
-        if (!$fixtureId) {
-            abort(404, 'Không tìm thấy thông tin trận đấu.');
-        }
-
-        $match = $this->pulseLiveService->getMatchDetail($fixtureId);
-        if (!$match) {
-            abort(404, 'Trận đấu không tồn tại hoặc dữ liệu tạm thời chưa sẵn sàng.');
-        }
-
-        // Kiểm tra Canonical URL: nếu slug không khớp chuẩn SEO, 301 Redirect về URL chuẩn
-        $canonicalSlug = FootballSeoHelper::generateMatchSlug($match);
-        if ($slug !== $canonicalSlug) {
-            return redirect()->route('match.detail', ['slug' => $canonicalSlug], 301);
-        }
-
-        // Tự động sinh dữ liệu SEO động
-        $pageTitle = FootballSeoHelper::generateTitle($match);
-        $metaDescription = FootballSeoHelper::generateMetaDescription($match);
-        $schemaJsonLd = FootballSeoHelper::generateSportsEventSchema($match, route('match.detail', ['slug' => $canonicalSlug]));
-
-        $seo = [
-            'title' => $pageTitle,
-            'description' => $metaDescription,
-            'canonical' => route('match.detail', ['slug' => $canonicalSlug]),
-            'type' => 'article',
-            'schema' => $schemaJsonLd
-        ];
-
-        return view('football.match-detail', [
-            'match' => $match,
             'seo' => $seo,
         ]);
     }

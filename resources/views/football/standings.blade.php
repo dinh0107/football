@@ -27,10 +27,12 @@
                 <div class="match-card-header">
                     <span>{{ $match['ground']['name'] ?? 'Premier League' }}</span>
                     <div style="display: flex; align-items: center; gap: 8px;">
+                        @if($tvChannel)
                         <span class="badge-tv-guide">
                             <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
                             {{ $tvChannel }}
                         </span>
+                        @endif
                         <span class="match-status-tag status-live">
                             <span class="live-badge-dot" style="width: 6px; height: 6px;"></span>
                             <span class="match-clock">{{ $match['clock']['label'] ?? 'LIVE' }}</span>

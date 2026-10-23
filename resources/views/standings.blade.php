@@ -32,10 +32,10 @@
     <meta property="og:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất, cập nhật trực tiếp theo thời gian thực.">
     <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
     <meta property="og:locale" content="vi_VN">
-    <meta property="og:image" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
-    <meta property="og:image:width" content="512">
-    <meta property="og:image:height" content="512">
+    <meta property="og:image" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:secure_url" content="{{ asset('images/og-default.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:image:type" content="image/png">
     <meta property="og:image:alt" content="Bảng Xếp Hạng Ngoại Hạng Anh">
 
@@ -43,17 +43,23 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
     <meta name="twitter:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất.">
-    <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+    <meta name="twitter:image" content="{{ asset('images/og-default.png') }}">
 
     {{-- Schema.org Structured Data --}}
     <script type="application/ld+json">
     {!! json_encode([
         '@context' => 'https://schema.org',
-        '@type' => 'SportsOrganization',
-        'name' => 'Bảng Xếp Hạng Premier League',
-        'sport' => 'Football',
+        '@type' => 'WebPage',
+        'name' => "Bảng Xếp Hạng Ngoại Hạng Anh {$seasonShort}",
         'url' => url()->current(),
-        'description' => 'Bảng xếp hạng Ngoại Hạng Anh và bảng thành tích ghi bàn của các cầu thủ hàng đầu.'
+        'inLanguage' => 'vi',
+        'description' => 'Bảng xếp hạng Ngoại Hạng Anh và bảng thành tích ghi bàn của các cầu thủ hàng đầu.',
+        'isPartOf' => [
+            '@type' => 'WebSite',
+            '@id' => url('/') . '#website',
+            'name' => 'Tỷ Số Ngoại Hạng Anh',
+            'url' => url('/'),
+        ],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
 
