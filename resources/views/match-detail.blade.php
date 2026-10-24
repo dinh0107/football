@@ -59,7 +59,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://resources.premierleague.com" crossorigin>
     <link rel="dns-prefetch" href="https://resources.premierleague.com">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
     {{-- CSS Giao Diện Match Center Đỉnh Cao --}}
     <style>
@@ -2188,7 +2189,7 @@
     <header class="site-header">
         <div class="container header-content">
             <a href="{{ route('home') }}" class="brand-logo">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="38" height="38" onerror="this.onerror=null; this.src='/images/logo.png';">
+                <img src="{{ asset('images/logo-96.png') }}" alt="Logo tysongoaihang" class="brand-logo-img" width="38" height="38" onerror="this.onerror=null; this.src='/images/logo.png';">
                 <div class="brand-text">PREMIER<span>LEAGUE</span></div>
             </a>
             <nav class="header-nav">

@@ -55,7 +55,8 @@
     {{-- Google Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
 
     {{-- Pure Vanilla CSS --}}
     <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ filemtime(public_path('css/app.css')) }}">
@@ -67,7 +68,7 @@
     <header class="header">
         <div class="container header-inner">
             <a href="{{ route('home') }}" class="logo-brand">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo tysongoaihang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;" onerror="this.onerror=null; this.src='/images/logo.png';">
+                <img src="{{ asset('images/logo-96.png') }}" alt="Logo tysongoaihang" class="logo-img" width="36" height="36" style="border-radius: 9px; object-fit: cover;" onerror="this.onerror=null; this.src='/images/logo.png';">
             </a>
 
             <nav class="nav-links">
