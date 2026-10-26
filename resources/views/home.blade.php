@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Lịch Thi Đấu & Tỷ Số Ngoại Hạng Anh Trực Tiếp Premier League</title>
-    <meta name="description" content="Xem lịch thi đấu và tỷ số các trận đấu Ngoại Hạng Anh trực tiếp hôm nay, kết quả bóng đá Premier League mới nhất theo ngày. Cập nhật bảng xếp hạng và diễn biến từng phút.">
+    <title>Lịch Thi Đấu Ngoại Hạng Anh Hôm Nay - Lịch EPL, KQ & Tỷ Số Trực Tiếp K+</title>
+    <meta name="description" content="Lịch thi đấu Ngoại Hạng Anh hôm nay và ngày mai mới nhất. Cập nhật lịch EPL, kết quả bóng đá, tỷ số trực tiếp các trận đấu Premier League phát sóng trên K+, TV360 và bảng xếp hạng.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 

@@ -131,16 +131,16 @@ class SeoHelper
         if ($status === 'L') {
             // Đang diễn ra (Live)
             $clock = $match['clock']['label'] ?? 'Đang đá';
-            return "[LIVE {$clock}] {$home} {$homeScore} - {$awayScore} {$away} - Tỷ số, Đội hình";
+            return "[LIVE {$clock}] {$home} {$homeScore} - {$awayScore} {$away} - {$home} đấu với {$away} - Tỷ số, Đội hình";
         }
 
         if ($status === 'C') {
             // Đã kết thúc (Full Time)
-            return "Trực tiếp {$home} vs {$away} (FT {$homeScore}-{$awayScore}) - Tỷ số, Đội hình";
+            return "Trực tiếp {$home} vs {$away} (FT {$homeScore}-{$awayScore}) - Kết quả {$home} đấu với {$away} - Tỷ số, Đội hình";
         }
 
         // Chưa diễn ra (Upcoming)
-        return "Trực tiếp {$home} vs {$away} ({$timeLabel}) - Kênh chiếu, Tỷ số, Đội hình";
+        return "Trực tiếp {$home} vs {$away} ({$timeLabel}) - {$home} đấu với {$away} - Kênh chiếu, Tỷ số, Đội hình (K+)";
     }
 
     /**
@@ -160,11 +160,11 @@ class SeoHelper
         if (($match['status'] ?? 'U') === 'C') {
             $homeScore = (int) ($match['teams'][0]['score'] ?? 0);
             $awayScore = (int) ($match['teams'][1]['score'] ?? 0);
-            return "Kết quả {$home} {$homeScore}-{$awayScore} {$away} Vòng {$gw} Ngoại Hạng Anh ngày {$ngay}. Xem lại diễn biến, bàn thắng, thẻ phạt, đội hình ra sân và thống kê trận đấu.";
+            return "Kết quả {$home} {$homeScore}-{$awayScore} {$away} Vòng {$gw} Ngoại Hạng Anh ({$home} đấu với {$away}) ngày {$ngay}. Xem lại diễn biến, bàn thắng, thẻ phạt, đội hình ra sân và thống kê trận đấu.";
         }
 
         $tvText = $tv ? " Kênh phát sóng trên {$tv}." : '';
-        return "Xem trực tiếp tỷ số trận {$home} vs {$away} lúc {$gio} ngày {$ngay} Vòng {$gw} Ngoại Hạng Anh. Cập nhật diễn biến, đội hình ra sân và thống kê trận đấu.{$tvText}";
+        return "Trực tiếp {$home} vs {$away} Vòng {$gw} Ngoại Hạng Anh ({$home} đấu với {$away}) lúc {$gio} ngày {$ngay}. Xem trực tiếp tỷ số trận {$home} vs {$away}, cập nhật diễn biến, đội hình ra sân và thống kê trận đấu.{$tvText}";
     }
 
     /**

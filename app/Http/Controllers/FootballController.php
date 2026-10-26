@@ -30,8 +30,8 @@ class FootballController extends Controller
         $currentGameweek = $this->pulseLiveService->getCurrentGameweek($season['id']);
 
         $seo = [
-            'title' => "Bảng Xếp Hạng Ngoại Hạng Anh {$season['label']} Mới Nhất",
-            'description' => "Cập nhật bảng xếp hạng Ngoại Hạng Anh mùa giải {$season['label']} chuẩn xác nhất. Thứ hạng, điểm số, hiệu số và phong độ các đội Arsenal, Man City, Liverpool, MU.",
+            'title' => "BXH Ngoại Hạng Anh {$season['label']} - Bảng Xếp Hạng Premier League & KQ BXH Mới Nhất",
+            'description' => "Bảng xếp hạng Ngoại Hạng Anh (BXH Premier League) mùa giải {$season['label']} mới nhất. Cập nhật kết quả BXH Anh trực tiếp, điểm số, hiệu số, phong độ các đội Arsenal, Man City, Liverpool, MU.",
             'canonical' => route('standings'),
             'type' => 'website'
         ];
@@ -72,8 +72,8 @@ class FootballController extends Controller
         $gwNumber = $selectedGw['gameweek'] ?? 'Hiện tại';
 
         $seo = [
-            'title' => "Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {$gwNumber}",
-            'description' => "Lịch thi đấu và kết quả bóng đá Ngoại Hạng Anh vòng {$gwNumber} mùa giải {$season['label']}. Tỉ số, giờ thi đấu theo giờ Việt Nam và kênh phát sóng trực tiếp.",
+            'title' => "Lịch Thi Đấu & Kết Quả Ngoại Hạng Anh Vòng {$gwNumber} - Lịch EPL Mới Nhất",
+            'description' => "Lịch thi đấu và kết quả bóng đá Ngoại Hạng Anh vòng {$gwNumber} mùa giải {$season['label']} mới nhất. Tra cứu lịch EPL, tỉ số, giờ thi đấu theo giờ Việt Nam và kênh phát sóng trực tiếp K+.",
             'canonical' => (int) $selectedGwId === (int) ($currentGw['id'] ?? 0)
                 ? route('fixtures')
                 : route('fixtures', ['vong' => $selectedGwId]),
@@ -106,8 +106,8 @@ class FootballController extends Controller
         $titlePrefix = $liveCount > 0 ? "[{$liveCount} Trận Đang Đá] " : '';
 
         $seo = [
-            'title' => "{$titlePrefix}Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay",
-            'description' => "Theo dõi trực tiếp tỷ số Ngoại Hạng Anh hôm nay với tốc độ cập nhật siêu nhanh. Tường thuật trực tiếp diễn biến trận đấu, bàn thắng, thẻ phạt và BXH trực tuyến.",
+            'title' => "{$titlePrefix}Trực Tiếp Bóng Đá Ngoại Hạng Anh Hôm Nay - Xem Tỷ Số Trực Tiếp K+",
+            'description' => "Theo dõi trực tiếp bóng đá Ngoại Hạng Anh hôm nay, cập nhật tỷ số trực tiếp K+, kết quả bóng đá EPL, diễn biến bàn thắng, thẻ phạt và BXH trực tuyến.",
             'canonical' => route('live'),
             'type' => 'website'
         ];

@@ -11,8 +11,8 @@
         $seasonShort = preg_match('/\d{4}\/\d{2,4}/', $rawSeason, $m) ? $m[0] : '2026/27';
     @endphp
 
-    <title>Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} - BXH Bóng Đá Premier League Mới Nhất</title>
-    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất. Cập nhật BXH Premier League trực tiếp theo thời gian thực, điểm số, hiệu số và Top ghi bàn.">
+    <title>BXH Ngoại Hạng Anh {{ $seasonShort }} - Bảng Xếp Hạng Premier League & KQ BXH Mới Nhất</title>
+    <meta name="description" content="Bảng xếp hạng Ngoại Hạng Anh (BXH Premier League) mùa giải {{ $seasonShort }} mới nhất hôm nay. Cập nhật kết quả BXH Anh trực tiếp theo thời gian thực, điểm số, hiệu số và Top ghi bàn.">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="{{ url()->current() }}">
 
@@ -28,8 +28,8 @@
     {{-- Open Graph / Facebook / Zalo --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
-    <meta property="og:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất, cập nhật trực tiếp theo thời gian thực.">
+    <meta property="og:title" content="BXH Ngoại Hạng Anh {{ $seasonShort }} - Bảng Xếp Hạng Premier League Mới Nhất">
+    <meta property="og:description" content="Bảng xếp hạng Ngoại Hạng Anh (BXH Premier League) mùa giải {{ $seasonShort }} mới nhất, cập nhật trực tiếp theo thời gian thực.">
     <meta property="og:site_name" content="Tỷ Số Ngoại Hạng Anh">
     <meta property="og:locale" content="vi_VN">
     <meta property="og:image" content="{{ asset('images/og-default.png') }}">
@@ -41,8 +41,8 @@
 
     {{-- Twitter Cards --}}
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }} Mới Nhất">
-    <meta name="twitter:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất.">
+    <meta name="twitter:title" content="BXH Ngoại Hạng Anh {{ $seasonShort }} - Bảng Xếp Hạng Premier League Mới Nhất">
+    <meta name="twitter:description" content="Bảng xếp hạng Ngoại Hạng Anh mùa giải {{ $seasonShort }} mới nhất, cập nhật BXH Premier League liên tục.">
     <meta name="twitter:image" content="{{ asset('images/og-default.png') }}">
 
     {{-- Schema.org Structured Data --}}
