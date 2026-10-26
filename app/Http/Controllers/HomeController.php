@@ -28,8 +28,8 @@ class HomeController extends Controller
         $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
         $selectedDate = $request->query('date', $today);
 
-        // Kiểm tra hợp lệ định dạng YYYY-MM-DD
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $selectedDate)) {
+        // Kiểm tra hợp lệ định dạng YYYY-MM-DD và ngày có thật (2026-13-45 từng gây lỗi 500)
+        if (!is_string($selectedDate) || !preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $selectedDate, $d) || !checkdate((int) $d[2], (int) $d[3], (int) $d[1])) {
             $selectedDate = $today;
         }
 

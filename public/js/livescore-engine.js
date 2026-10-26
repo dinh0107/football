@@ -183,7 +183,7 @@
     }
 
     /**
-     * Hiển thị Goal Toast Banner nổi bật trên màn hình
+     * Hiển thị Goal Toast Banner nổi bật trên màn hình (Thiết kế Vector hiện đại, nhỏ gọn trên Mobile)
      */
     function showGoalBanner(homeTeam, awayTeam, scoreStr, scorer) {
         let toast = document.getElementById('eplGoalBannerToast');
@@ -194,37 +194,46 @@
             document.body.appendChild(toast);
         }
 
-        const scorerText = scorer ? `<div class="toast-scorer">⚽ ${scorer}</div>` : '';
+        const ballSvg = `<svg class="toast-ball-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="12 7 15 9.5 14 13 10 13 9 9.5"></polygon><line x1="12" y1="2" x2="12" y2="7"></line><line x1="17" y1="5.5" x2="15" y2="9.5"></line><line x1="20" y1="12" x2="14" y2="13"></line><line x1="17" y1="18.5" x2="13" y2="17"></line><line x1="7" y1="18.5" x2="11" y2="17"></line><line x1="4" y1="12" x2="10" y2="13"></line><line x1="7" y1="5.5" x2="9" y2="9.5"></line></svg>`;
+
+        const scorerText = scorer ? `<div class="toast-scorer">${ballSvg}<span>${scorer}</span></div>` : '';
 
         toast.innerHTML = `
-            <div class="toast-icon">⚽</div>
+            <div class="toast-icon">
+                ${ballSvg}
+            </div>
             <div class="toast-body">
-                <div class="toast-heading">VÀOOOO! BÀN THẮNG MỚI!</div>
+                <div class="toast-heading">VÀO! BÀN THẮNG</div>
                 <div class="toast-match">
-                    <strong>${homeTeam}</strong>
+                    <span class="toast-team">${homeTeam}</span>
                     <span class="toast-score">${scoreStr}</span>
-                    <strong>${awayTeam}</strong>
+                    <span class="toast-team">${awayTeam}</span>
                 </div>
                 ${scorerText}
             </div>
-            <button class="toast-close" type="button" aria-label="Đóng">&times;</button>
+            <button class="toast-close" type="button" aria-label="Đóng">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         `;
 
-        toast.querySelector('.toast-close').addEventListener('click', function () {
-            toast.classList.remove('show');
-        });
+        const closeBtn = toast.querySelector('.toast-close');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function () {
+                toast.classList.remove('show');
+            });
+        }
 
         // Kích hoạt animation hiện
         requestAnimationFrame(() => {
             toast.classList.add('show');
         });
 
-        // Tự ẩn sau 8 giây
+        // Tự ẩn sau 7 giây
         setTimeout(() => {
             if (toast) {
                 toast.classList.remove('show');
             }
-        }, 8000);
+        }, 7000);
     }
 
     /**
@@ -262,7 +271,8 @@
      * Trả về true nếu phát hiện bàn thắng mới
      */
     function diffAndUpdateMatch(match) {
-        if (!match || !match.id) return false;
+        // Trận chưa đá: giữ giờ bóng lăn, không ghi đè thành "0 - 0"
+        if (!match || !match.id || match.status === 'U') return false;
 
         const matchId = String(match.id);
         const matchElements = document.querySelectorAll(`[data-fixture-id="${matchId}"]`);
@@ -287,6 +297,38 @@
             container.setAttribute('data-away-score', newAway);
             if (match.status) {
                 container.setAttribute('data-status', match.status);
+            }
+
+            // 0. Nâng cấp giao diện nếu trận chuyển từ "Sắp diễn ra" (U) sang "Trực tiếp" (L)
+            if (match.status === 'L') {
+                // Trên trang chi tiết trận đấu (Hero Card):
+                const upcomingPill = container.querySelector('.pill-upcoming');
+                if (upcomingPill) {
+                    upcomingPill.className = 'hero-status-pill pill-live';
+                    upcomingPill.innerHTML = `<span class="live-dot-pulse"></span> <span data-fixture-clock>${match.minute || 'LIVE'}</span> &bull; TRỰC TIẾP`;
+                }
+
+                const heroVsEl = container.querySelector('.hero-score-vs');
+                if (heroVsEl) {
+                    heroVsEl.className = 'hero-score-display';
+                    heroVsEl.innerHTML = `<span data-score-home>${newHome}</span> - <span data-score-away>${newAway}</span>`;
+                    const heroCenter = container.querySelector('.hero-score-center');
+                    if (heroCenter) {
+                        const dateSpans = heroCenter.querySelectorAll('span');
+                        dateSpans.forEach(s => {
+                            if (!s.classList.contains('hero-status-pill') && !s.classList.contains('live-dot-pulse') && !s.hasAttribute('data-fixture-clock')) {
+                                s.style.display = 'none';
+                            }
+                        });
+                    }
+                }
+
+                // Trên danh sách thẻ trận đấu (Home / Fixtures):
+                const upcomingBadge = container.querySelector('.badge-upcoming');
+                if (upcomingBadge) {
+                    upcomingBadge.className = 'status-badge badge-live';
+                    upcomingBadge.innerHTML = `<span class="pulse-dot"></span> <span class="live-clock-flash" data-fixture-clock>${match.minute || 'LIVE'}</span>`;
+                }
             }
 
             // 1. Cập nhật tỷ số vào các phần tử con
@@ -362,7 +404,7 @@
         // Nếu có sự kiện mới chưa xuất hiện trong timeline, có thể bổ sung hoặc cập nhật thông báo
         const indicator = document.getElementById('livePollingIndicator');
         if (indicator) {
-            indicator.textContent = `Đồng bộ lúc ${new Date().toLocaleTimeString('vi-VN')} (PulseLive)`;
+            indicator.textContent = `Cập nhật lúc ${new Date().toLocaleTimeString('vi-VN')}`;
         }
     }
 

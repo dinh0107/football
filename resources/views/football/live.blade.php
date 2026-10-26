@@ -7,14 +7,14 @@
         <span style="font-weight: 800; font-size: 0.8rem; color: var(--pl-pink); text-transform: uppercase;">Trung Tâm Trực Tiếp</span>
     </div>
     <h1 class="page-title">Trực Tiếp Tỷ Số Ngoại Hạng Anh</h1>
-    <p class="page-subtitle">Dữ liệu thời gian thực được đồng bộ qua PulseLive API & Laravel Cache 30s. Tự động cập nhật không cần reload.</p>
+    <p class="page-subtitle">Tỷ số, bàn thắng và thẻ phạt tự cập nhật mỗi 30 giây, không cần tải lại trang.</p>
 </div>
 
 <div class="live-section">
     {{-- Danh Sách Trận Đang Live --}}
     @if(!empty($liveMatches))
         <div style="margin-bottom: 32px;">
-            <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 16px; color: var(--pl-pink); display: flex; align-items: center; gap: 8px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; margin-bottom: 16px; color: var(--pl-pink); display: flex; align-items: center; gap: 8px;">
                 <span class="live-badge-dot"></span> Đang Diễn Ra ({{ count($liveMatches) }} Trận)
             </h2>
 
@@ -105,7 +105,7 @@
     {{-- Danh Sách Trận Đấu Vòng Này --}}
     <div>
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple);">
+            <h2 style="font-size: clamp(1rem, 4.1vw, 1.15rem); font-weight: 800; color: var(--pl-purple);">
                 Lịch Thi Đấu & Kết Quả Vòng {{ $currentGw['gameweek'] ?? 'Hiện Tại' }} Ngoại Hạng Anh
             </h2>
             <span style="font-size: 0.8rem; color: var(--text-muted);">Giờ Việt Nam (GMT+7)</span>

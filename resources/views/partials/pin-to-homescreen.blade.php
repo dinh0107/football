@@ -70,13 +70,23 @@
 /* Smart App Banner - Phong Cách Tối Giản Thanh Lịch */
 .pwa-pin-banner {
     position: fixed;
-    bottom: 16px;
+    bottom: 20px;
     left: 16px;
     right: 16px;
-    max-width: 420px;
+    max-width: 380px;
     margin: 0 auto;
-    z-index: 9999;
+    z-index: 9990;
+    pointer-events: none;
     animation: pwaSlideIn 0.25s ease-out forwards;
+}
+
+@media (max-width: 767px) {
+    .pwa-pin-banner {
+        bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+        left: 12px;
+        right: 12px;
+        max-width: 360px;
+    }
 }
 
 @media (min-width: 768px) {
@@ -107,12 +117,13 @@
 .pwa-banner-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.12), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+    box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.16), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
     border-radius: 12px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+    pointer-events: auto;
 }
 
 .pwa-btn-close {
@@ -345,18 +356,30 @@
     var userAgent = (window.navigator.userAgent || '').toLowerCase();
     var isMobile = /iphone|ipad|ipod|android|mobile/i.test(userAgent);
 
-    function showBanner() {
-        if (banner) banner.classList.remove('hidden');
+    var hasShown = false;
+    function triggerBanner() {
+        if (hasShown || !banner) return;
+        hasShown = true;
+        showBanner();
     }
 
     window.addEventListener('beforeinstallprompt', function(e) {
         e.preventDefault();
         deferredPrompt = e;
-        setTimeout(showBanner, 2000);
+        setTimeout(triggerBanner, 8000);
     });
 
     if (isMobile) {
-        setTimeout(showBanner, 3000);
+        // Chỉ hiện thông báo ghim khi người dùng đã cuộn trang (thực sự tương tác) hoặc sau 15 giây,
+        // tuyệt đối KHÔNG nhảy ra ngay khi vừa load trang che mất thanh điều hướng (nav)
+        var scrollHandler = function() {
+            if (window.scrollY > 200) {
+                triggerBanner();
+                window.removeEventListener('scroll', scrollHandler);
+            }
+        };
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+        setTimeout(triggerBanner, 15000);
     }
 
     if (pinBtn) {
@@ -378,8 +401,8 @@
     function dismissBanner() {
         if (banner) banner.classList.add('hidden');
         try {
-            var nextWeek = Date.now() + 7 * 24 * 60 * 60 * 1000;
-            localStorage.setItem(storageKey, nextWeek.toString());
+            var nextPeriod = Date.now() + 14 * 24 * 60 * 60 * 1000; // 14 ngày
+            localStorage.setItem(storageKey, nextPeriod.toString());
         } catch(e) {}
     }
 

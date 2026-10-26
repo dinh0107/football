@@ -479,8 +479,10 @@ a {
   overflow-x: auto;
   padding-bottom: 12px;
   margin-bottom: 24px;
-  scrollbar-width: thin;
+  scrollbar-width: none;
 }
+
+.gw-selector-container::-webkit-scrollbar { display: none; }
 
 .gw-pill {
   padding: 8px 18px;
@@ -652,6 +654,7 @@ a {
   padding: 4px 12px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-light);
+  white-space: nowrap;
 }
 
 .kickoff-time {
@@ -968,7 +971,7 @@ a {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-light);
-  z-index: 9999;
+  z-index: 10005;
   justify-content: space-around;
   align-items: center;
   box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
@@ -1027,6 +1030,10 @@ a {
     display: none;
   }
 
+  .ticker-bar {
+    display: none;
+  }
+
   .bottom-nav,
   .bottom-nav-mobile {
     display: flex;
@@ -1037,12 +1044,17 @@ a {
   }
 
   .page-title {
-    font-size: 1.35rem;
+    font-size: 1.2rem;
   }
 
   .page-subtitle {
     font-size: 0.85rem;
   }
+
+  .match-team-name {
+    font-size: 0.875rem;
+  }
+
 
   .fixture-grid {
     grid-template-columns: 1fr;
@@ -1172,23 +1184,25 @@ a {
 /* 3. Toast Banner Bàn Thắng Nổi Bật */
 .goal-toast-notification {
   position: fixed;
-  top: 24px;
+  top: 16px;
   left: 50%;
-  transform: translateX(-50%) translateY(-40px);
-  background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-  border: 2px solid var(--pl-green-neon);
-  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.5), 0 0 30px rgba(0, 255, 135, 0.3);
-  padding: 14px 22px;
-  border-radius: var(--radius-md);
+  transform: translateX(-50%) translateY(-30px);
+  background: rgba(15, 23, 42, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 255, 135, 0.4);
+  box-shadow: 0 12px 36px rgba(2, 6, 23, 0.5), 0 0 20px rgba(0, 255, 135, 0.15);
+  padding: 9px 16px;
+  border-radius: 12px;
   color: #ffffff;
   z-index: 100000;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  max-width: 90vw;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 440px;
 }
 
 .goal-toast-notification.show {
@@ -1198,67 +1212,145 @@ a {
 }
 
 .goal-toast-notification .toast-icon {
-  font-size: 2rem;
-  line-height: 1;
-  animation: bounce 1s infinite alternate;
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: rgba(0, 255, 135, 0.12);
+  color: var(--pl-green-neon, #00ff87);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: bounce 1.2s infinite alternate;
+}
+
+.goal-toast-notification .toast-icon svg {
+  width: 17px;
+  height: 17px;
+  stroke: var(--pl-green-neon, #00ff87);
 }
 
 @keyframes bounce {
   from { transform: translateY(0) scale(1); }
-  to { transform: translateY(-4px) scale(1.1); }
+  to { transform: translateY(-3px) scale(1.08); }
 }
 
 .goal-toast-notification .toast-body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
+  flex: 1;
 }
 
 .goal-toast-notification .toast-heading {
-  font-size: 0.75rem;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  color: var(--pl-green-neon);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--pl-green-neon, #00ff87);
   text-transform: uppercase;
 }
 
 .goal-toast-notification .toast-match {
-  font-size: 1rem;
-  font-weight: 800;
+  font-size: 0.875rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.goal-toast-notification .toast-team {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
 }
 
 .goal-toast-notification .toast-score {
-  background: var(--pl-pink);
+  background: var(--pl-pink, #e90052);
   color: #fff;
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
-  font-size: 1.1rem;
-  font-weight: 900;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 .goal-toast-notification .toast-scorer {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.85);
-  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.goal-toast-notification .toast-scorer svg {
+  width: 11px;
+  height: 11px;
+  stroke: var(--pl-green-neon, #00ff87);
 }
 
 .goal-toast-notification .toast-close {
   background: transparent;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.5);
   cursor: pointer;
-  line-height: 1;
   padding: 4px;
-  margin-left: 8px;
-  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
 }
 
 .goal-toast-notification .toast-close:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 640px) {
+  .goal-toast-notification {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    transform: translateY(-20px);
+    width: auto;
+    max-width: calc(100vw - 20px);
+    margin: 0 auto;
+    padding: 7px 10px;
+    gap: 8px;
+    border-radius: 10px;
+  }
+  .goal-toast-notification.show {
+    transform: translateY(0);
+  }
+  .goal-toast-notification .toast-icon {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+  }
+  .goal-toast-notification .toast-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+  .goal-toast-notification .toast-heading {
+    font-size: 0.625rem;
+    letter-spacing: 0.05em;
+  }
+  .goal-toast-notification .toast-match {
+    font-size: 0.78rem;
+    gap: 5px;
+  }
+  .goal-toast-notification .toast-team {
+    max-width: 85px;
+  }
+  .goal-toast-notification .toast-score {
+    font-size: 0.8rem;
+    padding: 1px 5px;
+  }
+  .goal-toast-notification .toast-scorer {
+    font-size: 0.68rem;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1664,6 +1756,18 @@ a {
 .seo-content-box strong {
   color: var(--pl-purple);
   font-weight: 700;
+}
+
+@media (max-width: 768px) {
+  .seo-content-box {
+    font-size: 0.875rem;
+    padding: 18px;
+  }
+
+  .seo-content-box h2,
+  .seo-content-box h3 {
+    font-size: 1.05rem;
+  }
 }
 
 /* === HOME PAGE STYLES === */
@@ -2323,7 +2427,7 @@ a {
             }
 
             .hero-title {
-                font-size: 1.25rem;
+                font-size: 1.125rem;
             }
 
             .hero-subtitle {
@@ -3324,7 +3428,7 @@ a {
                 height: 56px;
             }
             .hero-title {
-                font-size: 1.25rem;
+                font-size: 1.125rem;
             }
             .hero-subtitle {
                 font-size: 0.8rem;
@@ -5578,3 +5682,130 @@ a {
         .goal-toast-notification .toast-close:hover {
             color: #ffffff;
         }
+
+.name-short {
+  display: none;
+}
+
+/* Mobile: giao diện phẳng, gọn kiểu app thể thao (chỉ ≤640px) */
+@media (max-width: 640px) {
+  .name-full {
+    display: none;
+  }
+
+  .name-short {
+    display: inline;
+  }
+
+  .hero-banner {
+    background: var(--pl-purple);
+  }
+
+  .hero-banner::after {
+    display: none;
+  }
+
+  .matches-container .btn-favorite-team {
+    display: none;
+  }
+
+  .match-card,
+  .seo-content-box,
+  .date-nav-card {
+    border-radius: 12px;
+    box-shadow: none;
+    border-color: #e8edf3;
+  }
+
+  .match-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .hero-banner {
+    padding: 16px 14px;
+    border-radius: 12px;
+    box-shadow: none;
+  }
+
+  .date-nav-card {
+    padding: 10px;
+  }
+
+  /* Thẻ trận Lịch thi đấu / Trực tiếp: một hàng ngang [tên + logo | tỷ số | logo + tên] */
+  .match-card {
+    padding: 10px 12px;
+  }
+
+  .match-card-header {
+    margin-bottom: 6px;
+    flex-wrap: nowrap;
+    font-size: 0.7rem;
+  }
+
+  .match-card-footer,
+  .match-teams-box .btn-favorite-team,
+  .match-score-box > span {
+    display: none;
+  }
+
+  .match-teams-box {
+    padding: 2px 0;
+  }
+
+  .match-team {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 8px;
+    width: 38%;
+    text-align: left;
+  }
+
+  .match-teams-box .match-team:first-child {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+
+  .match-team > div {
+    min-width: 0;
+  }
+
+  .team-badge-lg {
+    width: 28px;
+    filter: none;
+  }
+
+  .match-team-name {
+    font-weight: 700;
+  }
+
+  .match-score-box {
+    width: 24%;
+  }
+
+  .score-display,
+  .kickoff-time {
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  .score-display {
+    font-size: 1.15rem;
+  }
+
+  .kickoff-time {
+    font-size: 0.875rem;
+  }
+
+  .match-status-tag,
+  .badge-tv-guide {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+  }
+
+  .gw-pill {
+    padding: 6px 14px;
+    font-size: 0.8rem;
+  }
+}

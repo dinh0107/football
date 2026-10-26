@@ -41,15 +41,10 @@ class MatchVote extends Model
             $drawCount = $votes->where('choice', 'draw')->count();
             $awayCount = $votes->where('choice', 'away')->count();
 
-            if ($total > 0) {
-                $homePercent = (float) number_format(($homeCount / $total) * 100, 1);
-                $drawPercent = (float) number_format(($drawCount / $total) * 100, 1);
-                $awayPercent = (float) number_format(($awayCount / $total) * 100, 1);
-            } else {
-                $homePercent = 45.0;
-                $drawPercent = 25.0;
-                $awayPercent = 30.0;
-            }
+            // Chưa có lượt bình chọn thì hiện 0%, không hiện tỷ lệ giả
+            $homePercent = $total > 0 ? round($homeCount / $total * 100, 1) : 0.0;
+            $drawPercent = $total > 0 ? round($drawCount / $total * 100, 1) : 0.0;
+            $awayPercent = $total > 0 ? round($awayCount / $total * 100, 1) : 0.0;
 
             $userVote = null;
             if ($userIp) {
@@ -78,9 +73,9 @@ class MatchVote extends Model
             return [
                 'match_id' => $matchId,
                 'total_votes' => 0,
-                'home' => ['count' => 0, 'percent' => 45.0],
-                'draw' => ['count' => 0, 'percent' => 25.0],
-                'away' => ['count' => 0, 'percent' => 30.0],
+                'home' => ['count' => 0, 'percent' => 0.0],
+                'draw' => ['count' => 0, 'percent' => 0.0],
+                'away' => ['count' => 0, 'percent' => 0.0],
                 'has_voted' => false,
                 'user_choice' => null,
             ];

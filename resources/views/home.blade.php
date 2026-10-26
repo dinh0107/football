@@ -342,6 +342,11 @@
             overflow-x: auto;
             margin-bottom: 20px;
             padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+
+        .filter-tabs::-webkit-scrollbar {
+            display: none;
         }
 
         .filter-tab {
@@ -711,7 +716,7 @@
             }
 
             .hero-title {
-                font-size: 1.25rem;
+                font-size: 1.125rem;
             }
 
             .hero-subtitle {
@@ -877,23 +882,25 @@
 
         .goal-toast-notification {
             position: fixed;
-            top: 24px;
+            top: 16px;
             left: 50%;
-            transform: translateX(-50%) translateY(-40px);
-            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            border: 2px solid #10b981;
-            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.6), 0 0 30px rgba(16, 185, 129, 0.35);
-            padding: 14px 22px;
-            border-radius: var(--radius-md);
+            transform: translateX(-50%) translateY(-30px);
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 135, 0.4);
+            box-shadow: 0 12px 36px rgba(2, 6, 23, 0.5), 0 0 20px rgba(0, 255, 135, 0.15);
+            padding: 9px 16px;
+            border-radius: 12px;
             color: #ffffff;
             z-index: 100000;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 90vw;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 440px;
         }
 
         .goal-toast-notification.show {
@@ -903,63 +910,145 @@
         }
 
         .goal-toast-notification .toast-icon {
-            font-size: 2rem;
-            line-height: 1;
-            animation: bounce 1s infinite alternate;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            background: rgba(0, 255, 135, 0.12);
+            color: var(--pl-green-neon, #00ff87);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 1.2s infinite alternate;
+        }
+
+        .goal-toast-notification .toast-icon svg {
+            width: 17px;
+            height: 17px;
+            stroke: var(--pl-green-neon, #00ff87);
         }
 
         @keyframes bounce {
             from { transform: translateY(0) scale(1); }
-            to { transform: translateY(-4px) scale(1.1); }
+            to { transform: translateY(-3px) scale(1.08); }
         }
 
         .goal-toast-notification .toast-body {
             display: flex;
             flex-direction: column;
             gap: 2px;
+            min-width: 0;
+            flex: 1;
         }
 
         .goal-toast-notification .toast-heading {
-            font-size: 0.75rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: var(--pl-mint);
+            font-size: 0.6875rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--pl-green-neon, #00ff87);
             text-transform: uppercase;
         }
 
         .goal-toast-notification .toast-match {
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 0.875rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .goal-toast-notification .toast-team {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 110px;
         }
 
         .goal-toast-notification .toast-score {
-            background: var(--pl-pink);
+            background: var(--pl-pink, #e90052);
             color: #fff;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 900;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
         .goal-toast-notification .toast-scorer {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 2px;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .goal-toast-notification .toast-scorer svg {
+            width: 11px;
+            height: 11px;
+            stroke: var(--pl-green-neon, #00ff87);
         }
 
         .goal-toast-notification .toast-close {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            line-height: 1;
             padding: 4px;
-            margin-left: 8px;
-            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
+        }
+
+        .goal-toast-notification .toast-close:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .goal-toast-notification {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                transform: translateY(-20px);
+                width: auto;
+                max-width: calc(100vw - 20px);
+                margin: 0 auto;
+                padding: 7px 10px;
+                gap: 8px;
+                border-radius: 10px;
+            }
+            .goal-toast-notification.show {
+                transform: translateY(0);
+            }
+            .goal-toast-notification .toast-icon {
+                width: 26px;
+                height: 26px;
+                min-width: 26px;
+            }
+            .goal-toast-notification .toast-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+            .goal-toast-notification .toast-heading {
+                font-size: 0.625rem;
+                letter-spacing: 0.05em;
+            }
+            .goal-toast-notification .toast-match {
+                font-size: 0.78rem;
+                gap: 5px;
+            }
+            .goal-toast-notification .toast-team {
+                max-width: 85px;
+            }
+            .goal-toast-notification .toast-score {
+                font-size: 0.8rem;
+                padding: 1px 5px;
+            }
+            .goal-toast-notification .toast-scorer {
+                font-size: 0.68rem;
+            }
         }
 
         /* Ghim Đội Bóng Yêu Thích & Icon Ngôi Sao Vector */
@@ -1063,7 +1152,7 @@
             {{-- Hero Section --}}
             <div class="hero-banner">
                 <h1 class="hero-title">Lịch Thi Đấu, Tỷ Số Trực Tiếp & Bảng Xếp Hạng Ngoại Hạng Anh Premier League</h1>
-                <p class="hero-subtitle">Mùa giải {{ $season['label'] ?? '2026/27' }} &bull; Dữ liệu thời gian thực từ PulseLive API chính thức.</p>
+                <p class="hero-subtitle">Mùa giải {{ $season['label'] ?? '2026/27' }} &bull; Tỷ số cập nhật trực tiếp, giờ thi đấu theo giờ Việt Nam.</p>
             </div>
 
             {{-- Date Navigation Card --}}
@@ -1093,7 +1182,7 @@
 
             {{-- Tiêu đề ngày thi đấu --}}
             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
-                <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple);">
+                <h2 style="font-size: clamp(1rem, 4.1vw, 1.15rem); font-weight: 800; color: var(--pl-purple);">
                     Lịch Thi Đấu & Kết Quả Các Trận Đấu Ngoại Hạng Anh: {{ $dateNav['dayOfWeek'] }}, ngày {{ $dateNav['formattedSelected'] }}
                 </h2>
                 <span style="font-size: 0.8rem; font-weight: 700; color: var(--pl-text-muted);">
@@ -1170,7 +1259,7 @@
                                 <button type="button" class="btn-favorite-team" data-favorite-team="{{ $homeId }}" title="Ghim đội yêu thích" aria-label="Ghim đội yêu thích">
                                     <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                 </button>
-                                <span class="team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }}</span>
+                                <span class="team-name"><span class="name-full">{{ $homeTeam['name'] ?? 'Đội nhà' }}</span><span class="name-short">{{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}</span></span>
                                 <img src="{{ \App\Services\PremierLeagueService::getTeamBadgeUrl($homeId, 70) }}" 
                                      alt="{{ $homeTeam['name'] ?? '' }}" 
                                      class="team-logo" loading="lazy"
@@ -1200,7 +1289,7 @@
                                      alt="{{ $awayTeam['name'] ?? '' }}" 
                                      class="team-logo" loading="lazy"
                                      onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/70/t1.png';">
-                                <span class="team-name">{{ $awayTeam['name'] ?? 'Đội khách' }}</span>
+                                <span class="team-name"><span class="name-full">{{ $awayTeam['name'] ?? 'Đội khách' }}</span><span class="name-short">{{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}</span></span>
                                 <button type="button" class="btn-favorite-team" data-favorite-team="{{ $awayId }}" title="Ghim đội yêu thích" aria-label="Ghim đội yêu thích">
                                     <svg class="star-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                 </button>

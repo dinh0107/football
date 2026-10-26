@@ -17,7 +17,8 @@ class DeployController extends Controller
      */
     protected function getSecret(): string
     {
-        return env('DEPLOY_SECRET', 'dinh0107_football_secret_2026');
+        // Không có giá trị mặc định: repo public nên secret phải nằm trong .env của server
+        return (string) env('DEPLOY_SECRET', '');
     }
 
     /**
@@ -36,7 +37,9 @@ class DeployController extends Controller
 
         $authorized = false;
 
-        if ($providedSecret && hash_equals($secret, $providedSecret)) {
+        if ($secret === '') {
+            // Chưa cấu hình DEPLOY_SECRET thì từ chối mọi yêu cầu
+        } elseif ($providedSecret && hash_equals($secret, (string) $providedSecret)) {
             $authorized = true;
         } elseif ($githubSignature) {
             $payload = $request->getContent();

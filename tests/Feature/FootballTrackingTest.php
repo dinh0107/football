@@ -39,6 +39,13 @@ class FootballTrackingTest extends TestCase
         $response->assertSee('datePicker');
     }
 
+    public function test_home_page_invalid_date_falls_back_instead_of_500(): void
+    {
+        $this->get('/?date=2026-13-45')->assertStatus(200);
+        $this->get('/?date=2026-02-30')->assertStatus(200);
+        $this->get('/?date[]=x')->assertStatus(200);
+    }
+
     /**
      * Test Phase 2: Trang chủ với tham số ?date=YYYY-MM-DD tải danh sách trận đấu và lọc theo tab
      */

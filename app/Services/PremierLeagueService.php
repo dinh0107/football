@@ -94,88 +94,60 @@ class PremierLeagueService
 
     /**
      * Lấy danh sách trận đấu và kết quả theo ngày (Fixtures & Results by Date)
-     * Yêu cầu Phase 2:
-     * - Tham số: $dateString định dạng YYYY-MM-DD
-     * - API: https://footballapi.pulselive.com/football/fixtures với comps=1, pageSize=40, sort=asc
-     * - Cache::remember(): 60s (nếu là hôm nay) hoặc 1 ngày (nếu là quá khứ/tương lai)
+     * Lọc theo giờ Việt Nam từ getFixtures() của vòng tương ứng (cache theo trạng thái trận)
      *
      * @param string $dateString Ngày định dạng YYYY-MM-DD
      * @return array Danh sách trận đấu diễn ra trong ngày
      */
     public function getFixturesByDate(string $dateString): array
     {
-        $today = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
-        $isToday = ($dateString === $today);
-        
-        // TTL: 60s nếu là ngày hôm nay (để cập nhật tỉ số live), 1 ngày (86400s) nếu là ngày khác
-        $ttl = $isToday ? 60 : 86400;
-        $cacheKey = "epl_fixtures_by_date_{$dateString}";
+        try {
+            $season = $this->getCurrentCompSeason()['id'];
+            $gameweeks = $this->getGameweeks($season);
 
-        return Cache::remember($cacheKey, $ttl, function () use ($dateString) {
-            try {
-                $season = $this->getCurrentCompSeason()['id'];
-                $gameweeks = $this->getGameweeks($season);
+            // Xác định gameweek tương ứng với ngày được chọn để lọc chính xác từ PulseLive
+            $targetCarbon = Carbon::parse($dateString, 'Asia/Ho_Chi_Minh');
+            $matchedGwId = null;
 
-                // Xác định gameweek tương ứng với ngày được chọn để lọc chính xác từ PulseLive
-                $targetCarbon = Carbon::parse($dateString, 'Asia/Ho_Chi_Minh');
-                $matchedGwId = null;
-
-                foreach ($gameweeks as $gw) {
-                    if (isset($gw['from']['millis']) && isset($gw['until']['millis'])) {
-                        $from = Carbon::createFromTimestampMs($gw['from']['millis'], 'Asia/Ho_Chi_Minh')->startOfDay()->subDay();
-                        $until = Carbon::createFromTimestampMs($gw['until']['millis'], 'Asia/Ho_Chi_Minh')->endOfDay()->addDay();
-                        if ($targetCarbon->between($from, $until)) {
-                            $matchedGwId = (int) $gw['id'];
-                            break;
-                        }
+            foreach ($gameweeks as $gw) {
+                if (isset($gw['from']['millis']) && isset($gw['until']['millis'])) {
+                    $from = Carbon::createFromTimestampMs($gw['from']['millis'], 'Asia/Ho_Chi_Minh')->startOfDay()->subDay();
+                    $until = Carbon::createFromTimestampMs($gw['until']['millis'], 'Asia/Ho_Chi_Minh')->endOfDay()->addDay();
+                    if ($targetCarbon->between($from, $until)) {
+                        $matchedGwId = (int) $gw['id'];
+                        break;
                     }
                 }
-
-                // Thiết lập params gọi API PulseLive theo đúng yêu cầu: comps=1, pageSize=40, sort=asc
-                $params = [
-                    'comps' => self::COMPETITION_ID,
-                    'compSeasons' => $season,
-                    'pageSize' => 40,
-                    'sort' => 'asc',
-                ];
-
-                if ($matchedGwId) {
-                    $params['gameweeks'] = $matchedGwId;
-                }
-
-                $response = $this->client()->get("{$this->baseUrl}/fixtures", $params);
-                if ($response->successful()) {
-                    $content = $response->json('content', []);
-
-                    // Lọc chính xác các trận đấu diễn ra vào ngày $dateString theo giờ Việt Nam (GMT+7)
-                    $filtered = array_values(array_filter($content, function ($fixture) use ($dateString) {
-                        if (!isset($fixture['kickoff']['millis'])) {
-                            return false;
-                        }
-                        $matchDate = Carbon::createFromTimestampMs($fixture['kickoff']['millis'], 'Asia/Ho_Chi_Minh')->toDateString();
-                        return $matchDate === $dateString;
-                    }));
-
-                    return $filtered;
-                }
-            } catch (\Throwable $e) {
-                Log::error("Lỗi khi lấy trận đấu ngày {$dateString} từ PulseLive: " . $e->getMessage());
             }
 
-            return [];
-        });
+            // Ngày ngoài mọi vòng (trận bù, đá giữa tuần...) thì lọc từ danh sách cả mùa
+            $fixtures = $this->getFixtures($matchedGwId, $season);
+
+            // Lọc chính xác các trận đấu diễn ra vào ngày $dateString theo giờ Việt Nam (GMT+7)
+            return array_values(array_filter($fixtures, function ($fixture) use ($dateString) {
+                if (!isset($fixture['kickoff']['millis'])) {
+                    return false;
+                }
+                $matchDate = Carbon::createFromTimestampMs($fixture['kickoff']['millis'], 'Asia/Ho_Chi_Minh')->toDateString();
+                return $matchDate === $dateString;
+            }));
+        } catch (\Throwable $e) {
+            Log::error("Lỗi khi lấy trận đấu ngày {$dateString} từ PulseLive: " . $e->getMessage());
+        }
+
+        return [];
     }
 
     /**
      * Lấy Bảng Xếp Hạng (Standings) gốc từ PulseLive
-     * Cache trong 30 phút (1800 giây) theo yêu cầu Phase 3
+     * Cache 5 phút: trận vừa hết giờ rời khỏi danh sách live, BXH gốc phải kịp cập nhật để không bị lùi điểm
      */
     public function getStandings(?int $seasonId = null): array
     {
         $season = $seasonId ?: $this->getCurrentCompSeason()['id'];
         $cacheKey = "epl_standings_{$season}";
 
-        return Cache::remember($cacheKey, 1800, function () use ($season) {
+        return Cache::remember($cacheKey, 300, function () use ($season) {
             try {
                 $response = $this->client()->get("{$this->baseUrl}/compseasons/{$season}/standings");
                 if ($response->successful()) {
@@ -509,38 +481,83 @@ class PremierLeagueService
      */
     public function getMatchDetail(int $fixtureId): ?array
     {
-        $metaKey = "epl_fixture_meta_{$fixtureId}";
-        $cachedMeta = Cache::get($metaKey);
-
-        // Mặc định:
-        // - Trận Live ('L'): 20 giây
-        // - Trận Đã xong ('C'): 7 ngày (604800s) - kết quả vĩnh viễn không thay đổi
-        // - Trận Chưa đá ('U'): 3 ngày (259200s) - lịch thi đấu cố định
-        $ttl = 259200;
-        if ($cachedMeta === 'L') {
-            $ttl = 20;
-        } elseif ($cachedMeta === 'C') {
-            $ttl = 604800;
+        $cacheKey = "epl_match_detail_{$fixtureId}";
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            $kickoff = (int) (($cached['kickoff']['millis'] ?? 0) / 1000);
+            // Nếu bản cache đang lưu 'U' nhưng thời điểm hiện tại đã tới/qua giờ bóng lăn,
+            // bản cache 'U' cũ không còn tin cậy -> bỏ qua cache để gọi API
+            if (($cached['status'] ?? 'U') === 'U' && $kickoff > 0 && time() >= $kickoff) {
+                $cached = null;
+            } else {
+                return $this->overlayLiveMatchOnDetail($cached);
+            }
         }
 
-        $cacheKey = "epl_match_detail_{$fixtureId}";
-
-        return Cache::remember($cacheKey, $ttl, function () use ($fixtureId, $metaKey) {
-            try {
-                $response = $this->client()->get("{$this->baseUrl}/fixtures/{$fixtureId}");
-                if ($response->successful()) {
-                    $data = $response->json();
-                    $status = $data['status'] ?? 'U';
-                    $storeTtl = ($status === 'L') ? 20 : (($status === 'C') ? 604800 : 259200);
-                    Cache::put($metaKey, $status, $storeTtl);
-                    return $data;
-                }
-            } catch (\Throwable $e) {
-                Log::error("Lỗi khi lấy chi tiết trận {$fixtureId}: " . $e->getMessage());
+        try {
+            $response = $this->client()->get("{$this->baseUrl}/fixtures/{$fixtureId}");
+            if ($response->successful()) {
+                $data = $response->json();
+                $data = $this->overlayLiveMatchOnDetail($data);
+                Cache::put($cacheKey, $data, self::matchDetailTtl($data));
+                return $data;
             }
+        } catch (\Throwable $e) {
+            Log::error("Lỗi khi lấy chi tiết trận {$fixtureId}: " . $e->getMessage());
+        }
 
-            return null;
-        });
+        return null;
+    }
+
+    /**
+     * Đồng bộ trạng thái Live từ feed getLiveMatches() nếu trận đang diễn ra thực tế
+     */
+    public function overlayLiveMatchOnDetail(array $data): array
+    {
+        $fixtureId = (int) ($data['id'] ?? 0);
+        if ($fixtureId <= 0 || ($data['status'] ?? 'U') === 'C') {
+            return $data;
+        }
+
+        $liveMatches = $this->getLiveMatches();
+        foreach ($liveMatches as $lm) {
+            if ((int) ($lm['id'] ?? 0) === $fixtureId) {
+                $data['status'] = 'L';
+                if (!empty($lm['clock'])) {
+                    $data['clock'] = $lm['clock'];
+                }
+                if (!empty($lm['teams'])) {
+                    $data['teams'] = $lm['teams'];
+                }
+                if (isset($lm['goals'])) {
+                    $data['goals'] = $lm['goals'];
+                }
+                if (isset($lm['phase'])) {
+                    $data['phase'] = $lm['phase'];
+                }
+                break;
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * TTL cache chi tiết trận: đã xong 7 ngày, đang đá 20 giây,
+     * chưa đá chỉ tới giờ bóng lăn để trận vừa bắt đầu chuyển sang live ngay.
+     */
+    public static function matchDetailTtl(array $data): int
+    {
+        $status = $data['status'] ?? 'U';
+        if ($status === 'C') {
+            return 604800;
+        }
+        if ($status !== 'U') {
+            return 20;
+        }
+
+        $kickoff = (int) (($data['kickoff']['millis'] ?? 0) / 1000);
+        return max(20, min(259200, $kickoff - time()));
     }
 
     /**
@@ -891,7 +908,12 @@ class PremierLeagueService
         $ttl = ($status === 'C') ? 86400 : 30;
         $cacheKey = "epl_match_stats_{$matchId}";
 
-        return Cache::remember($cacheKey, $ttl, function () use ($matchId, $match, $defaultStats) {
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            return $cached;
+        }
+
+        $stats = (function () use ($matchId, $match) {
             try {
                 $homeId = (int) ($match['teams'][0]['team']['club']['id'] ?? ($match['teams'][0]['team']['id'] ?? 0));
                 $awayId = (int) ($match['teams'][1]['team']['club']['id'] ?? ($match['teams'][1]['team']['id'] ?? 0));
@@ -939,8 +961,16 @@ class PremierLeagueService
                 Log::error("Lỗi khi lấy match stats {$matchId}: " . $e->getMessage());
             }
 
+            return null;
+        })();
+
+        // Không cache khi API lỗi, tránh hiện toàn số 0 suốt 24 giờ
+        if ($stats === null) {
             return $defaultStats;
-        });
+        }
+
+        Cache::put($cacheKey, $stats, $ttl);
+        return $stats;
     }
 
     /**
@@ -954,7 +984,8 @@ class PremierLeagueService
         }
 
         foreach ($gameweeks as $gw) {
-            if (in_array($gw['status'] ?? '', ['L', 'U'])) {
+            // I = vòng đang diễn ra (đã đá một phần), L = đang có trận live, U = chưa đá
+            if (in_array($gw['status'] ?? '', ['I', 'L', 'U'])) {
                 return $gw;
             }
         }
@@ -970,31 +1001,124 @@ class PremierLeagueService
         $season = $seasonId ?: $this->getCurrentCompSeason()['id'];
         $cacheKey = "epl_fixtures_{$season}_gw_" . ($gameweekId ?? 'all');
 
-        return Cache::remember($cacheKey, 86400, function () use ($season, $gameweekId) {
-            try {
-                $params = [
-                    'comps' => self::COMPETITION_ID,
-                    'compSeasons' => $season,
-                    'page' => 0,
-                    // 1 mùa = 380 trận, lấy trọn trong 1 trang để sitemap không sót trận
-                    'pageSize' => 400,
-                    'sort' => 'asc',
-                ];
-
-                if ($gameweekId) {
-                    $params['gameweeks'] = $gameweekId;
+        $cached = Cache::get($cacheKey);
+        if ($cached !== null) {
+            $now = time();
+            $hasStaleUpcoming = false;
+            foreach ($cached as $item) {
+                if (($item['status'] ?? 'U') === 'U') {
+                    $k = (int) (($item['kickoff']['millis'] ?? 0) / 1000);
+                    if ($k > 0 && $now >= $k && ($now - $k < 10800)) {
+                        $hasStaleUpcoming = true;
+                        break;
+                    }
                 }
-
-                $response = $this->client()->get("{$this->baseUrl}/fixtures", $params);
-                if ($response->successful()) {
-                    return $response->json('content', []);
-                }
-            } catch (\Throwable $e) {
-                Log::error('Lỗi khi lấy Lịch Thi Đấu: ' . $e->getMessage());
             }
 
-            return [];
-        });
+            if (!$hasStaleUpcoming) {
+                return $this->overlayLiveMatchesOnFixtures($cached, $season);
+            }
+        }
+
+        try {
+            $params = [
+                'comps' => self::COMPETITION_ID,
+                'compSeasons' => $season,
+                'page' => 0,
+                // 1 mùa = 380 trận, lấy trọn trong 1 trang để sitemap không sót trận
+                'pageSize' => 400,
+                'sort' => 'asc',
+            ];
+
+            if ($gameweekId) {
+                $params['gameweeks'] = $gameweekId;
+            }
+
+            $response = $this->client()->get("{$this->baseUrl}/fixtures", $params);
+            if ($response->successful()) {
+                $fixtures = $response->json('content', []);
+                $fixtures = $this->overlayLiveMatchesOnFixtures($fixtures, $season);
+                Cache::put($cacheKey, $fixtures, self::fixturesTtl($fixtures));
+                return $fixtures;
+            }
+        } catch (\Throwable $e) {
+            Log::error('Lỗi khi lấy Lịch Thi Đấu: ' . $e->getMessage());
+        }
+
+        return [];
+    }
+
+    /**
+     * Tự động ghép nối các trận Live thời gian thực vào danh sách Fixtures
+     */
+    public function overlayLiveMatchesOnFixtures(array $fixtures, ?int $seasonId = null): array
+    {
+        $liveMatches = $this->getLiveMatches($seasonId);
+        if (empty($liveMatches)) {
+            return $fixtures;
+        }
+
+        $liveMap = [];
+        foreach ($liveMatches as $lm) {
+            $id = (int) ($lm['id'] ?? 0);
+            if ($id > 0) {
+                $liveMap[$id] = $lm;
+            }
+        }
+
+        foreach ($fixtures as &$f) {
+            $id = (int) ($f['id'] ?? 0);
+            if (isset($liveMap[$id])) {
+                $lm = $liveMap[$id];
+                $f['status'] = 'L';
+                if (!empty($lm['clock'])) {
+                    $f['clock'] = $lm['clock'];
+                }
+                if (!empty($lm['teams'])) {
+                    $f['teams'] = $lm['teams'];
+                }
+                if (isset($lm['goals'])) {
+                    $f['goals'] = $lm['goals'];
+                }
+                if (isset($lm['phase'])) {
+                    $f['phase'] = $lm['phase'];
+                }
+            }
+        }
+
+        return $fixtures;
+    }
+
+    /**
+     * TTL cache danh sách trận: có trận đang đá (hoặc vừa tới giờ bóng lăn) thì 60 giây,
+     * còn trận sắp đá thì tới giờ bóng lăn gần nhất, tất cả đã xong thì 1 ngày.
+     */
+    public static function fixturesTtl(array $fixtures): int
+    {
+        $now = time();
+        $nextKickoff = null;
+
+        foreach ($fixtures as $fixture) {
+            $status = $fixture['status'] ?? 'U';
+            if ($status === 'C') {
+                continue;
+            }
+            if ($status !== 'U') {
+                return 60;
+            }
+
+            $kickoff = (int) (($fixture['kickoff']['millis'] ?? 0) / 1000);
+            if ($kickoff <= $now) {
+                // Quá giờ bóng lăn 3 tiếng mà vẫn 'U' là trận bị hoãn, không cần làm mới liên tục
+                if ($now - $kickoff < 10800) {
+                    return 60;
+                }
+                continue;
+            }
+            $nextKickoff = min($nextKickoff ?? $kickoff, $kickoff);
+        }
+
+        return $nextKickoff ? max(60, min(86400, $nextKickoff - $now)) : 86400;
     }
 
     /**

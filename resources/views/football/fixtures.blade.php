@@ -38,7 +38,7 @@
 {{-- Tiêu đề Vòng được chọn --}}
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <div>
-        <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple);">
+        <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple);">
             Trận Đấu Vòng {{ $selectedGw['gameweek'] ?? 'Hiện tại' }}
         </h2>
         <span style="font-size: 0.825rem; color: var(--text-muted);">

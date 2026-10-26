@@ -17,16 +17,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Tạo tài khoản Admin chính thức (Không dùng Factory/fake để tương thích 100% Production Plesk)
+        // Mật khẩu admin lấy từ .env (repo public, không được ghi cứng trong code)
+        $password = env('ADMIN_PASSWORD');
+        if (!$password) {
+            $this->command?->error('Thiếu ADMIN_PASSWORD trong .env, bỏ qua tạo tài khoản admin.');
+            return;
+        }
+
         User::updateOrCreate(
-            ['email' => 'admin@tysongoaihang.site'],
+            ['email' => env('ADMIN_EMAIL', 'admin@tysongoaihang.site')],
             [
                 'name' => 'Administrator',
-                'password' => Hash::make('Admin@123456'),
+                'password' => Hash::make($password),
                 'is_admin' => true,
             ]
         );
-
-        $this->call(AdminUserSeeder::class);
     }
 }

@@ -1,5 +1,5 @@
 {{-- Reusable Mobile Bottom Navigation Bar (Chuẩn Vector SVG, không dùng emoji) --}}
-<nav class="bottom-nav-mobile" aria-label="Điều hướng nhanh di động">
+<nav class="bottom-nav-mobile" aria-label="Điều hướng nhanh di động" style="z-index: 10005 !important;">
     <a href="{{ route('home') }}" class="bottom-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
         <svg class="bottom-nav-icon" viewBox="0 0 24 24">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z"/>

@@ -92,8 +92,8 @@
     <div class="ticker-bar">
         <div class="container ticker-inner">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <span class="ticker-badge">LIVE PULSE</span>
-                <span style="color: var(--text-muted); font-size: 0.8rem;" id="livePollingIndicator">Cập nhật mỗi 30s từ PulseLive</span>
+                <span class="ticker-badge">LIVE</span>
+                <span style="color: var(--text-muted); font-size: 0.8rem;" id="livePollingIndicator">Tỷ số tự cập nhật mỗi 30 giây</span>
             </div>
             <div style="display: flex; gap: 12px; align-items: center;">
                 <a href="{{ route('fixtures') }}" class="ticker-match">
@@ -122,7 +122,7 @@
             <div>
                 <p><strong>Premier League Live Tracker</strong> &copy; {{ date('Y') }}. Chuyên trang phi lợi nhuận cập nhật Ngoại Hạng Anh.</p>
                 <p style="font-size: 0.775rem; color: var(--text-dim); margin-top: 4px;">
-                    Dữ liệu PulseLive API &bull; Không tổ chức cá độ &bull; Không phát sóng lậu.
+                    Dữ liệu chính thức Premier League &bull; Không tổ chức cá độ &bull; Không phát sóng lậu.
                 </p>
             </div>
             <div style="display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.8rem; align-items: center;">

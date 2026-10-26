@@ -120,9 +120,6 @@ class AdminController extends Controller
                 'notes' => $validated['notes'] ?? null,
             ]
         );
-
-        Cache::forget("match_details_{$validated['match_id']}");
-
         return redirect()->route('admin.dashboard')->with('success', "Đã cập nhật kênh phát sóng [{$validated['tv_channel']}] cho trận #{$validated['match_id']} thành công!");
     }
 
@@ -150,10 +147,11 @@ class AdminController extends Controller
                 Artisan::call('up');
                 $msg = 'Đã TẮT chế độ bảo trì. Website hoạt động bình thường!';
             } else {
+                $bypass = \Illuminate\Support\Str::random(32);
                 Artisan::call('down', [
-                    '--secret' => 'admin-epl-bypass',
+                    '--secret' => $bypass,
                 ]);
-                $msg = 'Đã BẬT chế độ bảo trì hệ thống. Người dùng sẽ thấy trang bảo trì.';
+                $msg = 'Đã BẬT chế độ bảo trì hệ thống. Người dùng sẽ thấy trang bảo trì. Link vào site trong lúc bảo trì: ' . url($bypass);
             }
 
             return redirect()->route('admin.dashboard')->with('success', $msg);

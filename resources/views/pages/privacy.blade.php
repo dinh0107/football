@@ -25,19 +25,19 @@
             <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10b981;"></span>
             <span style="font-size: 0.75rem; font-weight: 800; color: #34d399; text-transform: uppercase; letter-spacing: 0.05em;">Cam Kết Bảo Vệ Quyền Riêng Tư</span>
         </div>
-        <h1 style="font-size: 2rem; font-weight: 900; line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.02em;">
+        <h1 style="font-size: clamp(1.375rem, 5.6vw, 2rem); font-weight: 900; line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.02em;">
             Chính Sách Bảo Mật Thông Tin
         </h1>
-        <p style="font-size: 1.05rem; color: #cbd5e1; max-width: 680px; line-height: 1.6; margin: 0;">
+        <p style="font-size: clamp(0.9375rem, 3.85vw, 1.05rem); color: #cbd5e1; max-width: 680px; line-height: 1.6; margin: 0;">
             TySoNgoaiHang.site cam kết tôn trọng tuyệt đối quyền riêng tư và khẳng định không thu thập trái phép bất kỳ dữ liệu cá nhân nào của người dùng.
         </p>
     </div>
 
     {{-- Nội dung chính sách --}}
-    <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 28px; line-height: 1.75; color: var(--text-muted); font-size: 0.95rem;">
+    <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 28px; line-height: 1.75; color: var(--text-muted); font-size: clamp(0.875rem, 3.6vw, 0.95rem);">
         
         <section>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pl-pink);"></span>
                 1. Cam Kết Không Thu Thập Trái Phép Dữ Liệu
             </h2>
@@ -50,7 +50,7 @@
         </section>
 
         <section>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pl-pink);"></span>
                 2. Dữ Liệu Lưu Trữ Cục Bộ (LocalStorage & Cookie)
             </h2>
@@ -68,7 +68,7 @@
         </section>
 
         <section>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pl-pink);"></span>
                 3. Nhật Ký Kỹ Thuật Máy Chủ (Server Logs)
             </h2>
@@ -81,7 +81,7 @@
         </section>
 
         <section>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pl-pink);"></span>
                 4. Cam Kết Không Bán / Chia Sẻ Dữ Liệu Cho Bên Thứ Ba
             </h2>
@@ -91,7 +91,7 @@
         </section>
 
         <section>
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 12px; display: flex; align-items: center; gap: 10px;">
                 <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--pl-pink);"></span>
                 5. Liên Hệ & Quyền Khiếu Nại
             </h2>

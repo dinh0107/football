@@ -385,6 +385,10 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        .name-short {
+            display: none;
+        }
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -680,7 +684,7 @@
                 height: 56px;
             }
             .hero-title {
-                font-size: 1.25rem;
+                font-size: 1.125rem;
             }
             .hero-subtitle {
                 font-size: 0.8rem;
@@ -743,6 +747,12 @@
             .col-hide-mobile {
                 display: none;
             }
+            .name-full {
+                display: none;
+            }
+            .name-short {
+                display: inline;
+            }
             .site-footer {
                 padding: 20px 0 16px;
                 font-size: 0.775rem;
@@ -752,6 +762,14 @@
                 align-items: center;
                 text-align: center;
                 gap: 10px;
+            }
+            .hero-banner,
+            .table-card {
+                border-radius: 12px;
+                box-shadow: none;
+            }
+            .hero-banner {
+                padding: 16px 14px;
             }
         }
     </style>
@@ -779,7 +797,7 @@
             {{-- Hero Banner --}}
             <div class="hero-banner">
                 <h1 class="hero-title">Bảng Xếp Hạng Ngoại Hạng Anh {{ $seasonShort }}</h1>
-                <p class="hero-subtitle">Bảng xếp hạng đầy đủ, bảng trực tiếp thời gian thực (Live Table As-It-Stands) & Top Vua phá lưới.</p>
+                <p class="hero-subtitle">Bảng xếp hạng đầy đủ, cập nhật trực tiếp khi có trận đang đá, kèm danh sách Vua phá lưới.</p>
             </div>
 
             {{-- Thông báo Live Table As-It-Stands --}}
@@ -788,7 +806,7 @@
                     <div class="live-banner-left">
                         <span class="pulse-circle"></span>
                         <div>
-                            <span class="live-badge-text">BXH Trực Tiếp (Live Table As-It-Stands)</span>
+                            <span class="live-badge-text">BXH Trực Tiếp</span>
                             <div style="font-size: 0.8rem; color: #881337; margin-top: 2px;">
                                 Đang tự động cộng điểm tạm thời và tính lại thứ hạng theo diễn biến của <strong>{{ $liveMatchesCount }}</strong> trận đấu trực tiếp!
                             </div>
@@ -815,8 +833,8 @@
                 <div class="table-card">
                     <div class="table-toolbar">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <strong style="font-size: 0.95rem; color: var(--pl-purple);">Premier League Standings</strong>
-                            <span style="font-size: 0.8rem; color: var(--pl-text-muted);">(Tổng cộng 20 CLB &bull; Cache 30 phút)</span>
+                            <strong style="font-size: 0.95rem; color: var(--pl-purple);">Bảng xếp hạng</strong>
+                            <span style="font-size: 0.8rem; color: var(--pl-text-muted);">(20 CLB)</span>
                         </div>
                         <div class="search-box">
                             <span style="color: var(--pl-text-muted); font-size: 0.85rem;">Tìm:</span>
@@ -831,13 +849,13 @@
                                     <th style="text-align: center; width: 50px;">#</th>
                                     <th>Câu lạc bộ</th>
                                     <th style="text-align: center;">Trận</th>
-                                    <th style="text-align: center;">Thắng</th>
-                                    <th style="text-align: center;">Hòa</th>
-                                    <th style="text-align: center;">Thua</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">Thắng</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">Hòa</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">Thua</th>
                                     <th class="col-hide-mobile" style="text-align: center;">BT-BB</th>
-                                    <th style="text-align: center;">Hiệu số</th>
+                                    <th style="text-align: center;"><span class="name-full">Hiệu số</span><span class="name-short">HS</span></th>
                                     <th style="text-align: center; width: 70px;">Điểm</th>
-                                    <th style="text-align: center;">5 Trận Gần Nhất</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">5 Trận Gần Nhất</th>
                                 </tr>
                             </thead>
                             <tbody id="standingsTableBody">
@@ -883,7 +901,7 @@
                                                      class="club-badge" loading="lazy"
                                                      onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/badges/50/t1.png';">
                                                 <div>
-                                                    <div>{{ $team['name'] ?? 'Chưa rõ' }}</div>
+                                                    <div><span class="name-full">{{ $team['name'] ?? 'Chưa rõ' }}</span><span class="name-short">{{ $team['shortName'] ?? ($team['name'] ?? 'Chưa rõ') }}</span></div>
                                                     @if($isLiveNow)
                                                         <span class="live-playing-badge">ĐANG ĐÁ</span>
                                                     @endif
@@ -893,9 +911,9 @@
 
                                         {{-- Thống kê thi đấu --}}
                                         <td style="text-align: center; font-weight: 700;">{{ $overall['played'] ?? 0 }}</td>
-                                        <td style="text-align: center; color: #10b981; font-weight: 700;">{{ $overall['won'] ?? 0 }}</td>
-                                        <td style="text-align: center; color: var(--pl-text-muted);">{{ $overall['drawn'] ?? 0 }}</td>
-                                        <td style="text-align: center; color: #ef4444; font-weight: 700;">{{ $overall['lost'] ?? 0 }}</td>
+                                        <td class="col-hide-mobile" style="text-align: center; color: #10b981; font-weight: 700;">{{ $overall['won'] ?? 0 }}</td>
+                                        <td class="col-hide-mobile" style="text-align: center; color: var(--pl-text-muted);">{{ $overall['drawn'] ?? 0 }}</td>
+                                        <td class="col-hide-mobile" style="text-align: center; color: #ef4444; font-weight: 700;">{{ $overall['lost'] ?? 0 }}</td>
                                         <td class="col-hide-mobile" style="text-align: center; color: var(--pl-text-muted);">{{ $overall['goalsFor'] ?? 0 }}-{{ $overall['goalsAgainst'] ?? 0 }}</td>
                                         <td style="text-align: center; font-weight: 700; color: {{ ($overall['goalsDifference'] ?? 0) >= 0 ? 'var(--pl-mint-dark)' : '#ef4444' }};">
                                             {{ ($overall['goalsDifference'] ?? 0) > 0 ? '+' : '' }}{{ $overall['goalsDifference'] ?? 0 }}
@@ -905,7 +923,7 @@
                                         <td class="points-col">{{ $overall['points'] ?? 0 }}</td>
 
                                         {{-- 5 Trận Gần Nhất --}}
-                                        <td style="text-align: center;">
+                                        <td class="col-hide-mobile" style="text-align: center;">
                                             @if(!empty($form))
                                                 <div class="form-pills">
                                                     @foreach(array_slice($form, -5) as $f)
@@ -965,7 +983,7 @@
                     <div class="table-toolbar">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <strong style="font-size: 0.95rem; color: var(--pl-purple);">Top 10 Vua Phá Lưới Ngoại Hạng Anh</strong>
-                            <span style="font-size: 0.8rem; color: var(--pl-text-muted);">(Cập nhật mùa giải {{ $season['label'] ?? '' }})</span>
+                            <span style="font-size: 0.8rem; color: var(--pl-text-muted);">(Mùa {{ $seasonShort }})</span>
                         </div>
                     </div>
 
@@ -975,10 +993,10 @@
                                 <tr>
                                     <th style="text-align: center; width: 50px;">Hạng</th>
                                     <th>Cầu thủ</th>
-                                    <th>Câu lạc bộ</th>
-                                    <th style="text-align: center;">Quốc tịch</th>
-                                    <th style="text-align: center;">Bàn thắng</th>
-                                    <th style="text-align: center;">Kiến tạo</th>
+                                    <th class="col-hide-mobile">Câu lạc bộ</th>
+                                    <th class="col-hide-mobile" style="text-align: center;">Quốc tịch</th>
+                                    <th style="text-align: center;"><span class="name-full">Bàn thắng</span><span class="name-short">Bàn</span></th>
+                                    <th style="text-align: center;"><span class="name-full">Kiến tạo</span><span class="name-short">KT</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -996,11 +1014,11 @@
                                                      onerror="this.onerror=null; this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';">
                                                 <div>
                                                     <div class="player-name-text">{{ $scorer['name'] }}</div>
-                                                    <div class="player-pos-text">{{ $scorer['position'] }}</div>
+                                                    <div class="player-pos-text"><span class="name-full">{{ $scorer['position'] }}</span><span class="name-short">{{ $scorer['teamName'] }}</span></div>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="col-hide-mobile">
                                             <div style="display: flex; align-items: center; gap: 8px;">
                                                 <img src="{{ $scorer['teamBadge'] }}" 
                                                      alt="{{ $scorer['teamName'] }}" 
@@ -1010,7 +1028,7 @@
                                                 <span style="font-weight: 700;">{{ $scorer['teamName'] }}</span>
                                             </div>
                                         </td>
-                                        <td style="text-align: center; color: var(--pl-text-muted);">
+                                        <td class="col-hide-mobile" style="text-align: center; color: var(--pl-text-muted);">
                                             {{ $scorer['nationality'] ?: '--' }}
                                         </td>
                                         <td class="goals-badge">{{ $scorer['goals'] }}</td>

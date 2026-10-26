@@ -25,10 +25,10 @@
             <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #38bdf8;"></span>
             <span style="font-size: 0.75rem; font-weight: 800; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.05em;">Kênh Phản Hồi Trực Tiếp</span>
         </div>
-        <h1 style="font-size: 2rem; font-weight: 900; line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.02em;">
+        <h1 style="font-size: clamp(1.375rem, 5.6vw, 2rem); font-weight: 900; line-height: 1.25; margin-bottom: 12px; letter-spacing: -0.02em;">
             Liên Hệ Ban Quản Trị
         </h1>
-        <p style="font-size: 1.05rem; color: #cbd5e1; max-width: 680px; line-height: 1.6; margin: 0;">
+        <p style="font-size: clamp(0.9375rem, 3.85vw, 1.05rem); color: #cbd5e1; max-width: 680px; line-height: 1.6; margin: 0;">
             Mọi ý kiến đóng góp, phản ánh lỗi kỹ thuật hoặc thắc mắc về dữ liệu trận đấu, vui lòng gửi qua email hoặc mẫu liên hệ dưới đây.
         </p>
     </div>
@@ -38,7 +38,7 @@
         <div style="background: #ecfdf5; border: 1.5px solid #10b981; border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; color: #065f46;">
             <svg class="svg-icon svg-icon-lg" viewBox="0 0 24 24" style="color: #059669; flex-shrink: 0;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
             <div>
-                <strong style="font-size: 0.95rem;">Gửi liên hệ thành công!</strong>
+                <strong style="font-size: clamp(0.875rem, 3.6vw, 0.95rem);">Gửi liên hệ thành công!</strong>
                 <p style="font-size: 0.85rem; margin-top: 2px; margin-bottom: 0;">{{ session('success') }}</p>
             </div>
         </div>
@@ -47,7 +47,7 @@
     {{-- Lỗi Validation nếu có --}}
     @if($errors->any())
         <div style="background: #fef2f2; border: 1.5px solid #ef4444; border-radius: var(--radius-md); padding: 16px 20px; margin-bottom: 24px; color: #991b1b;">
-            <strong style="font-size: 0.95rem; display: block; margin-bottom: 6px;">Vui lòng kiểm tra lại thông tin:</strong>
+            <strong style="font-size: clamp(0.875rem, 3.6vw, 0.95rem); display: block; margin-bottom: 6px;">Vui lòng kiểm tra lại thông tin:</strong>
             <ul style="margin: 0; padding-left: 20px; font-size: 0.85rem;">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -60,7 +60,7 @@
         {{-- Cột trái: Thông tin liên hệ trực tiếp --}}
         <div style="display: flex; flex-direction: column; gap: 18px;">
             <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-sm);">
-                <h2 style="font-size: 1.15rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 16px;">
+                <h2 style="font-size: clamp(1rem, 4.1vw, 1.15rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 16px;">
                     Thông Tin Liên Hệ
                 </h2>
 
@@ -71,7 +71,7 @@
                         </div>
                         <div>
                             <span style="font-size: 0.775rem; color: var(--text-dim); text-transform: uppercase; font-weight: 700; display: block;">Email Chính Thức</span>
-                            <a href="mailto:lienhe@tysongoaihang.site" style="font-size: 0.95rem; font-weight: 800; color: var(--pl-pink); word-break: break-all;">
+                            <a href="mailto:lienhe@tysongoaihang.site" style="font-size: clamp(0.875rem, 3.6vw, 0.95rem); font-weight: 800; color: var(--pl-pink); word-break: break-all;">
                                 lienhe@tysongoaihang.site
                             </a>
                         </div>
@@ -110,7 +110,7 @@
 
         {{-- Cột phải: Form liên hệ --}}
         <div style="background: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-sm);">
-            <h2 style="font-size: 1.25rem; font-weight: 800; color: var(--pl-purple); margin-bottom: 8px;">
+            <h2 style="font-size: clamp(1.0625rem, 4.4vw, 1.25rem); font-weight: 800; color: var(--pl-purple); margin-bottom: 8px;">
                 Gửi Tin Nhắn Cho Chúng Tôi
             </h2>
             <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 20px;">
@@ -160,7 +160,7 @@
                               onfocus="this.style.borderColor='var(--pl-pink)'" onblur="this.style.borderColor='var(--border-light)'">{{ old('message') }}</textarea>
                 </div>
 
-                <button type="submit" style="width: 100%; padding: 12px 24px; border-radius: var(--radius-full); background: var(--pl-purple); color: #ffffff; font-weight: 800; font-size: 0.95rem; border: none; cursor: pointer; transition: background 0.2s; box-shadow: var(--shadow-sm);"
+                <button type="submit" style="width: 100%; padding: 12px 24px; border-radius: var(--radius-full); background: var(--pl-purple); color: #ffffff; font-weight: 800; font-size: clamp(0.875rem, 3.6vw, 0.95rem); border: none; cursor: pointer; transition: background 0.2s; box-shadow: var(--shadow-sm);"
                         onmouseover="this.style.background='var(--pl-purple-light)'" onmouseout="this.style.background='var(--pl-purple)'">
                     Gửi Tin Nhắn Liên Hệ &rarr;
                 </button>

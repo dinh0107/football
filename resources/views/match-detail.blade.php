@@ -333,7 +333,7 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: var(--radius-md);
             padding: 14px 18px;
-            margin: 0 auto 20px;
+            margin: 18px auto 0;
             max-width: 900px;
             text-align: left;
             backdrop-filter: blur(10px);
@@ -2049,6 +2049,162 @@
             .match-hero-meta {
                 gap: 6px;
             }
+            .hero-scoreboard {
+                gap: 6px;
+            }
+            .hero-team {
+                width: 34%;
+            }
+            .hero-score-center {
+                width: 32%;
+            }
+            .hero-status-pill {
+                padding: 4px 10px;
+                font-size: 0.65rem;
+                letter-spacing: 0.02em;
+            }
+            .event-card-header {
+                gap: 6px;
+            }
+            .event-team-meta {
+                min-width: 0;
+            }
+            .event-team-meta span {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .event-badge-tag {
+                font-size: 0.6rem;
+                padding: 3px 6px;
+            }
+            .timeline-section-title {
+                font-size: 1rem;
+            }
+            .event-player-name {
+                font-size: 0.875rem;
+            }
+        }
+
+        .hero-status-pill, .hero-score-display, .event-badge-tag, .event-score-tag {
+            white-space: nowrap;
+        }
+
+        .seo-content-box {
+            --bg-primary: var(--pl-bg);
+            --border-light: var(--pl-border);
+            background: var(--pl-card-bg);
+            border: 1px solid var(--pl-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            margin: 24px 0;
+            box-shadow: var(--shadow-subtle);
+            color: var(--pl-text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .seo-content-box h2 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--pl-purple);
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin: 0 0 10px;
+        }
+
+        .seo-content-box p {
+            margin: 0 0 10px;
+        }
+
+        .seo-content-box strong {
+            color: var(--pl-purple);
+        }
+
+        @media (max-width: 480px) {
+            .seo-content-box {
+                font-size: 0.875rem;
+                padding: 16px;
+            }
+            .seo-content-box h2 {
+                font-size: 1rem;
+            }
+        }
+
+        /* Mobile: giao diện phẳng, gọn kiểu app thể thao */
+        @media (max-width: 640px) {
+            .breadcrumb-nav {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scrollbar-width: none;
+                white-space: nowrap;
+                gap: 4px;
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+            }
+            .breadcrumb-nav::-webkit-scrollbar {
+                display: none;
+            }
+            .breadcrumb-nav a,
+            .breadcrumb-current {
+                padding: 0;
+                background: none;
+                border: 0;
+                box-shadow: none;
+            }
+            .breadcrumb-nav a {
+                color: var(--pl-text-muted);
+            }
+            .match-hero-card {
+                padding: 18px 14px 14px;
+                border-radius: 16px;
+                box-shadow: none;
+                margin-bottom: 14px;
+            }
+            .match-nav-tabs {
+                box-shadow: none;
+                margin-bottom: 14px;
+            }
+            .timeline-card {
+                padding: 16px 12px;
+                border-radius: 12px;
+                box-shadow: none;
+            }
+            .timeline-row {
+                margin-bottom: 12px;
+            }
+            .timeline-row.home-event,
+            .timeline-row.away-event {
+                padding-left: 46px;
+            }
+            .timeline-period-divider {
+                margin: 14px 0;
+                padding-left: 46px;
+            }
+            .tl-period-pill {
+                padding: 4px 12px;
+                font-size: 0.72rem;
+                box-shadow: none;
+            }
+            .timeline-row .event-minute-badge {
+                left: 5px;
+                width: 34px;
+                height: 34px;
+                font-size: 0.68rem;
+                border-width: 2px;
+                box-shadow: none;
+            }
+            .event-card,
+            .event-card:hover {
+                padding: 10px 12px;
+                border-radius: 12px;
+                box-shadow: none;
+            }
+            .event-card-header {
+                margin-bottom: 6px;
+                padding-bottom: 6px;
+            }
         }
 
         /* Phase 5: Realtime Goal Flash, Sound Toggle & Toast Notification */
@@ -2093,23 +2249,25 @@
 
         .goal-toast-notification {
             position: fixed;
-            top: 24px;
+            top: 16px;
             left: 50%;
-            transform: translateX(-50%) translateY(-40px);
-            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
-            border: 2px solid #10b981;
-            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.6), 0 0 30px rgba(16, 185, 129, 0.35);
-            padding: 14px 22px;
-            border-radius: var(--radius-md);
+            transform: translateX(-50%) translateY(-30px);
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 255, 135, 0.4);
+            box-shadow: 0 12px 36px rgba(2, 6, 23, 0.5), 0 0 20px rgba(0, 255, 135, 0.15);
+            padding: 9px 16px;
+            border-radius: 12px;
             color: #ffffff;
             z-index: 100000;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            max-width: 90vw;
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            max-width: 440px;
         }
 
         .goal-toast-notification.show {
@@ -2119,67 +2277,145 @@
         }
 
         .goal-toast-notification .toast-icon {
-            font-size: 2rem;
-            line-height: 1;
-            animation: bounce 1s infinite alternate;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            background: rgba(0, 255, 135, 0.12);
+            color: var(--pl-green-neon, #00ff87);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 1.2s infinite alternate;
+        }
+
+        .goal-toast-notification .toast-icon svg {
+            width: 17px;
+            height: 17px;
+            stroke: var(--pl-green-neon, #00ff87);
         }
 
         @keyframes bounce {
             from { transform: translateY(0) scale(1); }
-            to { transform: translateY(-4px) scale(1.1); }
+            to { transform: translateY(-3px) scale(1.08); }
         }
 
         .goal-toast-notification .toast-body {
             display: flex;
             flex-direction: column;
             gap: 2px;
+            min-width: 0;
+            flex: 1;
         }
 
         .goal-toast-notification .toast-heading {
-            font-size: 0.75rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            color: var(--pl-mint);
+            font-size: 0.6875rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--pl-green-neon, #00ff87);
             text-transform: uppercase;
         }
 
         .goal-toast-notification .toast-match {
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 0.875rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .goal-toast-notification .toast-team {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 110px;
         }
 
         .goal-toast-notification .toast-score {
-            background: var(--pl-pink);
+            background: var(--pl-pink, #e90052);
             color: #fff;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: 900;
+            padding: 1px 7px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
         .goal-toast-notification .toast-scorer {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.8);
-            margin-top: 2px;
+            font-size: 0.72rem;
+            color: rgba(255, 255, 255, 0.85);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .goal-toast-notification .toast-scorer svg {
+            width: 11px;
+            height: 11px;
+            stroke: var(--pl-green-neon, #00ff87);
         }
 
         .goal-toast-notification .toast-close {
             background: transparent;
             border: none;
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
-            line-height: 1;
             padding: 4px;
-            margin-left: 8px;
-            transition: color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: color 0.15s, background 0.15s;
         }
 
         .goal-toast-notification .toast-close:hover {
             color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 640px) {
+            .goal-toast-notification {
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                transform: translateY(-20px);
+                width: auto;
+                max-width: calc(100vw - 20px);
+                margin: 0 auto;
+                padding: 7px 10px;
+                gap: 8px;
+                border-radius: 10px;
+            }
+            .goal-toast-notification.show {
+                transform: translateY(0);
+            }
+            .goal-toast-notification .toast-icon {
+                width: 26px;
+                height: 26px;
+                min-width: 26px;
+            }
+            .goal-toast-notification .toast-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+            .goal-toast-notification .toast-heading {
+                font-size: 0.625rem;
+                letter-spacing: 0.05em;
+            }
+            .goal-toast-notification .toast-match {
+                font-size: 0.78rem;
+                gap: 5px;
+            }
+            .goal-toast-notification .toast-team {
+                max-width: 85px;
+            }
+            .goal-toast-notification .toast-score {
+                font-size: 0.8rem;
+                padding: 1px 5px;
+            }
+            .goal-toast-notification .toast-scorer {
+                font-size: 0.68rem;
+            }
         }
     </style>
 </head>
@@ -2276,23 +2512,6 @@
                     Trực tiếp {{ $homeTeam['name'] ?? 'Đội nhà' }} vs {{ $awayTeam['name'] ?? 'Đội khách' }} - Vòng {{ $match['gameweek']['gameweek'] ?? 1 }} Ngoại Hạng Anh
                 </h1>
 
-                {{-- Tiêu đề H2 Kênh phát sóng & Giờ thi đấu --}}
-                <h2 class="seo-section-h2">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    {{ !empty($tvChannel) ? 'Kênh phát sóng trực tiếp và Thời gian thi đấu' : 'Thời gian và địa điểm thi đấu' }}
-                </h2>
-
-                {{-- Khối Văn Bản SEO Tự Động (Programmatic SEO Content) --}}
-                @if(!empty($seoParagraph))
-                <div class="seo-intro-card">
-                    <div class="seo-intro-header">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                        {{ match($match['status'] ?? 'U') { 'C' => 'Tóm tắt trận đấu', 'L' => 'Diễn biến trận đấu', default => 'Tổng quan trước trận đấu' } }}
-                    </div>
-                    <p class="seo-intro-text">{{ $seoParagraph }}</p>
-                </div>
-                @endif
-
                 {{-- Bảng Tỷ Số Chính --}}
                 <div class="hero-scoreboard">
                     {{-- Đội Nhà --}}
@@ -2336,7 +2555,7 @@
                                 <span data-score-home>{{ $homeScore ?? 0 }}</span> - <span data-score-away>{{ $awayScore ?? 0 }}</span>
                             </div>
                         @elseif($status === 'C')
-                            <span class="hero-status-pill pill-ft">HẾT GIỜ (FT)</span>
+                            <span class="hero-status-pill pill-ft">HẾT GIỜ</span>
                             <div class="hero-score-display" data-score-display>
                                 <span data-score-home>{{ $homeScore ?? 0 }}</span> - <span data-score-away>{{ $awayScore ?? 0 }}</span>
                             </div>
@@ -2382,6 +2601,12 @@
                     </div>
                 </div>
 
+                {{-- Tiêu đề H2 Kênh phát sóng & Giờ thi đấu --}}
+                <h2 class="seo-section-h2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    {{ !empty($tvChannel) ? 'Kênh phát sóng trực tiếp và Thời gian thi đấu' : 'Thời gian và địa điểm thi đấu' }}
+                </h2>
+
                 {{-- Thông tin sân vận động & trọng tài --}}
                 <div class="hero-info-footer">
                     <span class="hero-info-pill">
@@ -2405,6 +2630,17 @@
                     </span>
                     @endif
                 </div>
+
+                {{-- Khối Văn Bản SEO Tự Động (Programmatic SEO Content) --}}
+                @if(!empty($seoParagraph))
+                <div class="seo-intro-card">
+                    <div class="seo-intro-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        {{ match($match['status'] ?? 'U') { 'C' => 'Tóm tắt trận đấu', 'L' => 'Diễn biến trận đấu', default => 'Tổng quan trước trận đấu' } }}
+                    </div>
+                    <p class="seo-intro-text">{{ $seoParagraph }}</p>
+                </div>
+                @endif
             </div>
 
             {{-- PHASE 8: Banner Quảng Cáo Dưới Tỷ Số (banner_below_score) --}}
@@ -2933,38 +3169,38 @@
                         <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'home' ? 'active-voted' : '' }}" 
                                 data-choice="home" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
                             <span class="vote-team-name">{{ $homeTeam['name'] ?? 'Đội nhà' }} thắng</span>
-                            <span class="vote-percent-tag" id="homeVoteTag">{{ $voteStats['home']['percent'] ?? 45 }}%</span>
+                            <span class="vote-percent-tag" id="homeVoteTag">{{ $voteStats['home']['percent'] ?? 0 }}%</span>
                         </button>
 
                         <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'draw' ? 'active-voted' : '' }}" 
                                 data-choice="draw" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
                             <span class="vote-team-name">Hai đội Hòa</span>
-                            <span class="vote-percent-tag" id="drawVoteTag">{{ $voteStats['draw']['percent'] ?? 25 }}%</span>
+                            <span class="vote-percent-tag" id="drawVoteTag">{{ $voteStats['draw']['percent'] ?? 0 }}%</span>
                         </button>
 
                         <button type="button" class="btn-vote-choice {{ ($voteStats['user_choice'] ?? '') === 'away' ? 'active-voted' : '' }}" 
                                 data-choice="away" {{ ($voteStats['has_voted'] ?? false) ? 'disabled' : '' }}>
                             <span class="vote-team-name">{{ $awayTeam['name'] ?? 'Đội khách' }} thắng</span>
-                            <span class="vote-percent-tag" id="awayVoteTag">{{ $voteStats['away']['percent'] ?? 30 }}%</span>
+                            <span class="vote-percent-tag" id="awayVoteTag">{{ $voteStats['away']['percent'] ?? 0 }}%</span>
                         </button>
                     </div>
 
                     {{-- Thanh tỷ lệ phần trăm bình chọn trực quan: [Đội nhà thắng 65%] - [Hòa 15%] - [Đội khách thắng 20%] --}}
                     <div class="voting-progress-bar-wrap">
                         <div class="voting-multi-bar">
-                            <div class="bar-segment segment-home" id="barHomeSegment" style="width: {{ $voteStats['home']['percent'] ?? 45 }}%;"></div>
-                            <div class="bar-segment segment-draw" id="barDrawSegment" style="width: {{ $voteStats['draw']['percent'] ?? 25 }}%;"></div>
-                            <div class="bar-segment segment-away" id="barAwaySegment" style="width: {{ $voteStats['away']['percent'] ?? 30 }}%;"></div>
+                            <div class="bar-segment segment-home" id="barHomeSegment" style="width: {{ $voteStats['home']['percent'] ?? 0 }}%;"></div>
+                            <div class="bar-segment segment-draw" id="barDrawSegment" style="width: {{ $voteStats['draw']['percent'] ?? 0 }}%;"></div>
+                            <div class="bar-segment segment-away" id="barAwaySegment" style="width: {{ $voteStats['away']['percent'] ?? 0 }}%;"></div>
                         </div>
                         <div class="voting-legend-row">
                             <span class="legend-item legend-home">
-                                <span class="legend-dot"></span> {{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}: <strong id="legendHomeVal">{{ $voteStats['home']['percent'] ?? 45 }}%</strong>
+                                <span class="legend-dot"></span> {{ $homeTeam['shortName'] ?? ($homeTeam['name'] ?? 'Đội nhà') }}: <strong id="legendHomeVal">{{ $voteStats['home']['percent'] ?? 0 }}%</strong>
                             </span>
                             <span class="legend-item legend-draw">
-                                <span class="legend-dot"></span> Hòa: <strong id="legendDrawVal">{{ $voteStats['draw']['percent'] ?? 25 }}%</strong>
+                                <span class="legend-dot"></span> Hòa: <strong id="legendDrawVal">{{ $voteStats['draw']['percent'] ?? 0 }}%</strong>
                             </span>
                             <span class="legend-item legend-away">
-                                <span class="legend-dot"></span> {{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}: <strong id="legendAwayVal">{{ $voteStats['away']['percent'] ?? 30 }}%</strong>
+                                <span class="legend-dot"></span> {{ $awayTeam['shortName'] ?? ($awayTeam['name'] ?? 'Đội khách') }}: <strong id="legendAwayVal">{{ $voteStats['away']['percent'] ?? 0 }}%</strong>
                             </span>
                         </div>
                     </div>

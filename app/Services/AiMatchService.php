@@ -153,7 +153,7 @@ class AiMatchService
             $awayScore = $matchInfo['teams'][1]['score'] ?? 0;
 
             $eventDesc = collect($events)->take(6)->map(function ($e) {
-                return "Phút {$e['clock']}: {$e['description']}";
+                return "Phút {$e['clock']}: " . ($e['desc'] ?? '') . ' - ' . ($e['playerName'] ?? '');
             })->implode("\n");
 
             $prompt = "Trận đấu Ngoại Hạng Anh kết thúc: {$home} {$homeScore} - {$awayScore} {$away}.\nCác diễn biến chính:\n{$eventDesc}\nHãy đúc kết đúng 3 điểm nhấn chính (bullet points) về trận đấu này bằng tiếng Việt ngắn gọn, giàu tính chuyên môn.";
@@ -242,13 +242,8 @@ class AiMatchService
 
         // 2. Thống kê kiểm soát bóng hoặc sút
         $possession = null;
-        if (!empty($stats)) {
-            foreach ($stats as $st) {
-                if (stripos($st['name'] ?? '', 'possession') !== false || stripos($st['label'] ?? '', 'Kiểm soát') !== false) {
-                    $possession = "{$home} {$st['home']} - {$st['away']} {$away}";
-                    break;
-                }
-            }
+        if (isset($stats['possession']['home'], $stats['possession']['away'])) {
+            $possession = "{$home} {$stats['possession']['home']}% - {$stats['possession']['away']}% {$away}";
         }
         $point2 = $possession 
             ? "Thế trận kiểm soát bóng ({$possession}) phản ánh rõ sự áp đặt chiến thuật và quyền làm chủ nhịp điệu trên sân."
